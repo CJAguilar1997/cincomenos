@@ -1,6 +1,7 @@
 package com.tienda.cincomenos.domain.producto;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,4 +57,8 @@ public abstract class Producto {
         this.fechaDeRegistro = LocalDate.now();
         this.productoActivo = true;
     }
+
+    public abstract Map<String, String> getAtributosSubclases();
+
+    protected abstract void validarAtributos();
 }

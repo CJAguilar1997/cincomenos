@@ -9,8 +9,12 @@ public record DatosRespuestaProducto (
     String descripcion, 
     String marca, 
     Double precio, 
-    Long cantidad, 
+    Long stock, 
     CategoriaProducto categoria,
     Map<String, String> atributosDeSubclases) {
+
+    public DatosRespuestaProducto(Producto producto) {
+        this(producto.getId(), producto.getCodigoDeBarras(), producto.getNombre(), producto.getDescripcion(), producto.getMarca(), producto.getPrecio(), producto.getStock(), producto.getCategoria(), producto.getAtributosSubclases());
+    }
 
 }
