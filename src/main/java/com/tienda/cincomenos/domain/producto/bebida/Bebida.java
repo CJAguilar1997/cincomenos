@@ -55,7 +55,7 @@ public class Bebida extends Producto {
         if (volumen.isEmpty() || embase.isEmpty() || fechaDeVencimiento.isEmpty()) {
             throw new IllegalArgumentException("Los atributos volumen, embase y fecha de vencimiento son obligatorios");
         }
-        if (!Arrays.asList("SI", "NO").contains(bebidaAlcoholica.toString())) {
+        if (!Arrays.asList("true", "false").contains(bebidaAlcoholica.toString())) {
             throw new IllegalArgumentException("El atributo bebida_alcoholica debe ser SI o NO");
         }
     }
