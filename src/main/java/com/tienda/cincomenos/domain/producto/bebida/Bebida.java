@@ -1,11 +1,11 @@
 package com.tienda.cincomenos.domain.producto.bebida;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.tienda.cincomenos.domain.producto.DatosActualizarProducto;
 import com.tienda.cincomenos.domain.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.producto.Producto;
 
@@ -14,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -21,10 +22,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Getter
 public class Bebida extends Producto {
 
     private String volumen;
+
     private String embase;
+
     private Boolean bebidaAlcoholica;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -36,8 +40,7 @@ public class Bebida extends Producto {
         this.volumen = datos.atributosDeSubclases().getOrDefault("volumen", "");
         this.embase = datos.atributosDeSubclases().getOrDefault("embase", "");
         this.bebidaAlcoholica = Boolean.parseBoolean(datos.atributosDeSubclases().get("bebida_alcoholica"));
-        this.fechaDeVencimiento = datos.atributosDeSubclases().get("fecha_vencimiento");
-        validarAtributos();
+        this.fechaDeVencimiento = datos.atributosDeSubclases().getOrDefault("fecha_vencimiento", "");
     }
 
     @Override
@@ -50,13 +53,19 @@ public class Bebida extends Producto {
         return atributos;
     }
 
-    @Override
-    protected void validarAtributos() {
-        if (volumen.isEmpty() || embase.isEmpty() || fechaDeVencimiento.isEmpty()) {
-            throw new IllegalArgumentException("Los atributos volumen, embase y fecha de vencimiento son obligatorios");
+    public void actualizarAtributos(DatosActualizarProducto datos) {
+        super.actualizarAtributos(datos);
+        if (datos.atributosDeSubclases().get("volumen") != null) {
+            this.volumen = datos.atributosDeSubclases().get("volumen");
         }
-        if (!Arrays.asList("true", "false").contains(bebidaAlcoholica.toString())) {
-            throw new IllegalArgumentException("El atributo bebida_alcoholica debe ser SI o NO");
+        if (datos.atributosDeSubclases().get("embase") != null) {
+            this.embase = datos.atributosDeSubclases().get("embase");
+        }
+        if (datos.atributosDeSubclases().get("bebida_alcoholica") != null) {
+            this.bebidaAlcoholica = Boolean.parseBoolean(datos.atributosDeSubclases().get("bebida_alcoholica"));
+        }
+        if (datos.atributosDeSubclases().get("fecha_vencimiento") != null) {
+            this.fechaDeVencimiento = datos.atributosDeSubclases().get("fecha_vencimiento");
         }
     }
 }

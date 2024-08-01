@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,5 +61,25 @@ public abstract class Producto {
 
     public abstract Map<String, String> getAtributosSubclases();
 
-    protected abstract void validarAtributos();
+    public void desactivarProducto() {
+        this.productoActivo = false;
+    }
+
+    protected void actualizarAtributos(@Valid DatosActualizarProducto datos) {
+        if (datos.nombre() != null) {
+            this.nombre = datos.nombre();
+        }
+        if (datos.descripcion() != null) {
+            this.descripcion = datos.descripcion();
+        }
+        if (datos.marca() != null) {
+            this.marca = datos.marca();
+        }
+        if (datos.precio() != null) {
+            this.precio = datos.precio();
+        }
+        if (datos.categoria() != null) {
+            this.categoria = datos.categoria();
+        }
+    }
 }
