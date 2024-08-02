@@ -65,6 +65,7 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<Object> borrarProducto(@PathVariable Long id) {
         service.borrar(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
