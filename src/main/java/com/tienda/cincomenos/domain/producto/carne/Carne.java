@@ -39,10 +39,10 @@ public class Carne extends Producto {
 
     public Carne(DatosRegistrarProducto datos) {
         super(datos);
-        this.peso = datos.atributosDeSubclases().getOrDefault("peso", "");
-        this.ventaPorUnidad = Boolean.parseBoolean(datos.atributosDeSubclases().getOrDefault("venta_unidad", ""));
-        this.empaque = TipoEmpaque.valueOf(datos.atributosDeSubclases().getOrDefault("empaque", ""));
-        this.tipo = TipoCarne.valueOf(datos.atributosDeSubclases().getOrDefault("tipo_carne", ""));
+        this.peso = datos.atributosDeSubclases().get("peso");
+        this.ventaPorUnidad = Boolean.parseBoolean(datos.atributosDeSubclases().get("venta_unidad"));
+        this.empaque = TipoEmpaque.valueOf(datos.atributosDeSubclases().get("empaque"));
+        this.tipo = TipoCarne.valueOf(datos.atributosDeSubclases().get("tipo_carne"));
     }
 
     @Override
