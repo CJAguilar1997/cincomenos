@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.tienda.cincomenos.domain.producto.CategoriaProducto;
 import com.tienda.cincomenos.domain.producto.DatosActualizarProducto;
 import com.tienda.cincomenos.domain.producto.DatosListadoProductos;
 import com.tienda.cincomenos.domain.producto.DatosRegistrarProducto;
@@ -51,8 +53,15 @@ public class ProductoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosListadoProductos>> ListarProductos(@PageableDefault(size = 30, sort = "nombre") Pageable paginacion) {
-        return service.listar(paginacion);
+    public ResponseEntity<Page<DatosListadoProductos>> listarProductosPorParametros(
+        @PageableDefault(size = 30, sort = "id") Pageable paginacion,
+        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "nombre", required = false) String nombre,
+        @RequestParam(value = "marca", required = false) String marca,
+        @RequestParam(value = "categoria", required = false) CategoriaProducto categoria,
+        @RequestParam(value = "precioMin", required = false) Double precioMin,
+        @RequestParam(value = "precioMax", required = false) Double precioMax) {
+        return service.listarPorParametros(paginacion, id, nombre, marca, categoria, precioMin, precioMax);
     }
 
     @DeleteMapping("/{id}")

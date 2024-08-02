@@ -68,4 +68,10 @@ public class ProductoService {
         producto.actualizarAtributos(datos);
         return producto;
     }
+
+    public ResponseEntity<Page<DatosListadoProductos>> listarPorParametros(Pageable paginacion, Long id, String nombre,
+            String marca, CategoriaProducto categoria, Double precioMin, Double precioMax) {
+        var listadoDeProductos = repository.findByParameters(id, nombre, marca, categoria, precioMin, precioMax, paginacion).map(DatosListadoProductos::new);
+        return ResponseEntity.status(HttpStatus.OK).body(listadoDeProductos);
+    }
 }

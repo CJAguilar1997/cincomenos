@@ -2,16 +2,16 @@ package com.tienda.cincomenos.domain.producto;
 
 import java.util.Map;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record DatosActualizarProducto(
-    @NotBlank
+    @NotNull
     Long id,
     String nombre, 
     String descripcion, 
     String marca, 
     Double precio,
-    @NotBlank
+    @NotNull
     CategoriaProducto categoria,
     Map<String, String> atributosDeSubclases) {
 
