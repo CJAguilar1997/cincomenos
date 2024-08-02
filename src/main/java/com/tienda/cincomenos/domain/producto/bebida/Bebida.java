@@ -27,7 +27,7 @@ public class Bebida extends Producto {
 
     private String volumen;
 
-    private String embase;
+    private EmbaseBebida embase;
 
     private Boolean bebidaAlcoholica;
 
@@ -37,8 +37,8 @@ public class Bebida extends Producto {
     
     public Bebida(DatosRegistrarProducto datos) {
         super(datos);
-        this.volumen = datos.atributosDeSubclases().getOrDefault("volumen", "");
-        this.embase = datos.atributosDeSubclases().getOrDefault("embase", "");
+        this.volumen = datos.atributosDeSubclases().get("volumen");
+        this.embase = EmbaseBebida.valueOf(datos.atributosDeSubclases().get("embase"));
         this.bebidaAlcoholica = Boolean.parseBoolean(datos.atributosDeSubclases().get("bebida_alcoholica"));
         this.fechaDeVencimiento = datos.atributosDeSubclases().getOrDefault("fecha_vencimiento", "");
     }
@@ -47,7 +47,7 @@ public class Bebida extends Producto {
     public Map<String, String> getAtributosSubclases() {
         Map<String, String> atributos = new HashMap<>();
         atributos.put("volumen", volumen);
-        atributos.put("embase", embase);
+        atributos.put("embase", String.valueOf(embase));
         atributos.put("bebida_alcoholica", String.valueOf(bebidaAlcoholica));
         atributos.put("fecha_vencimiento", fechaDeVencimiento);
         return atributos;
@@ -59,7 +59,7 @@ public class Bebida extends Producto {
             this.volumen = datos.atributosDeSubclases().get("volumen");
         }
         if (datos.atributosDeSubclases().get("embase") != null) {
-            this.embase = datos.atributosDeSubclases().get("embase");
+            this.embase = EmbaseBebida.valueOf(datos.atributosDeSubclases().get("embase"));
         }
         if (datos.atributosDeSubclases().get("bebida_alcoholica") != null) {
             this.bebidaAlcoholica = Boolean.parseBoolean(datos.atributosDeSubclases().get("bebida_alcoholica"));
