@@ -3,6 +3,9 @@ package com.tienda.cincomenos.domain.producto;
 import java.time.LocalDate;
 import java.util.Map;
 
+import com.tienda.cincomenos.domain.producto.dto.DatosActualizarProducto;
+import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

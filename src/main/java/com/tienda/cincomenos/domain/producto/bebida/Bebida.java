@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.tienda.cincomenos.domain.producto.DatosActualizarProducto;
-import com.tienda.cincomenos.domain.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.producto.Producto;
+import com.tienda.cincomenos.domain.producto.dto.DatosActualizarProducto;
+import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

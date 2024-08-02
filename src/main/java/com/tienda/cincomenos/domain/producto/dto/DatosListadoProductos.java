@@ -1,6 +1,9 @@
-package com.tienda.cincomenos.domain.producto;
+package com.tienda.cincomenos.domain.producto.dto;
 
 import java.util.Map;
+
+import com.tienda.cincomenos.domain.producto.CategoriaProducto;
+import com.tienda.cincomenos.domain.producto.Producto;
 
 public record DatosListadoProductos(
     Long id,

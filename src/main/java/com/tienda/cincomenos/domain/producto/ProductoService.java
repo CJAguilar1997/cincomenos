@@ -13,6 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.tienda.cincomenos.domain.producto.bebida.Bebida;
 import com.tienda.cincomenos.domain.producto.carne.Carne;
+import com.tienda.cincomenos.domain.producto.dto.DatosActualizarProducto;
+import com.tienda.cincomenos.domain.producto.dto.DatosListadoProductos;
+import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.producto.dto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 
 import jakarta.validation.Valid;

@@ -1,8 +1,9 @@
-package com.tienda.cincomenos.domain.producto;
+package com.tienda.cincomenos.domain.producto.dto;
 
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tienda.cincomenos.domain.producto.CategoriaProducto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

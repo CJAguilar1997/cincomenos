@@ -1,6 +1,8 @@
-package com.tienda.cincomenos.domain.producto;
+package com.tienda.cincomenos.domain.producto.dto;
 
 import java.util.Map;
+
+import com.tienda.cincomenos.domain.producto.CategoriaProducto;
 
 import jakarta.validation.constraints.NotNull;
 

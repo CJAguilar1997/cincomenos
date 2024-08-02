@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.tienda.cincomenos.domain.producto.CategoriaProducto;
-import com.tienda.cincomenos.domain.producto.DatosActualizarProducto;
-import com.tienda.cincomenos.domain.producto.DatosListadoProductos;
-import com.tienda.cincomenos.domain.producto.DatosRegistrarProducto;
-import com.tienda.cincomenos.domain.producto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.Producto;
 import com.tienda.cincomenos.domain.producto.ProductoService;
+import com.tienda.cincomenos.domain.producto.dto.DatosActualizarProducto;
+import com.tienda.cincomenos.domain.producto.dto.DatosListadoProductos;
+import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.producto.dto.DatosRespuestaProducto;
 
 import jakarta.validation.Valid;
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.tienda.cincomenos.domain.producto.CategoriaProducto;
-import com.tienda.cincomenos.domain.producto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 
 @Component
