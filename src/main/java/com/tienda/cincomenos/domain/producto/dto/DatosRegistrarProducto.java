@@ -1,5 +1,6 @@
 package com.tienda.cincomenos.domain.producto.dto;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +21,7 @@ public record DatosRegistrarProducto (
     String marca, 
 
     @NotNull
-    Double precio, 
+    BigDecimal precio, 
 
     @NotNull
     Long stock, 

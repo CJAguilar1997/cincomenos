@@ -1,5 +1,7 @@
 package com.tienda.cincomenos.domain.producto;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductoRepository extends JpaRepository <Producto, Long> {
+public interface InventarioRepository extends JpaRepository <Producto, Long> {
 
     boolean existsByCodigoDeBarras(String codigoBarras);
 
@@ -28,8 +30,8 @@ public interface ProductoRepository extends JpaRepository <Producto, Long> {
         @Param("nombre") String nombre,
         @Param("marca") String marca,
         @Param("categoria") CategoriaProducto categoria, 
-        @Param("precioMin") Double precioMin,
-        @Param("precioMax") Double precioMax,
+        @Param("precioMin") BigDecimal precioMin,
+        @Param("precioMax") BigDecimal precioMax,
         Pageable pageable);
 
 }

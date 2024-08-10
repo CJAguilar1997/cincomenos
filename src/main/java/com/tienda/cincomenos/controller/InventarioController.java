@@ -1,5 +1,6 @@
 package com.tienda.cincomenos.controller;
 
+import java.math.BigDecimal;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.tienda.cincomenos.domain.producto.CategoriaProducto;
 import com.tienda.cincomenos.domain.producto.Producto;
-import com.tienda.cincomenos.domain.producto.ProductoService;
+import com.tienda.cincomenos.domain.producto.InventarioService;
 import com.tienda.cincomenos.domain.producto.dto.DatosActualizarProducto;
 import com.tienda.cincomenos.domain.producto.dto.DatosListadoProductos;
 import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
@@ -32,10 +33,10 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/inventario")
-public class ProductoController {
+public class InventarioController {
 
     @Autowired
-    private ProductoService service;
+    private InventarioService service;
 
     @PostMapping
     @Transactional
@@ -59,8 +60,8 @@ public class ProductoController {
         @RequestParam(value = "nombre", required = false) String nombre,
         @RequestParam(value = "marca", required = false) String marca,
         @RequestParam(value = "categoria", required = false) CategoriaProducto categoria,
-        @RequestParam(value = "precioMin", required = false) Double precioMin,
-        @RequestParam(value = "precioMax", required = false) Double precioMax) {
+        @RequestParam(value = "precioMin", required = false) BigDecimal precioMin,
+        @RequestParam(value = "precioMax", required = false) BigDecimal precioMax) {
         return service.listarPorParametros(paginacion, id, nombre, marca, categoria, precioMin, precioMax);
     }
 

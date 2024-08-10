@@ -1,5 +1,6 @@
 package com.tienda.cincomenos.domain.producto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +23,10 @@ import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 import jakarta.validation.Valid;
 
 @Service
-public class ProductoService {
+public class InventarioService {
 
     @Autowired
-    private ProductoRepository repository;
+    private InventarioRepository repository;
     
     @Autowired
     private List<ValidadorDeProductos> validadores;
@@ -74,7 +75,7 @@ public class ProductoService {
     }
 
     public ResponseEntity<Page<DatosListadoProductos>> listarPorParametros(Pageable paginacion, Long id, String nombre,
-            String marca, CategoriaProducto categoria, Double precioMin, Double precioMax) {
+            String marca, CategoriaProducto categoria, BigDecimal precioMin, BigDecimal precioMax) {
         var listadoDeProductos = repository.findByParameters(id, nombre, marca, categoria, precioMin, precioMax, paginacion).map(DatosListadoProductos::new);
         return ResponseEntity.status(HttpStatus.OK).body(listadoDeProductos);
     }

@@ -1,5 +1,6 @@
 package com.tienda.cincomenos.domain.producto.dto;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import com.tienda.cincomenos.domain.producto.CategoriaProducto;
@@ -11,7 +12,7 @@ public record DatosRespuestaProducto (
     String nombre, 
     String descripcion, 
     String marca, 
-    Double precio, 
+    BigDecimal precio, 
     Long stock, 
     CategoriaProducto categoria,
     Map<String, String> atributosDeSubclases) {

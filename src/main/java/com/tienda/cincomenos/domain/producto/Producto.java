@@ -1,5 +1,6 @@
 package com.tienda.cincomenos.domain.producto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public abstract class Producto {
     private String nombre;
     private String descripcion;
     private String marca;
-    private Double precio;
+    private BigDecimal precio;
     private Long stock;
     
     @Enumerated(EnumType.STRING)
