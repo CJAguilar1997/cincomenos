@@ -27,6 +27,10 @@ public class FacturaService {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "El código de barras no existe");
             }
             Producto producto = inventarioRepository.findByCodigoDeBarras(codigoDeBarras);
+            if (producto.getStock() < item.cantidad()) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, String.format("No hay existencias suficientes del producto '%s', el stock disponible es de: %d", producto.getNombre(), producto.getStock()));   
+            }
+            inventarioRepository.updateStockProducto(item.codigoDeBarras(), item.cantidad());
             ItemsFactura items = new ItemsFactura(item.cantidad(), producto, factura);
             factura.agregarItems(items);
         });
