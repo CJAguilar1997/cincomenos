@@ -5,18 +5,18 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tienda.cincomenos.domain.factura.Factura;
 
 public record DatosRespuestaFactura(
     Long id,
 
-    @JsonAlias("fecha_registro")
+    @JsonProperty("fecha_registro")
     LocalDate fechaDeRegistro,
     
     List<ItemsFacturaDTO> items,
 
-    @JsonAlias("valor_total")
+    @JsonProperty("valor_total")
     BigDecimal valorTotal
     ) {
 

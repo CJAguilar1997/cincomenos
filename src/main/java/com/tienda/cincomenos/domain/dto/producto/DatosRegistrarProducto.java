@@ -3,7 +3,7 @@ package com.tienda.cincomenos.domain.dto.producto;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
 
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record DatosRegistrarProducto (
 
-    @JsonProperty("codigo_barras")
+    @JsonAlias("codigo_barras")
     String codigoDeBarras,
 
     @NotBlank
@@ -29,7 +29,7 @@ public record DatosRegistrarProducto (
     @NotNull
     CategoriaProducto categoria,
 
-    @JsonProperty("atributos_subclase")
+    @JsonAlias("atributos_subclase")
     Map<String, String> atributosDeSubclases) {
 
 }
