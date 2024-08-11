@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.domain.producto;
+package com.tienda.cincomenos.domain.producto.productoBase;
 
 import java.math.BigDecimal;
 
@@ -17,13 +17,14 @@ public interface InventarioRepository extends JpaRepository <Producto, Long> {
     Page<Producto> findByProductoActivoTrue(Pageable paginacion);
 
     @Query("""
-        SELECT p FROM Producto p WHERE 
-        (:id IS NULL OR p.id = :id)
+        SELECT p FROM Producto p WHERE p.productoActivo = true 
+        AND (:id IS NULL OR p.id = :id)
         AND (:nombre IS NULL OR p.nombre LIKE :nombre) 
         AND (:marca IS NULL OR p.marca LIKE :marca) 
         AND (:categoria IS NULL OR p.categoria = :categoria)                                        
         AND (:precioMin IS NULL OR p.precio >= :precioMin)
         AND (:precioMax IS NULL OR p.precio <= :precioMax)
+        AND (:codigoBarras IS NULL OR p.codigoDeBarras LIKE :codigoBarras)
     """)   
     Page<Producto> findByParameters (
         @Param("id") Long id,
@@ -32,6 +33,9 @@ public interface InventarioRepository extends JpaRepository <Producto, Long> {
         @Param("categoria") CategoriaProducto categoria, 
         @Param("precioMin") BigDecimal precioMin,
         @Param("precioMax") BigDecimal precioMax,
+        @Param("codigoBarras") String codigoBarras,
         Pageable pageable);
+
+    Producto findByCodigoDeBarras(String codigoDeBarras);
 
 }

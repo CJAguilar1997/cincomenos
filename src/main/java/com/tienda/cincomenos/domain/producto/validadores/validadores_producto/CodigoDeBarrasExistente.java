@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.tienda.cincomenos.domain.producto.CategoriaProducto;
-import com.tienda.cincomenos.domain.producto.InventarioRepository;
-import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
+import com.tienda.cincomenos.domain.producto.productoBase.InventarioRepository;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 
 @Component

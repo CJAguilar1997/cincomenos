@@ -1,11 +1,11 @@
-package com.tienda.cincomenos.domain.producto;
+package com.tienda.cincomenos.domain.producto.productoBase;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 
-import com.tienda.cincomenos.domain.producto.dto.DatosActualizarProducto;
-import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosActualizarProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

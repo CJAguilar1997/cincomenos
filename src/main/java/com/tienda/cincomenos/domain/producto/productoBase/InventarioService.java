@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.domain.producto;
+package com.tienda.cincomenos.domain.producto.productoBase;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,12 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.tienda.cincomenos.domain.dto.producto.DatosActualizarProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosListadoProductos;
+import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.bebida.Bebida;
 import com.tienda.cincomenos.domain.producto.carne.Carne;
-import com.tienda.cincomenos.domain.producto.dto.DatosActualizarProducto;
-import com.tienda.cincomenos.domain.producto.dto.DatosListadoProductos;
-import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
-import com.tienda.cincomenos.domain.producto.dto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 
 import jakarta.validation.Valid;
@@ -75,8 +75,8 @@ public class InventarioService {
     }
 
     public ResponseEntity<Page<DatosListadoProductos>> listarPorParametros(Pageable paginacion, Long id, String nombre,
-            String marca, CategoriaProducto categoria, BigDecimal precioMin, BigDecimal precioMax) {
-        var listadoDeProductos = repository.findByParameters(id, nombre, marca, categoria, precioMin, precioMax, paginacion).map(DatosListadoProductos::new);
+            String marca, CategoriaProducto categoria, BigDecimal precioMin, BigDecimal precioMax, String codigoBarras) {
+        var listadoDeProductos = repository.findByParameters(id, nombre, marca, categoria, precioMin, precioMax, codigoBarras, paginacion).map(DatosListadoProductos::new);
         return ResponseEntity.status(HttpStatus.OK).body(listadoDeProductos);
     }
 }

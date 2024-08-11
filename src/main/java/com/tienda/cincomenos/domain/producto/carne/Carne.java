@@ -3,8 +3,8 @@ package com.tienda.cincomenos.domain.producto.carne;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.tienda.cincomenos.domain.producto.Producto;
-import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.producto.productoBase.Producto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

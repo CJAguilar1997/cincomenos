@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.tienda.cincomenos.domain.producto.CategoriaProducto;
-import com.tienda.cincomenos.domain.producto.Producto;
-import com.tienda.cincomenos.domain.producto.InventarioService;
-import com.tienda.cincomenos.domain.producto.dto.DatosActualizarProducto;
-import com.tienda.cincomenos.domain.producto.dto.DatosListadoProductos;
-import com.tienda.cincomenos.domain.producto.dto.DatosRegistrarProducto;
-import com.tienda.cincomenos.domain.producto.dto.DatosRespuestaProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosActualizarProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosListadoProductos;
+import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
+import com.tienda.cincomenos.domain.dto.producto.DatosRespuestaProducto;
+import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
+import com.tienda.cincomenos.domain.producto.productoBase.InventarioService;
+import com.tienda.cincomenos.domain.producto.productoBase.Producto;
 
 import jakarta.validation.Valid;
 
@@ -61,8 +61,9 @@ public class InventarioController {
         @RequestParam(value = "marca", required = false) String marca,
         @RequestParam(value = "categoria", required = false) CategoriaProducto categoria,
         @RequestParam(value = "precioMin", required = false) BigDecimal precioMin,
-        @RequestParam(value = "precioMax", required = false) BigDecimal precioMax) {
-        return service.listarPorParametros(paginacion, id, nombre, marca, categoria, precioMin, precioMax);
+        @RequestParam(value = "precioMax", required = false) BigDecimal precioMax,
+        @RequestParam(value = "codigoBarras", required = false) String codigoBarras) {
+        return service.listarPorParametros(paginacion, id, nombre, marca, categoria, precioMin, precioMax, codigoBarras);
     }
 
     @DeleteMapping("/{id}")
