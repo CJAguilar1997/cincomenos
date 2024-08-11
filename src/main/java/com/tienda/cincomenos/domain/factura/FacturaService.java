@@ -1,7 +1,9 @@
 package com.tienda.cincomenos.domain.factura;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.tienda.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRespuestaFactura;
@@ -21,6 +23,9 @@ public class FacturaService {
         Factura factura = new Factura();
         datos.items().forEach(item -> {
             String codigoDeBarras = item.codigoDeBarras();
+            if (!inventarioRepository.existsByCodigoDeBarras(codigoDeBarras)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "El código de barras no existe");
+            }
             Producto producto = inventarioRepository.findByCodigoDeBarras(codigoDeBarras);
             ItemsFactura items = new ItemsFactura(item.cantidad(), producto, factura);
             factura.agregarItems(items);
