@@ -63,7 +63,8 @@ public class InventarioController {
         @RequestParam(value = "precioMin", required = false) BigDecimal precioMin,
         @RequestParam(value = "precioMax", required = false) BigDecimal precioMax,
         @RequestParam(value = "codigoBarras", required = false) String codigoBarras) {
-        return service.listarPorParametros(paginacion, id, nombre, marca, categoria, precioMin, precioMax, codigoBarras);
+        Page<DatosListadoProductos> respuesta = service.listarPorParametros(paginacion, id, nombre, marca, categoria, precioMin, precioMax, codigoBarras);
+        return ResponseEntity.status(HttpStatus.OK).body(respuesta);
     }
 
     @DeleteMapping("/{id}")

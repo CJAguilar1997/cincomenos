@@ -1,10 +1,13 @@
 package com.tienda.cincomenos.domain.factura;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.tienda.cincomenos.domain.dto.factura.DatosListadoFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRespuestaFactura;
 import com.tienda.cincomenos.domain.producto.productoBase.InventarioRepository;
@@ -36,6 +39,11 @@ public class FacturaService {
         });
         Factura facturaGuardada = facturaRepository.save(factura);
         return new DatosRespuestaFactura(facturaGuardada);
+    }
+
+    public Page<DatosListadoFactura> listarPorParametros(Pageable paginacion, Long id) {
+        Page<DatosListadoFactura> listadoFacturas = facturaRepository.findByParameters(id, paginacion).map(DatosListadoFactura::new);
+        return listadoFacturas;
     }
     
 }

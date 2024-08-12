@@ -74,9 +74,9 @@ public class InventarioService {
         return producto;
     }
 
-    public ResponseEntity<Page<DatosListadoProductos>> listarPorParametros(Pageable paginacion, Long id, String nombre,
+    public Page<DatosListadoProductos> listarPorParametros(Pageable paginacion, Long id, String nombre,
             String marca, CategoriaProducto categoria, BigDecimal precioMin, BigDecimal precioMax, String codigoBarras) {
-        var listadoDeProductos = repository.findByParameters(id, nombre, marca, categoria, precioMin, precioMax, codigoBarras, paginacion).map(DatosListadoProductos::new);
-        return ResponseEntity.status(HttpStatus.OK).body(listadoDeProductos);
+        Page<DatosListadoProductos> listadoDeProductos = repository.findByParameters(id, nombre, marca, categoria, precioMin, precioMax, codigoBarras, paginacion).map(DatosListadoProductos::new);
+        return listadoDeProductos;
     }
 }
