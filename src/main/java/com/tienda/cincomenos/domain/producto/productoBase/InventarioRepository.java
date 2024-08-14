@@ -48,4 +48,6 @@ public interface InventarioRepository extends JpaRepository <Producto, Long> {
     """)
     void updateStockProducto(String codigoDeBarras, Integer cantidad);
 
+    Page<Producto> getReferenceByCodigoDeBarras(String codigoDeBarras, Pageable paginacion);
+
 }

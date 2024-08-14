@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tienda.cincomenos.domain.dto.factura.DatosListadoFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRespuestaFactura;
+import com.tienda.cincomenos.domain.dto.producto.DatosListadoProductos;
 import com.tienda.cincomenos.domain.factura.FacturaService;
 
 @RestController
@@ -24,13 +25,21 @@ import com.tienda.cincomenos.domain.factura.FacturaService;
 public class FacturaController {
 
     @Autowired
-    FacturaService service;
+    private FacturaService service;
 
     @PostMapping
     @Transactional
     public ResponseEntity<DatosRespuestaFactura> registrarFactura(@RequestBody DatosRegistrarFactura datos) {
         DatosRespuestaFactura respuesta = service.registrar(datos);
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+    }
+
+    @GetMapping("/getProducto")
+    public ResponseEntity<Page<DatosListadoProductos>> obtenerProducto(
+        @RequestParam(value = "codigo_barras", required = true) String codigoDeBarras,
+        Pageable paginacion) {
+            Page<DatosListadoProductos> respuesta = service.obtenerProducto(codigoDeBarras, paginacion);
+            return ResponseEntity.status(HttpStatus.OK).body(respuesta);
     }
 
     @GetMapping

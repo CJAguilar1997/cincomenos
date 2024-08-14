@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, Long>{
-
+    
     @Query("""
             SELECT f FROM Factura f WHERE 
             :id IS NULL OR f.id = :id
             """)
-    Page<Factura> findByParameters(@Param("id") Long id, Pageable paginacion);
+    Page<Factura> getReferenceByParameters(@Param("id") Long id, Pageable paginacion);
 
 }
