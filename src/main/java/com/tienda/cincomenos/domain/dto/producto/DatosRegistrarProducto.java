@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 public record DatosRegistrarProducto(
 
@@ -28,10 +29,12 @@ public record DatosRegistrarProducto(
     String marca, 
 
     @NotNull
+    @Positive(message = "El atributo precio solo puede contener valores positivos")
     @Digits(integer = 10, fraction = 2, message = "El atributo precio solo puede contener como máximo 10 valores positivos y 2 decimales")
     BigDecimal precio, 
     
     @NotNull
+    @Positive(message = "El atributo stock solo puede contener valores positivos")
     @Digits(integer = 19, fraction = 0, message = "El atributo stock solo puede contener numeros enteros")
     Long stock, 
 

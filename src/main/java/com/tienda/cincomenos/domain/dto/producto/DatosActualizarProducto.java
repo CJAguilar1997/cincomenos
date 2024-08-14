@@ -9,6 +9,7 @@ import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 public record DatosActualizarProducto(
     @NotNull
@@ -23,6 +24,7 @@ public record DatosActualizarProducto(
     @Pattern(regexp = "[\\p{L}0-9- ]+", message = "La marca es invalida")
     String marca, 
 
+    @Positive(message = "El atributo precio solo puede contener valores positivos")
     @Digits(integer = 10, fraction = 2, message = "El atributo precio solo puede contener como máximo 10 valores positivos y 2 decimales")
     BigDecimal precio,
 
