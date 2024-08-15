@@ -1,6 +1,5 @@
 package com.tienda.cincomenos.domain.cliente;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,9 +37,6 @@ public class Cliente {
     private String dni;
     private String email;
     private String telefono;
-    
-    @Column(name = "total_compras")
-    private BigDecimal totalCompras;
     
     @Column(name = "usuario_activo")
     private Boolean usuarioActivo;

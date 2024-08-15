@@ -5,6 +5,5 @@ CREATE TABLE Clientes(
     dni VARCHAR(50) NOT NULL,
     email VARCHAR(50),
     telefono VARCHAR(25) NOT NULL,
-    total_compras DECIMAL(15,2),
     usuario_activo BOOLEAN NOT NULL
 )

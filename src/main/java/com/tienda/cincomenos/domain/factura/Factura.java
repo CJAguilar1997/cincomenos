@@ -7,12 +7,17 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.tienda.cincomenos.domain.cliente.Cliente;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -33,6 +38,10 @@ public class Factura {
     @Column(name = "id_factura")
     Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id")
+    private Cliente cliente;
+
     @Column(name = "fecha_emision")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate fechaDeRegistro = LocalDate.now();
@@ -43,6 +52,10 @@ public class Factura {
     @Column(name = "importe_total")
     BigDecimal valorTotal = new BigDecimal(0);
     
+    public Factura(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public void setItems(List<ItemsFactura> items) {
         this.items = items;
     }
@@ -52,4 +65,5 @@ public class Factura {
         this.items.add(item);
         this.valorTotal = this.valorTotal.add(item.getValor());
     }
+
 }

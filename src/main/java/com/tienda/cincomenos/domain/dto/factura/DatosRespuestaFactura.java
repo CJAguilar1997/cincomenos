@@ -6,14 +6,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.tienda.cincomenos.domain.dto.cliente.ClienteDTO;
 import com.tienda.cincomenos.domain.factura.Factura;
 
+@JsonPropertyOrder({"id", "fechaDeRegistro", "cliente", "items", "valorTotal"})
 public record DatosRespuestaFactura(
     Long id,
 
     @JsonProperty("fecha_registro")
     LocalDate fechaDeRegistro,
     
+    ClienteDTO cliente,
+
     List<ItemsFacturaDTO> items,
 
     @JsonProperty("valor_total")
@@ -24,6 +29,11 @@ public record DatosRespuestaFactura(
         this(
             facturaGuardada.getId(),
             facturaGuardada.getFechaDeRegistro(),
+            new ClienteDTO(
+                facturaGuardada.getCliente().getId(), 
+                facturaGuardada.getCliente().getNombre(), 
+                facturaGuardada.getCliente().getDni(), 
+                facturaGuardada.getCliente().getTelefono()),
             facturaGuardada.getItems().stream()
             .map(item -> {
                 BigDecimal valorProductoCantidad = item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getCantidad()));
@@ -43,6 +53,4 @@ public record DatosRespuestaFactura(
             facturaGuardada.getValorTotal()
         );
     }
-        
-
 }

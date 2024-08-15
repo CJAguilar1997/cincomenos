@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.tienda.cincomenos.domain.factura.Factura;
 
+@JsonPropertyOrder({"id", "fecha_registro", "items", "valor_total"})
 public record DatosListadoFactura(
     Long id,
 

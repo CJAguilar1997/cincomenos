@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tienda.cincomenos.domain.dto.factura.DatosListadoFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRespuestaFactura;
-import com.tienda.cincomenos.domain.dto.producto.DatosListadoProductos;
+import com.tienda.cincomenos.domain.dto.producto.DatosListadoProducto;
 import com.tienda.cincomenos.domain.factura.FacturaService;
 
 @RestController
@@ -35,19 +35,20 @@ public class FacturaController {
     }
 
     @GetMapping("/getProducto")
-    public ResponseEntity<Page<DatosListadoProductos>> obtenerProducto(
+    public ResponseEntity<Page<DatosListadoProducto>> obtenerProducto(
         @RequestParam(value = "codigo_barras", required = true) String codigoDeBarras,
         Pageable paginacion) {
-            Page<DatosListadoProductos> respuesta = service.obtenerProducto(codigoDeBarras, paginacion);
+            Page<DatosListadoProducto> respuesta = service.obtenerProducto(codigoDeBarras, paginacion);
             return ResponseEntity.status(HttpStatus.OK).body(respuesta);
-    }
+    } 
 
     @GetMapping
     public ResponseEntity<Page<DatosListadoFactura>> listarFacturaPorParametros(
         @PageableDefault(size = 30, sort = "id") Pageable paginacion,
-        @RequestParam(value = "id", required = false) Long id
+        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "id_cliente", required = false) Long idCliente
     ) {
-        Page<DatosListadoFactura> respuesta = service.listarPorParametros(paginacion, id);
+        Page<DatosListadoFactura> respuesta = service.listarPorParametros(paginacion, id, idCliente);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
     }
 }

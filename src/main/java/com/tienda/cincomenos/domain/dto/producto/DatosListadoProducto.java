@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.Producto;
 
-public record DatosListadoProductos(
+public record DatosListadoProducto(
     Long id,
     @JsonProperty("codigo_barras")
     String codigoDeBarras,
@@ -21,7 +21,7 @@ public record DatosListadoProductos(
     Map<String, String> atributosDeSubclases
 ) {
 
-    public DatosListadoProductos(Producto producto) {
+    public DatosListadoProducto(Producto producto) {
         this(producto.getId(), producto.getCodigoDeBarras(), producto.getNombre(), producto.getDescripcion(), producto.getMarca(), producto.getPrecio(), producto.getStock(), producto.getCategoria(), producto.getAtributosSubclases());
     }
 }

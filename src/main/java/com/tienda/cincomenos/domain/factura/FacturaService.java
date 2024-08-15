@@ -7,10 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.tienda.cincomenos.domain.cliente.Cliente;
+import com.tienda.cincomenos.domain.cliente.ClienteRespository;
 import com.tienda.cincomenos.domain.dto.factura.DatosListadoFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRespuestaFactura;
-import com.tienda.cincomenos.domain.dto.producto.DatosListadoProductos;
+import com.tienda.cincomenos.domain.dto.producto.DatosListadoProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.InventarioRepository;
 import com.tienda.cincomenos.domain.producto.productoBase.Producto;
 
@@ -23,8 +25,12 @@ public class FacturaService {
     @Autowired
     InventarioRepository inventarioRepository;
 
+    @Autowired
+    ClienteRespository clienteRespository;
+
     public DatosRespuestaFactura registrar(DatosRegistrarFactura datos) {
-        Factura factura = new Factura();
+        Cliente cliente = clienteRespository.getReferenceById(datos.idCliente());
+        Factura factura = new Factura(cliente);
         datos.items().forEach(item -> {
             String codigoDeBarras = item.codigoDeBarras();
 
@@ -45,16 +51,26 @@ public class FacturaService {
         return new DatosRespuestaFactura(facturaGuardada);
     }
 
-    public Page<DatosListadoFactura> listarPorParametros(Pageable paginacion, Long id) {
-        Page<DatosListadoFactura> listadoFacturas = facturaRepository.getReferenceByParameters(id, paginacion).map(DatosListadoFactura::new);
+    public Page<DatosListadoFactura> listarPorParametros(Pageable paginacion, Long id, Long idCliente) {
+        Cliente cliente = null;
+        if (id == null && idCliente == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Se necesitan datos para realizar una busqueda de facturas");
+        }
+        if(idCliente != null) {
+            if(!clienteRespository.existsById(idCliente)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id del cliente no existe");
+            }
+            cliente = clienteRespository.getReferenceById(idCliente);
+        }
+        Page<DatosListadoFactura> listadoFacturas = facturaRepository.getReferenceByParameters(id, cliente, paginacion).map(DatosListadoFactura::new);
         return listadoFacturas;
     }
 
-    public Page<DatosListadoProductos> obtenerProducto(String codigoDeBarras, Pageable paginacion) {
+    public Page<DatosListadoProducto> obtenerProducto(String codigoDeBarras, Pageable paginacion) {
         if (!inventarioRepository.existsByCodigoDeBarras(codigoDeBarras)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El producto no existe en la base de datos");
         }
-        Page<DatosListadoProductos> listadoProducto = inventarioRepository.getReferenceByCodigoDeBarras(codigoDeBarras, paginacion).map(DatosListadoProductos::new);
+        Page<DatosListadoProducto> listadoProducto = inventarioRepository.getReferenceByCodigoDeBarras(codigoDeBarras, paginacion).map(DatosListadoProducto::new);
         return listadoProducto;
     }
     

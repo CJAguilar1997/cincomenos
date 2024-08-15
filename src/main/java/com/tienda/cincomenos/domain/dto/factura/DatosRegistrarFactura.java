@@ -6,10 +6,19 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 public record DatosRegistrarFactura(
+    
+    @JsonAlias("id_cliente")
+    @Min(value = 1, message = "El id debe contener al menos un número")
+    @Max(value = 10, message = "El id no puede superará los 10 digitos")
+    @Positive
+    Long idCliente,
+
     List<Producto> items
 ) {
     public record Producto(

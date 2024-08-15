@@ -7,13 +7,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.tienda.cincomenos.domain.cliente.Cliente;
+
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, Long>{
     
     @Query("""
             SELECT f FROM Factura f WHERE 
-            :id IS NULL OR f.id = :id
+            (:id IS NULL OR f.id = :id) 
+            AND (:idCliente IS NULL OR f.cliente = :idCliente) 
             """)
-    Page<Factura> getReferenceByParameters(@Param("id") Long id, Pageable paginacion);
+    Page<Factura> getReferenceByParameters(
+        @Param("id") Long id, 
+        @Param("idCliente") Cliente cliente, 
+        Pageable paginacion);
 
 }

@@ -1,0 +1,1 @@
+ALTER TABLE Facturas_detalle ADD COLUMN id_cliente BIGINT NOT NULL DEFAULT 0 AFTER id_factura;

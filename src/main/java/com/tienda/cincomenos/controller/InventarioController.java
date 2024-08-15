@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.tienda.cincomenos.domain.dto.producto.DatosActualizarProducto;
-import com.tienda.cincomenos.domain.dto.producto.DatosListadoProductos;
+import com.tienda.cincomenos.domain.dto.producto.DatosListadoProducto;
 import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.dto.producto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
@@ -54,7 +54,7 @@ public class InventarioController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosListadoProductos>> listarProductosPorParametros(
+    public ResponseEntity<Page<DatosListadoProducto>> listarProductosPorParametros(
         @PageableDefault(size = 30, sort = "id") Pageable paginacion,
         @RequestParam(value = "id", required = false) Long id,
         @RequestParam(value = "nombre", required = false) String nombre,
@@ -63,7 +63,7 @@ public class InventarioController {
         @RequestParam(value = "precioMin", required = false) BigDecimal precioMin,
         @RequestParam(value = "precioMax", required = false) BigDecimal precioMax,
         @RequestParam(value = "codigoBarras", required = false) String codigoBarras) {
-        Page<DatosListadoProductos> respuesta = service.listarPorParametros(paginacion, id, nombre, marca, categoria, precioMin, precioMax, codigoBarras);
+        Page<DatosListadoProducto> respuesta = service.listarPorParametros(paginacion, id, nombre, marca, categoria, precioMin, precioMax, codigoBarras);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
     }
 
