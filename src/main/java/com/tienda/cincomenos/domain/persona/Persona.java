@@ -46,7 +46,7 @@ public abstract class Persona {
         });
     }
 
-    public void desactivarCuenta() {
+    protected void desactivarCuenta() {
         this.usuarioActivo = false;
     }
 }
