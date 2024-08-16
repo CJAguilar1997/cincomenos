@@ -1,5 +1,10 @@
 package com.tienda.cincomenos.domain.dto.cliente;
 
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.tienda.cincomenos.domain.dto.persona.DatosDeContactoDTO;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -17,10 +22,14 @@ public record DatosActualizarCliente(
     @Pattern(regexp = "[0-9-]+", message = "El DNI contiene simbolos invalidos")
     String dni,
     
-    String email,
+    @JsonAlias("datos_contacto")
+    DatosDeContactoDTO contacto
 
-    @Pattern(regexp = "\\+?[0-9- ]+", message = "El números contiene simbolos invalidos")
-    String telefono
-) {
+) implements DatosActualizar {
+
+    @Override
+    public Map<String, Object> getAtributos() {
+        return DatosActualizar.super.getAtributos();
+    }
 
 }

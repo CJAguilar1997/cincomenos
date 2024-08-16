@@ -33,7 +33,7 @@ public record DatosRespuestaFactura(
                 facturaGuardada.getCliente().getId(), 
                 facturaGuardada.getCliente().getNombre(), 
                 facturaGuardada.getCliente().getDni(), 
-                facturaGuardada.getCliente().getTelefono()),
+                facturaGuardada.getCliente().getContactoCliente().getTelefono()),
             facturaGuardada.getItems().stream()
             .map(item -> {
                 BigDecimal valorProductoCantidad = item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getCantidad()));

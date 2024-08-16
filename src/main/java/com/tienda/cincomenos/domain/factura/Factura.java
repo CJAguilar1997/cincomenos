@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.tienda.cincomenos.domain.cliente.Cliente;
+import com.tienda.cincomenos.domain.persona.cliente.Cliente;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

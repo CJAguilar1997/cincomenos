@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.tienda.cincomenos.domain.cliente.Cliente;
-import com.tienda.cincomenos.domain.cliente.ClienteRespository;
 import com.tienda.cincomenos.domain.dto.factura.DatosListadoFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.tienda.cincomenos.domain.dto.factura.DatosRespuestaFactura;
 import com.tienda.cincomenos.domain.dto.producto.DatosListadoProducto;
+import com.tienda.cincomenos.domain.persona.cliente.Cliente;
+import com.tienda.cincomenos.domain.persona.cliente.ClienteRespository;
 import com.tienda.cincomenos.domain.producto.productoBase.InventarioRepository;
 import com.tienda.cincomenos.domain.producto.productoBase.Producto;
 

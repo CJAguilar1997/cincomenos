@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.domain.cliente;
+package com.tienda.cincomenos.domain.persona.cliente;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,7 +36,7 @@ public class ClienteService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
         }
         Cliente cliente = respository.getReferenceById(datos.id());
-        cliente.actualizarDatos(cliente);
+        cliente.actualizarDatos(datos);
         return new DatosRespuestaCliente(cliente);
 
     }

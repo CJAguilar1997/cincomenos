@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.tienda.cincomenos.domain.cliente.Cliente;
+import com.tienda.cincomenos.domain.persona.cliente.Cliente;
 
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, Long>{

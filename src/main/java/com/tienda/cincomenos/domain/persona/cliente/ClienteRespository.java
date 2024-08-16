@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.domain.cliente;
+package com.tienda.cincomenos.domain.persona.cliente;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
