@@ -2,6 +2,7 @@ package com.tienda.cincomenos.domain.dto.cliente;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.tienda.cincomenos.domain.dto.persona.DatosDeContactoDTO;
+import com.tienda.cincomenos.domain.persona.DatosRegistrar;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -16,6 +17,6 @@ public record DatosRegistrarCliente(
 
     @JsonAlias("datos_contacto")
     DatosDeContactoDTO contacto
-) {
+) implements DatosRegistrar{
 
 }

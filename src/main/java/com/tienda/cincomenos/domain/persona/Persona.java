@@ -1,9 +1,11 @@
 package com.tienda.cincomenos.domain.persona;
 
+import java.time.LocalDate;
 import java.util.Map;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.tienda.cincomenos.domain.dto.cliente.DatosActualizar;
-import com.tienda.cincomenos.domain.dto.cliente.DatosRegistrarCliente;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -19,14 +21,21 @@ public abstract class Persona {
 
     @Column(name = "nombre")
     private String nombre;
+    
     @Column(name = "dni")
     private String dni;
+
     @Column(name = "usuario_activo")
     private Boolean usuarioActivo;
+
+    @Column(name = "fecha_registro")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate fechaRegistro;
     
-    protected Persona(DatosRegistrarCliente datos) {
+    protected <T extends DatosRegistrar> Persona(T datos) {
         this.nombre = datos.nombre();
         this.dni = datos.dni();
+        this.fechaRegistro = LocalDate.now();
         this.usuarioActivo = true;
     }
 
@@ -49,4 +58,5 @@ public abstract class Persona {
     protected void desactivarCuenta() {
         this.usuarioActivo = false;
     }
+
 }

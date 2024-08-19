@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Pattern;
 @JsonPropertyOrder({"telefono", "email"})
 public record DatosDeContactoDTO(
     @NotBlank
-    @Pattern(regexp = "\\+?[0-9- ]+", message = "El números contiene simbolos invalidos")
+    @Pattern(regexp = "\\+?[0-9 ]+", message = "El números contiene simbolos invalidos")
     String telefono,
 
     @Email
