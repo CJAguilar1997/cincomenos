@@ -3,7 +3,7 @@ package com.tienda.cincomenos.domain.dto.cliente;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.tienda.cincomenos.domain.dto.persona.DatosDeContactoDTO;
+import com.tienda.cincomenos.domain.dto.persona.ActualizarDatosDeContacto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -23,7 +23,7 @@ public record DatosActualizarCliente(
     String dni,
     
     @JsonAlias("datos_contacto")
-    DatosDeContactoDTO contacto
+    ActualizarDatosDeContacto contacto
 
 ) implements DatosActualizar {
 

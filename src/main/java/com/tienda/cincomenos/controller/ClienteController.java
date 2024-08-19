@@ -53,6 +53,6 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> borrarClienteLogico(@PathVariable Long id) {
         service.borradoLogico(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

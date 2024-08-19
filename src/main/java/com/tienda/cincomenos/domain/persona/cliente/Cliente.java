@@ -38,11 +38,13 @@ public class Cliente extends Persona{
 
     public void actualizarDatos(DatosActualizarCliente datos) {
         super.actualizarAtributosCliente(datos);
-        if (!datos.contacto().email().isBlank()) {
-            this.contactoCliente.setEmail(datos.contacto().email());
-        }
-        if (!datos.contacto().telefono().isBlank()) {
-            this.contactoCliente.setTelefono(datos.contacto().telefono());
+        if (datos.contacto() != null) {
+            if (datos.contacto().email() != null && !datos.contacto().email().isBlank()) {
+                this.contactoCliente.setEmail(datos.contacto().email());
+            }
+            if (datos.contacto().telefono() != null && !datos.contacto().telefono().isBlank()) {
+                this.contactoCliente.setTelefono(datos.contacto().telefono());
+            }
         }
         
     }
