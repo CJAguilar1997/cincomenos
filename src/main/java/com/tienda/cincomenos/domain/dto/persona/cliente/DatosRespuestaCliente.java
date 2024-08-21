@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.domain.dto.cliente;
+package com.tienda.cincomenos.domain.dto.persona.cliente;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

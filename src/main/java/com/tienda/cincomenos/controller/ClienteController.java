@@ -1,5 +1,7 @@
 package com.tienda.cincomenos.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,11 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.tienda.cincomenos.domain.dto.cliente.DatosActualizarCliente;
-import com.tienda.cincomenos.domain.dto.cliente.DatosListadoCliente;
-import com.tienda.cincomenos.domain.dto.cliente.DatosRegistrarCliente;
-import com.tienda.cincomenos.domain.dto.cliente.DatosRespuestaCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosActualizarCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosListadoCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRegistrarCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRespuestaCliente;
 import com.tienda.cincomenos.domain.persona.cliente.ClienteService;
 
 import jakarta.validation.Valid;
@@ -32,13 +35,14 @@ public class ClienteController {
     private ClienteService service;
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaCliente> registrarCliente(@RequestBody @Valid DatosRegistrarCliente datos) {
+    public ResponseEntity<DatosRespuestaCliente> registrarCliente(@RequestBody @Valid DatosRegistrarCliente datos, UriComponentsBuilder uriComponentsBuilder) {
         DatosRespuestaCliente respuesta = service.registrar(datos);
-        return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+        URI url = uriComponentsBuilder.path("/clientes/{id}").buildAndExpand(respuesta.id()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(respuesta);
     }
 
     @PutMapping
-    public ResponseEntity<DatosRespuestaCliente> actualizarCliente(@RequestBody DatosActualizarCliente datos) {
+    public ResponseEntity<DatosRespuestaCliente> actualizarCliente(@Valid @RequestBody DatosActualizarCliente datos) {
         DatosRespuestaCliente respuesta = service.actualizar(datos);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
     }

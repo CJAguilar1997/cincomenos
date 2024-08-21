@@ -1,7 +1,6 @@
 package com.tienda.cincomenos.domain.dto.persona;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.tienda.cincomenos.domain.persona.cliente.Cliente;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,9 +15,5 @@ public record DatosDeContactoDTO(
     @Email
     String email
 ) {
-
-    public DatosDeContactoDTO(Cliente cliente) {
-        this(cliente.getContactoCliente().getTelefono(), cliente.getContactoCliente().getEmail());
-    }
 
 }

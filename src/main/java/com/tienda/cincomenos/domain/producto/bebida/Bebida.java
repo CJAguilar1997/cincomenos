@@ -32,6 +32,7 @@ public class Bebida extends Producto {
     @Enumerated(EnumType.STRING)
     private EmbaseBebida embase;
 
+    @Column(name = "bebida_alcoholica")
     private Boolean bebidaAlcoholica;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -8,6 +8,7 @@ import com.tienda.cincomenos.domain.persona.empleado.TipoEmpleado;
 
 @JsonPropertyOrder({"nombre", "dni", "tipo_empleado", "datos_contacto"})
 public record DatosRespuestaEmpleado(
+    Long id,
     String nombre,
     String dni,
 
@@ -19,7 +20,7 @@ public record DatosRespuestaEmpleado(
 ) {
 
     public DatosRespuestaEmpleado(Empleado empleado) {
-        this(empleado.getNombre(), empleado.getDni(), empleado.getTipoEmpleado(), new DatosRespuestaContacto(empleado.getContacto()));
+        this(empleado.getId(), empleado.getNombre(), empleado.getDni(), empleado.getTipoEmpleado(), new DatosRespuestaContacto(empleado.getContacto()));
     }
 
 }

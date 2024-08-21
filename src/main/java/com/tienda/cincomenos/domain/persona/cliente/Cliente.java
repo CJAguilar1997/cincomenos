@@ -1,7 +1,7 @@
 package com.tienda.cincomenos.domain.persona.cliente;
 
-import com.tienda.cincomenos.domain.dto.cliente.DatosActualizarCliente;
-import com.tienda.cincomenos.domain.dto.cliente.DatosRegistrarCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosActualizarCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRegistrarCliente;
 import com.tienda.cincomenos.domain.persona.DatosDeContacto;
 import com.tienda.cincomenos.domain.persona.Persona;
 

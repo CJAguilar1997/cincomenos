@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.tienda.cincomenos.domain.dto.cliente.ClienteDTO;
+import com.tienda.cincomenos.domain.dto.persona.cliente.ClienteDTO;
 import com.tienda.cincomenos.domain.factura.Factura;
 
 @JsonPropertyOrder({"id", "fechaDeRegistro", "cliente", "items", "valorTotal"})

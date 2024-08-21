@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.tienda.cincomenos.domain.dto.cliente.DatosActualizar;
+import com.tienda.cincomenos.domain.dto.persona.DatosActualizar;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

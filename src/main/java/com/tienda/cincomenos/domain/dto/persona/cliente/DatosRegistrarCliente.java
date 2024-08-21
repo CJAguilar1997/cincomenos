@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.domain.dto.cliente;
+package com.tienda.cincomenos.domain.dto.persona.cliente;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.tienda.cincomenos.domain.dto.persona.DatosDeContactoDTO;
@@ -9,10 +9,11 @@ import jakarta.validation.constraints.Pattern;
 
 public record DatosRegistrarCliente(
     @NotBlank
-    @Pattern(regexp = "[\\p{L} ]+", message = "El nombre contiene caracteres invalidos")
+    @Pattern(regexp = "^\\w+\\s+\\w+.*$", message = "El nombre contiene caracteres invalidos")
     String nombre,
 
-    @Pattern(regexp = "[0-9-]+", message = "El DNI contiene simbolos invalidos")
+    @NotBlank
+    @Pattern(regexp = "[0-9]+(\\-?[0-9]+)*", message = "El DNI contiene simbolos invalidos")
     String dni,
 
     @JsonAlias("datos_contacto")

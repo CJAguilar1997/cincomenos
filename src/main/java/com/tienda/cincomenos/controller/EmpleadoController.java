@@ -1,5 +1,7 @@
 package com.tienda.cincomenos.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.tienda.cincomenos.domain.dto.persona.empleado.DatosActualizarEmpleado;
 import com.tienda.cincomenos.domain.dto.persona.empleado.DatosListadoEmpleado;
@@ -33,9 +36,10 @@ public class EmpleadoController {
     private EmpleadoService service;
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaEmpleadoLogin> registroEmpleado(@RequestBody @Valid DatosRegistrarEmpleado datos) {
+    public ResponseEntity<DatosRespuestaEmpleadoLogin> registroEmpleado(@RequestBody @Valid DatosRegistrarEmpleado datos, UriComponentsBuilder uriComponentsBuilder) {
         DatosRespuestaEmpleadoLogin respuesta = service.registrar(datos);
-        return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+        URI url = uriComponentsBuilder.path("/empleados/{id}").buildAndExpand(respuesta.datos().id()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(respuesta);
     }
     
     @GetMapping
@@ -52,7 +56,7 @@ public class EmpleadoController {
         }
         
     @PutMapping
-    public ResponseEntity<DatosRespuestaEmpleado> actualizarEmpleado(@RequestBody DatosActualizarEmpleado datos) {
+    public ResponseEntity<DatosRespuestaEmpleado> actualizarEmpleado(@Valid @RequestBody DatosActualizarEmpleado datos) {
         DatosRespuestaEmpleado respuesta = service.actualizar(datos);
         return ResponseEntity.status(HttpStatus.OK).body(respuesta);
     }

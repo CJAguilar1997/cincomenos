@@ -70,13 +70,16 @@ public abstract class Producto {
     }
 
     protected void actualizarAtributos(@Valid DatosActualizarProducto datos) {
-        if (datos.nombre() != null) {
+        if (datos.codigoDeBarras() != null && !datos.codigoDeBarras().isBlank()) {
+            this.codigoDeBarras = datos.codigoDeBarras();
+        }
+        if (datos.nombre() != null && !datos.nombre().isBlank()) {
             this.nombre = datos.nombre();
         }
-        if (datos.descripcion() != null) {
+        if (datos.descripcion() != null && !datos.descripcion().isBlank()) {
             this.descripcion = datos.descripcion();
         }
-        if (datos.marca() != null) {
+        if (datos.marca() != null && !datos.marca().isBlank()) {
             this.marca = datos.marca();
         }
         if (datos.precio() != null) {

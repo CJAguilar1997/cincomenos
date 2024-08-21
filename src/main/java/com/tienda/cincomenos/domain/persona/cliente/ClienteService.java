@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.tienda.cincomenos.domain.dto.cliente.DatosActualizarCliente;
-import com.tienda.cincomenos.domain.dto.cliente.DatosListadoCliente;
-import com.tienda.cincomenos.domain.dto.cliente.DatosRegistrarCliente;
-import com.tienda.cincomenos.domain.dto.cliente.DatosRespuestaCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosActualizarCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosListadoCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRegistrarCliente;
+import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRespuestaCliente;
 
 @Service
 public class ClienteService {

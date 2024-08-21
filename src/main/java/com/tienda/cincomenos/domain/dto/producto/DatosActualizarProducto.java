@@ -14,14 +14,17 @@ import jakarta.validation.constraints.Positive;
 public record DatosActualizarProducto(
     @NotNull
     Long id,
+
+    @Pattern(regexp = "[0-9]{6,25}", message = "El código de barras solo debe contener números, como mínimo 6 digitos y como máximo 25")
+    String codigoDeBarras,
     
-    @Pattern(regexp = "[\\p{L}0-9- ]+", message = "El nombre es invalido")
+    @Pattern(regexp = "[\\p{L}0-9 ]+(\\-?[\\p{L}0-9]+)*", message = "El nombre es invalido")
     String nombre, 
 
     @Pattern(regexp = "[\\p{L}0-9., ]+", message = "La descripcion contiene caracteres invalidos")
     String descripcion, 
 
-    @Pattern(regexp = "[\\p{L}0-9- ]+", message = "La marca es invalida")
+    @Pattern(regexp = "[\\p{L}0-9 ]+(\\-?[\\p{L}0-9]+)*", message = "La marca es invalida")
     String marca, 
 
     @Positive(message = "El atributo precio solo puede contener valores positivos")
@@ -32,6 +35,6 @@ public record DatosActualizarProducto(
     CategoriaProducto categoria,
     
     @JsonAlias("atributos_subclases")
-    Map<String, String> atributosDeSubclases) {
+    Map<String, String> atributosDeSubclases){
 
 }

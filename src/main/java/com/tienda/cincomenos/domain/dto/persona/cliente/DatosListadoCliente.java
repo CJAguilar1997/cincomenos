@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.domain.dto.cliente;
+package com.tienda.cincomenos.domain.dto.persona.cliente;
 
 import java.time.LocalDate;
 

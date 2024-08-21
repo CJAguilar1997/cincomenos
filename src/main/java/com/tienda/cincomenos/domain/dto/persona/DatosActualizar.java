@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.domain.dto.cliente;
+package com.tienda.cincomenos.domain.dto.persona;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

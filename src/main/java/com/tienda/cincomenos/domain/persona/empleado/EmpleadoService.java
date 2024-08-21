@@ -30,9 +30,10 @@ public class EmpleadoService {
 
     public DatosRespuestaEmpleadoLogin registrar(DatosRegistrarEmpleado datos) {
         Empleado respuesta = empleadoRepository.save(new Empleado(datos));
-        Map<String, String> usuario = UserGenerator.generate(datos.nombre());
 
+        Map<String, String> usuario = UserGenerator.generate(datos.nombre());
         DatosLogin loginUsuario = loginRespository.save(new DatosLogin(usuario));
+
         DatosLoginRespuesta datosLogin = new DatosLoginRespuesta(loginUsuario);
 
         return new DatosRespuestaEmpleadoLogin(respuesta, datosLogin);
@@ -46,14 +47,13 @@ public class EmpleadoService {
 
     public DatosRespuestaEmpleado actualizar(DatosActualizarEmpleado datos) {
         Empleado empleado = empleadoRepository.getReferenceById(datos.id());
-        System.out.println(datos);
         empleado.actualizarDatos(datos);
         return new DatosRespuestaEmpleado(empleado);
     }
 
     public void borrar(Long id) {
         if (id == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Es necesario un id para proceder con el método");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Es necesario un id de una cuenta existente");
         }
         if (!empleadoRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id del usuario no existe");

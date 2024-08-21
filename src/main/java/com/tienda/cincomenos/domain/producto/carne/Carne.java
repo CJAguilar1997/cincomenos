@@ -3,6 +3,7 @@ package com.tienda.cincomenos.domain.producto.carne;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.tienda.cincomenos.domain.dto.producto.DatosActualizarProducto;
 import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.Producto;
 
@@ -54,6 +55,21 @@ public class Carne extends Producto {
         atributos.put("tipo", String.valueOf(tipo));
         return atributos;
     }
-
+    
+    public void actualizarAtributos(DatosActualizarProducto datos) {
+        super.actualizarAtributos(datos);
+        if (datos.atributosDeSubclases().get("peso") != null) {
+            this.peso = datos.atributosDeSubclases().get("peso");
+        }
+        if (datos.atributosDeSubclases().get("venta_unidad") != null) {
+            this.ventaPorUnidad = Boolean.parseBoolean(datos.atributosDeSubclases().get("venta_unidad"));
+        }
+        if (datos.atributosDeSubclases().get("empaque") != null) {
+            this.empaque = TipoEmpaque.valueOf(datos.atributosDeSubclases().get("empaque"));
+        }
+        if (datos.atributosDeSubclases().get("tipo_carne") != null) {
+            this.tipo = TipoCarne.valueOf(datos.atributosDeSubclases().get("tipo_carne"));
+        }
+    }
 
 }
