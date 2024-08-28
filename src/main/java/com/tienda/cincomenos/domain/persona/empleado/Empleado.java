@@ -33,15 +33,15 @@ public class Empleado extends Persona{
     Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_empleado")
-    TipoEmpleado tipoEmpleado;
+    @Column(name = "puesto_trabajo")
+    PuestoTrabajo puestoTrabajo;
 
     @Embedded
     DatosDeContacto contacto;
 
     public Empleado (DatosRegistrarEmpleado datos) {
         super(datos);
-        this.tipoEmpleado = datos.tipoEmpleado();
+        this.puestoTrabajo = datos.puestoTrabajo();
         this.contacto = new DatosDeContacto(datos.contacto().telefono(), datos.contacto().email());
     }
 

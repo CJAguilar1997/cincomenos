@@ -6,10 +6,11 @@ import java.util.Map;
 
 public class UserGenerator {
 
-    public static Map<String, String> generate(String nombre) {
+    public static Map<String, String> generate(String nombre, String email) {
         Map<String, String> userLogin = new HashMap<>();
         userLogin.put("username", generateUsername(nombre));
         userLogin.put("password", generatePassword());
+        userLogin.put("email", email);
         return userLogin;
     }
 

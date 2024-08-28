@@ -1,0 +1,16 @@
+CREATE TABLE Usuarios(
+    id_usuario BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Roles_usuario(
+    id_usuario BIGINT NOT NULL,
+    id_rol BIGINT NOT NULL
+);
+ 
+CREATE TABLE Roles(
+    id_rol BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    rol VARCHAR(20) NOT NULL
+);

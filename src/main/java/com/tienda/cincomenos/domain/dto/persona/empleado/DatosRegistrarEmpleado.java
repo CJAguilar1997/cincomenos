@@ -1,9 +1,11 @@
 package com.tienda.cincomenos.domain.dto.persona.empleado;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.tienda.cincomenos.domain.dto.persona.DatosDeContactoDTO;
 import com.tienda.cincomenos.domain.persona.DatosRegistrar;
-import com.tienda.cincomenos.domain.persona.empleado.TipoEmpleado;
+import com.tienda.cincomenos.domain.persona.empleado.PuestoTrabajo;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,8 +22,11 @@ public record DatosRegistrarEmpleado(
     String dni,
 
     @NotNull
-    @JsonAlias("tipo_empleado")
-    TipoEmpleado tipoEmpleado,
+    @JsonAlias("puesto_trabajo")
+    PuestoTrabajo puestoTrabajo,
+
+    @NotNull
+    Set<String> roles,
     
     @JsonAlias("datos_contacto")
     DatosDeContactoDTO contacto
