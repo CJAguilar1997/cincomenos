@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.controller;
+package com.tienda.cincomenos.domain.dto.persona.login;
 
 public record DatosAutenticacionUsuario(
     String username,

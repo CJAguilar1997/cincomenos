@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tienda.cincomenos.domain.dto.persona.login.DatosAutenticacionUsuario;
 import com.tienda.cincomenos.domain.persona.login.Usuario;
 import com.tienda.cincomenos.infra.security.DatosJwtToken;
 import com.tienda.cincomenos.infra.security.TokenService;
