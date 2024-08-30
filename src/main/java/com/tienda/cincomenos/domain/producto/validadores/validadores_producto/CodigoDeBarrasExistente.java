@@ -8,7 +8,7 @@ import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.InventarioRepository;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
-import com.tienda.cincomenos.infra.exception.producto.BarcodeExistsException;
+import com.tienda.cincomenos.infra.exception.producto.BarcodeNotExistsException;
 
 @Component
 public class CodigoDeBarrasExistente implements ValidadorDeProductos{
@@ -19,7 +19,7 @@ public class CodigoDeBarrasExistente implements ValidadorDeProductos{
     @Override
     public void validar(DatosRegistrarProducto datos) {
         if (repository.existsByCodigoDeBarras(datos.codigoDeBarras())) {
-            throw new BarcodeExistsException(HttpStatus.CONFLICT, "El codigo de barras del producto ya existe en la base de datos");
+            throw new BarcodeNotExistsException(HttpStatus.CONFLICT, "El codigo de barras del producto ya existe en la base de datos");
         };
     }
 

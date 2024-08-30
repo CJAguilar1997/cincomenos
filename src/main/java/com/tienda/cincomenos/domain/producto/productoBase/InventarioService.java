@@ -17,7 +17,7 @@ import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.dto.producto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 import com.tienda.cincomenos.domain.producto.validadores.validadores_producto.ValidadorDatosActualizarProducto;
-import com.tienda.cincomenos.infra.exception.producto.InvalidIdException;
+import com.tienda.cincomenos.infra.exception.producto.IdNotExistsException;
 
 import jakarta.validation.Valid;
 
@@ -54,7 +54,7 @@ public class InventarioService {
 
     public void borrar(Long id) {
         if (!repository.existsById(id)) {
-            throw new InvalidIdException(HttpStatus.BAD_REQUEST, "El id no existe en la base de datos");
+            throw new IdNotExistsException(HttpStatus.BAD_REQUEST, "El id no existe en la base de datos");
         } 
         Producto producto = repository.getReferenceById(id);
         producto.desactivarProducto();
@@ -62,7 +62,7 @@ public class InventarioService {
 
     public Producto actualizar(@Valid DatosActualizarProducto datos) {
         if (!repository.existsById(datos.id())) {
-            throw new InvalidIdException(HttpStatus.CONFLICT, "El id no existe en la base de datos");
+            throw new IdNotExistsException(HttpStatus.CONFLICT, "El id no existe en la base de datos");
         }
         ValidadorDatosActualizarProducto.validar(datos);
         Producto producto = repository.getReferenceById(datos.id());

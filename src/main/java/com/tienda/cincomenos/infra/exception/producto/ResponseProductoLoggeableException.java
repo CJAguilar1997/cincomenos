@@ -6,9 +6,9 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public class ResponseProductoException extends ResponseStatusException implements LoggeableException{
+public class ResponseProductoLoggeableException extends ResponseStatusException implements LoggeableException{
 
-    public ResponseProductoException(HttpStatus status, String reason) {
+    public ResponseProductoLoggeableException(HttpStatus status, String reason) {
         super(status, reason);
         StackTraceElement element = getStackTrace()[0];
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
