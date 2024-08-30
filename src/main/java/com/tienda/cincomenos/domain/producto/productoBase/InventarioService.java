@@ -5,14 +5,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.tienda.cincomenos.domain.dto.producto.DatosActualizarProducto;
 import com.tienda.cincomenos.domain.dto.producto.DatosListadoProducto;
@@ -20,13 +17,12 @@ import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.dto.producto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 import com.tienda.cincomenos.domain.producto.validadores.validadores_producto.ValidadorDatosActualizarProducto;
+import com.tienda.cincomenos.infra.exception.producto.InvalidIdException;
 
 import jakarta.validation.Valid;
 
 @Service
 public class InventarioService {
-
-    private static final Logger log = LoggerFactory.getLogger(InventarioService.class);
 
     @Autowired
     private InventarioRepository repository;
@@ -50,7 +46,7 @@ public class InventarioService {
 
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | 
             IllegalArgumentException | InvocationTargetException | SecurityException e) {
-            log.error("No constructor found for {}", datos.categoria());
+            e.printStackTrace();
             throw new RuntimeException("No se encontró un constructor asociado a la categoria: " + datos.categoria().toString());
         }
         return new DatosRespuestaProducto(producto);
@@ -58,7 +54,7 @@ public class InventarioService {
 
     public void borrar(Long id) {
         if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id no existe en la base de datos");
+            throw new InvalidIdException(HttpStatus.BAD_REQUEST, "El id no existe en la base de datos");
         } 
         Producto producto = repository.getReferenceById(id);
         producto.desactivarProducto();
@@ -66,7 +62,7 @@ public class InventarioService {
 
     public Producto actualizar(@Valid DatosActualizarProducto datos) {
         if (!repository.existsById(datos.id())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El id no existe en la base de datos");
+            throw new InvalidIdException(HttpStatus.CONFLICT, "El id no existe en la base de datos");
         }
         ValidadorDatosActualizarProducto.validar(datos);
         Producto producto = repository.getReferenceById(datos.id());

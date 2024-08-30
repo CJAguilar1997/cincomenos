@@ -8,11 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.tienda.cincomenos.domain.dto.producto.DatosActualizarProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.Producto;
+import com.tienda.cincomenos.infra.exception.producto.InvalidKeyException;
+import com.tienda.cincomenos.infra.exception.producto.InvalidValueException;
 
 import jakarta.persistence.Column;
 
@@ -25,7 +26,7 @@ public class ValidadorDatosActualizarProducto {
         atributos.forEach((key, value) -> {
             List<String> columns = extractNameColumn(datos.categoria());
             if (!columns.contains(key)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("La llave %s no pertenece a el producto %s", key, datos.categoria().toString()));
+                throw new InvalidKeyException(HttpStatus.BAD_REQUEST, String.format("La llave %s no pertenece a el producto %s", key, datos.categoria().toString()));
             }
             getMatcherValue(key, value);
         });
@@ -60,10 +61,10 @@ public class ValidadorDatosActualizarProducto {
         Matcher matcherKey = regexPatternKey.matcher(key);
         Matcher matcherValue = regexPatternValue.matcher(value);
         if (!matcherKey.matches()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("El atributo %s no es valido", key));
+            throw new InvalidKeyException(HttpStatus.BAD_REQUEST, String.format("El atributo %s no es valido", key));
         }
         if (!matcherValue.matches()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("El valor %s del atributo %s no es valido", value, key));
+            throw new InvalidValueException(HttpStatus.BAD_REQUEST, String.format("El valor %s del atributo %s no es valido", value, key));
         }
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.producto.productoBase.CategoriaProducto;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
+import com.tienda.cincomenos.infra.exception.producto.InvalidValueException;
 
 @Component
 public class ValidadorFechaVencimiento implements ValidadorDeProductos {
@@ -22,9 +23,11 @@ public class ValidadorFechaVencimiento implements ValidadorDeProductos {
     @Override
     public void validar(DatosRegistrarProducto datos) {
         String fechaVencimiento = datos.atributosDeSubclases().get("fecha_vencimiento");
+
         if (fechaVencimiento == null || fechaVencimiento.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El atributo fecha_vencimiento es obligatorio. Revisa tus datos");
+            throw new InvalidValueException(HttpStatus.CONFLICT, "El atributo fecha_vencimiento no puede estar vacio");
         }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fechaVencimientoFormateada = LocalDate.parse(fechaVencimiento, formatter);
 
