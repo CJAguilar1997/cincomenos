@@ -1,6 +1,5 @@
 package com.tienda.cincomenos.domain.persona.empleado;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -22,8 +21,8 @@ import com.tienda.cincomenos.domain.persona.login.ERoles;
 import com.tienda.cincomenos.domain.persona.login.Roles;
 import com.tienda.cincomenos.domain.persona.login.Usuario;
 import com.tienda.cincomenos.domain.persona.login.UsuarioRepository;
-import com.tienda.cincomenos.infra.exception.ValueNotFoundException;
 import com.tienda.cincomenos.infra.exception.NullPointerException;
+import com.tienda.cincomenos.infra.exception.ValueNotFoundException;
 import com.tienda.cincomenos.utils.user.generator.UserGenerator;
 
 @Service
@@ -57,11 +56,6 @@ public class EmpleadoService {
     
     public Page<DatosListadoEmpleado> listar(Pageable paginacion, Long id, String nombre, String dni, String telefono,
     String fechaDeRegistro) {
-        Object[] parametros = {id, nombre, dni, telefono, fechaDeRegistro};
-        if (Arrays.stream(parametros).allMatch(param -> param == null)) {
-            throw new NullPointerException(HttpStatus.BAD_REQUEST, "No se proporcionaron parametros de busqueda");
-        }
-
         Page<DatosListadoEmpleado> listadoEmpleados = empleadoRepository.getReferenceByParameters(paginacion, id, nombre, dni, telefono, fechaDeRegistro).map(DatosListadoEmpleado::new);
         return listadoEmpleados;
     }
