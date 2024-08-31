@@ -17,7 +17,7 @@ import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.dto.producto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 import com.tienda.cincomenos.domain.producto.validadores.validadores_producto.ValidadorDatosActualizarProducto;
-import com.tienda.cincomenos.infra.exception.producto.IdNotExistsException;
+import com.tienda.cincomenos.infra.exception.IdNotExistsException;
 
 import jakarta.validation.Valid;
 

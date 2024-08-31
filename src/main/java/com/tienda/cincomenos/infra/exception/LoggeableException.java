@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.infra.exception.producto;
+package com.tienda.cincomenos.infra.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
