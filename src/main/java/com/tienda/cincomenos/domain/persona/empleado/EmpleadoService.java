@@ -21,6 +21,7 @@ import com.tienda.cincomenos.domain.persona.login.ERoles;
 import com.tienda.cincomenos.domain.persona.login.Roles;
 import com.tienda.cincomenos.domain.persona.login.Usuario;
 import com.tienda.cincomenos.domain.persona.login.UsuarioRepository;
+import com.tienda.cincomenos.infra.exception.EntityNotFoundException;
 import com.tienda.cincomenos.infra.exception.NullPointerException;
 import com.tienda.cincomenos.infra.exception.ValueNotFoundException;
 import com.tienda.cincomenos.utils.user.generator.UserGenerator;
@@ -71,7 +72,7 @@ public class EmpleadoService {
             throw new NullPointerException(HttpStatus.BAD_REQUEST, "Es necesario un id de una cuenta existente");
         }
         if (!empleadoRepository.existsById(id)) {
-            throw new ValueNotFoundException(HttpStatus.BAD_REQUEST, "El id del usuario no existe");
+            throw new EntityNotFoundException(HttpStatus.BAD_REQUEST, "El id del usuario no existe");
         }
         Empleado empleado = empleadoRepository.getReferenceById(id);
         empleado.borrarCuentaEmpleado();

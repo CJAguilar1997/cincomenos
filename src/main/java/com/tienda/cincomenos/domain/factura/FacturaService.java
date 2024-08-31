@@ -14,7 +14,7 @@ import com.tienda.cincomenos.domain.persona.cliente.Cliente;
 import com.tienda.cincomenos.domain.persona.cliente.ClienteRespository;
 import com.tienda.cincomenos.domain.producto.productoBase.InventarioRepository;
 import com.tienda.cincomenos.domain.producto.productoBase.Producto;
-import com.tienda.cincomenos.infra.exception.ValueNotFoundException;
+import com.tienda.cincomenos.infra.exception.EntityNotFoundException;
 import com.tienda.cincomenos.infra.exception.NullPointerException;
 import com.tienda.cincomenos.infra.exception.producto.BarcodeNotExistsException;
 import com.tienda.cincomenos.infra.exception.producto.OutOfStockException;
@@ -61,7 +61,7 @@ public class FacturaService {
         }
         if(idCliente != null) {
             if(!clienteRespository.existsById(idCliente)) {
-                throw new ValueNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe");
+                throw new EntityNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe");
             }
             cliente = clienteRespository.getReferenceById(idCliente);
         }
