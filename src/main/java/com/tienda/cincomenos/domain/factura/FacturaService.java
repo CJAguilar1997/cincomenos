@@ -14,8 +14,8 @@ import com.tienda.cincomenos.domain.persona.cliente.Cliente;
 import com.tienda.cincomenos.domain.persona.cliente.ClienteRespository;
 import com.tienda.cincomenos.domain.producto.productoBase.InventarioRepository;
 import com.tienda.cincomenos.domain.producto.productoBase.Producto;
-import com.tienda.cincomenos.infra.exception.IdNotExistsException;
-import com.tienda.cincomenos.infra.exception.NullDataException;
+import com.tienda.cincomenos.infra.exception.ValueNotFoundException;
+import com.tienda.cincomenos.infra.exception.NullPointerException;
 import com.tienda.cincomenos.infra.exception.producto.BarcodeNotExistsException;
 import com.tienda.cincomenos.infra.exception.producto.OutOfStockException;
 
@@ -57,11 +57,11 @@ public class FacturaService {
     public Page<DatosListadoFactura> listarPorParametros(Pageable paginacion, Long id, Long idCliente) {
         Cliente cliente = null;
         if (id == null && idCliente == null) {
-            throw new NullDataException(HttpStatus.BAD_REQUEST, "Se necesitan datos para realizar una busqueda de facturas");
+            throw new NullPointerException(HttpStatus.BAD_REQUEST, "Se necesitan datos para realizar una busqueda de facturas");
         }
         if(idCliente != null) {
             if(!clienteRespository.existsById(idCliente)) {
-                throw new IdNotExistsException(HttpStatus.BAD_REQUEST, "El id del cliente no existe");
+                throw new ValueNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe");
             }
             cliente = clienteRespository.getReferenceById(idCliente);
         }

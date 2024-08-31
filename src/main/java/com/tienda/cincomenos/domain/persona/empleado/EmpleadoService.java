@@ -1,5 +1,6 @@
 package com.tienda.cincomenos.domain.persona.empleado;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -10,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.tienda.cincomenos.domain.dto.persona.empleado.DatosActualizarEmpleado;
 import com.tienda.cincomenos.domain.dto.persona.empleado.DatosListadoEmpleado;
@@ -22,6 +22,8 @@ import com.tienda.cincomenos.domain.persona.login.ERoles;
 import com.tienda.cincomenos.domain.persona.login.Roles;
 import com.tienda.cincomenos.domain.persona.login.Usuario;
 import com.tienda.cincomenos.domain.persona.login.UsuarioRepository;
+import com.tienda.cincomenos.infra.exception.ValueNotFoundException;
+import com.tienda.cincomenos.infra.exception.NullPointerException;
 import com.tienda.cincomenos.utils.user.generator.UserGenerator;
 
 @Service
@@ -55,6 +57,11 @@ public class EmpleadoService {
     
     public Page<DatosListadoEmpleado> listar(Pageable paginacion, Long id, String nombre, String dni, String telefono,
     String fechaDeRegistro) {
+        Object[] parametros = {id, nombre, dni, telefono, fechaDeRegistro};
+        if (Arrays.stream(parametros).allMatch(param -> param == null)) {
+            throw new NullPointerException(HttpStatus.BAD_REQUEST, "No se proporcionaron parametros de busqueda");
+        }
+
         Page<DatosListadoEmpleado> listadoEmpleados = empleadoRepository.getReferenceByParameters(paginacion, id, nombre, dni, telefono, fechaDeRegistro).map(DatosListadoEmpleado::new);
         return listadoEmpleados;
     }
@@ -67,10 +74,10 @@ public class EmpleadoService {
     
     public void borrar(Long id) {
         if (id == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Es necesario un id de una cuenta existente");
+            throw new NullPointerException(HttpStatus.BAD_REQUEST, "Es necesario un id de una cuenta existente");
         }
         if (!empleadoRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id del usuario no existe");
+            throw new ValueNotFoundException(HttpStatus.BAD_REQUEST, "El id del usuario no existe");
         }
         Empleado empleado = empleadoRepository.getReferenceById(id);
         empleado.borrarCuentaEmpleado();
@@ -78,7 +85,7 @@ public class EmpleadoService {
     
     private Set<Roles> obtenerRoles(Set<String> roles) {
         if (roles.isEmpty()) {
-            throw new RuntimeException("No hay roles para añadir");
+            throw new NullPointerException(HttpStatus.BAD_REQUEST, "No hay roles para añadir al usuario");
         }
 
         Set<Roles> rolEntities = new HashSet<>();
@@ -88,7 +95,7 @@ public class EmpleadoService {
             if (existingRole != null) {
                 rolEntities.add(existingRole);
             } else {
-                throw new RuntimeException(String.format("El rol s% no se pudo encontrar en la base de datos", existingRole));
+                throw new ValueNotFoundException(HttpStatus.BAD_REQUEST ,String.format("El rol s% no se pudo encontrar en la base de datos", existingRole));
             }
         }
         return rolEntities;
