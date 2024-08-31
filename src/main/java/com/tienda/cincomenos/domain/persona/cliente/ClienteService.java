@@ -5,12 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.tienda.cincomenos.domain.dto.persona.cliente.DatosActualizarCliente;
 import com.tienda.cincomenos.domain.dto.persona.cliente.DatosListadoCliente;
 import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRegistrarCliente;
 import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRespuestaCliente;
+import com.tienda.cincomenos.infra.exception.ValueNotFoundException;
 
 @Service
 public class ClienteService {
@@ -20,7 +20,7 @@ public class ClienteService {
 
     public Page<DatosListadoCliente> listar(Long id, Pageable paginacion) {
         if (!respository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
+            throw new ValueNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
         }
         Page<DatosListadoCliente> listadoClientes = respository.getReferenceById(id, paginacion).map(DatosListadoCliente::new);
         return listadoClientes;
@@ -33,7 +33,7 @@ public class ClienteService {
     
     public DatosRespuestaCliente actualizar(DatosActualizarCliente datos) {
         if (!respository.existsById(datos.id())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
+            throw new ValueNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
         }
         Cliente cliente = respository.getReferenceById(datos.id());
         cliente.actualizarDatos(datos);
@@ -43,7 +43,7 @@ public class ClienteService {
 
     public void borradoLogico(Long id) {
         if (!respository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
+            throw new ValueNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
         }
         Cliente cliente = respository.getReferenceById(id);
         cliente.desactivarCliente();
