@@ -1,4 +1,4 @@
-package com.tienda.cincomenos.infra.exception;
+package com.tienda.cincomenos.infra.exception.responsive;
 
 import org.springframework.http.HttpStatus;
 

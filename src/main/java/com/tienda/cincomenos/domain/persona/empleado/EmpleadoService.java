@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,10 @@ import com.tienda.cincomenos.domain.persona.login.ERoles;
 import com.tienda.cincomenos.domain.persona.login.Roles;
 import com.tienda.cincomenos.domain.persona.login.Usuario;
 import com.tienda.cincomenos.domain.persona.login.UsuarioRepository;
-import com.tienda.cincomenos.infra.exception.EntityNotFoundException;
-import com.tienda.cincomenos.infra.exception.NullPointerException;
-import com.tienda.cincomenos.infra.exception.ValueNotFoundException;
+import com.tienda.cincomenos.infra.exception.responsive.EntityNotFoundException;
+import com.tienda.cincomenos.infra.exception.responsive.NullPointerException;
+import com.tienda.cincomenos.infra.exception.responsive.ValueNotFoundException;
+import com.tienda.cincomenos.utils.user.generator.RoleValidator;
 import com.tienda.cincomenos.utils.user.generator.UserGenerator;
 
 @Service
@@ -41,7 +43,12 @@ public class EmpleadoService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public DatosRespuestaEmpleadoLogin registrar(DatosRegistrarEmpleado datos) {
+    @Autowired
+    private RoleValidator roleValidator;
+
+    public DatosRespuestaEmpleadoLogin registrar(DatosRegistrarEmpleado datos, Authentication authentication) {
+        roleValidator.validateHierarchy(datos.roles(), authentication);
+        
         Empleado respuesta = empleadoRepository.save(new Empleado(datos));
 
         Map<String, String> usuario = UserGenerator.generate(datos.nombre(), datos.contacto().email());
@@ -86,11 +93,11 @@ public class EmpleadoService {
         Set<Roles> rolEntities = new HashSet<>();
 
         for (String rol : roles) {
-            Roles existingRole = rolRepository.findByRol(ERoles.valueOf(rol.toUpperCase()));
-            if (existingRole != null) {
-                rolEntities.add(existingRole);
+            Roles roleEntity = rolRepository.findByRol(ERoles.valueOf(rol.toUpperCase()));
+            if (roleEntity != null) {
+                rolEntities.add(roleEntity);
             } else {
-                throw new ValueNotFoundException(HttpStatus.BAD_REQUEST ,String.format("El rol s% no se pudo encontrar en la base de datos", existingRole));
+                throw new ValueNotFoundException(HttpStatus.BAD_REQUEST ,String.format("El rol s% no se pudo encontrar en la base de datos", roleEntity));
             }
         }
         return rolEntities;

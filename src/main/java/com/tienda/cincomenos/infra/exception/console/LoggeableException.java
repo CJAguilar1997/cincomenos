@@ -1,15 +1,14 @@
-package com.tienda.cincomenos.infra.exception;
+package com.tienda.cincomenos.infra.exception.console;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import com.tienda.cincomenos.infra.exception.LoggeableExceptionImpl;
 
-public class ResponseLoggeableException extends ResponseStatusException implements LoggeableException{
-
-    public ResponseLoggeableException(HttpStatus status, String reason) {
-        super(status, reason);
+public class LoggeableException extends RuntimeException implements LoggeableExceptionImpl{
+    
+    public LoggeableException(String reason) {
+        super(reason);
         StackTraceElement element = getStackTrace()[0];
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = formatter.format(LocalDateTime.now());
@@ -21,5 +20,4 @@ public class ResponseLoggeableException extends ResponseStatusException implemen
             formattedDateTime,
             reason);
     }
-
 }

@@ -7,10 +7,10 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.tienda.cincomenos.domain.persona.login.Usuario;
 import com.tienda.cincomenos.domain.persona.login.UsuarioRepository;
 
 import jakarta.servlet.FilterChain;
@@ -33,10 +33,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         var authHeader = request.getHeader("Authorization");
         if (authHeader != null) {
             String token = authHeader.replace("Bearer ", "");
-            String userName = tokenService.getSubject(token);
-            if (userName != null) {
-                UserDetails user = usuarioRepository.findbyUsername(userName);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(userName, null, user.getAuthorities());
+            String username = tokenService.getSubject(token);
+            if (username != null) {
+                Usuario user = usuarioRepository.findbyUsername(username).get();
+                Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

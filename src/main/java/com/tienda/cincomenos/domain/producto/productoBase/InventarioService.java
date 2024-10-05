@@ -17,7 +17,7 @@ import com.tienda.cincomenos.domain.dto.producto.DatosRegistrarProducto;
 import com.tienda.cincomenos.domain.dto.producto.DatosRespuestaProducto;
 import com.tienda.cincomenos.domain.producto.validadores.ValidadorDeProductos;
 import com.tienda.cincomenos.domain.producto.validadores.validadores_producto.ValidadorDatosActualizarProducto;
-import com.tienda.cincomenos.infra.exception.EntityNotFoundException;
+import com.tienda.cincomenos.infra.exception.responsive.EntityNotFoundException;
 
 import jakarta.validation.Valid;
 
@@ -52,7 +52,7 @@ public class InventarioService {
         return new DatosRespuestaProducto(producto);
     }
 
-    public void borrar(Long id) {
+    public void borradoLogico(Long id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException(HttpStatus.BAD_REQUEST, "El id no existe en la base de datos");
         } 

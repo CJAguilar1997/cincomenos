@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,14 +32,16 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/empleados")
+@PreAuthorize("hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')")
 public class EmpleadoController {
 
     @Autowired
     private EmpleadoService service;
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaEmpleadoLogin> registroEmpleado(@RequestBody @Valid DatosRegistrarEmpleado datos, UriComponentsBuilder uriComponentsBuilder) {
-        DatosRespuestaEmpleadoLogin respuesta = service.registrar(datos);
+    public ResponseEntity<DatosRespuestaEmpleadoLogin> registroEmpleado(@RequestBody @Valid DatosRegistrarEmpleado datos, UriComponentsBuilder uriComponentsBuilder,
+    Authentication authentication) {
+        DatosRespuestaEmpleadoLogin respuesta = service.registrar(datos, authentication);
         URI url = uriComponentsBuilder.path("/empleados/{id}").buildAndExpand(respuesta.datos().id()).toUri();
         return ResponseEntity.status(HttpStatus.CREATED).location(url).body(respuesta);
     }

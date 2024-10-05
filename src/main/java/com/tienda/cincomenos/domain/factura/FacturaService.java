@@ -14,10 +14,10 @@ import com.tienda.cincomenos.domain.persona.cliente.Cliente;
 import com.tienda.cincomenos.domain.persona.cliente.ClienteRespository;
 import com.tienda.cincomenos.domain.producto.productoBase.InventarioRepository;
 import com.tienda.cincomenos.domain.producto.productoBase.Producto;
-import com.tienda.cincomenos.infra.exception.EntityNotFoundException;
-import com.tienda.cincomenos.infra.exception.NullPointerException;
 import com.tienda.cincomenos.infra.exception.producto.BarcodeNotExistsException;
 import com.tienda.cincomenos.infra.exception.producto.OutOfStockException;
+import com.tienda.cincomenos.infra.exception.responsive.EntityNotFoundException;
+import com.tienda.cincomenos.infra.exception.responsive.NullPointerException;
 
 @Service
 public class FacturaService {

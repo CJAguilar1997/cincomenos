@@ -10,7 +10,7 @@ import com.tienda.cincomenos.domain.dto.persona.cliente.DatosActualizarCliente;
 import com.tienda.cincomenos.domain.dto.persona.cliente.DatosListadoCliente;
 import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRegistrarCliente;
 import com.tienda.cincomenos.domain.dto.persona.cliente.DatosRespuestaCliente;
-import com.tienda.cincomenos.infra.exception.EntityNotFoundException;
+import com.tienda.cincomenos.infra.exception.responsive.EntityNotFoundException;
 
 @Service
 public class ClienteService {
