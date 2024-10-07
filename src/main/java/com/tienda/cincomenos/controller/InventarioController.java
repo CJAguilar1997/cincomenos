@@ -70,7 +70,7 @@ public class InventarioController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Object> borrarProducto(@PathVariable Long id) {
-        service.borrar(id);
+        service.borradoLogico(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
