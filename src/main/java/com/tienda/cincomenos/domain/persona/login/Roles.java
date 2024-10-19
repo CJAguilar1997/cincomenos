@@ -29,4 +29,8 @@ public class Roles {
     public Roles(Roles rolEntity) {
         this.rol = rolEntity.getRol();
     }
+
+    public Roles(ERoles rolEnum) {
+        this.rol = rolEnum;
+    }
 }

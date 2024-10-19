@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.tienda.cincomenos.infra.exception.console.HierarchyNotContainRoleException;
 import com.tienda.cincomenos.infra.exception.console.UnauthorizedRoleException;
@@ -19,9 +20,9 @@ public class RoleValidator {
         this.roleHierarchy = roleHierarchy;
     }
 
-    public void validateHierarchy(Set<String> roleEmployeeRegister, Authentication authenticationUser) {
+    public void validateHierarchy(Set<String> roleEmployeeRegister) {
         List<String> hierarchyRole = roleHierarchy.getHierarchy();
-        Set<String> rolesUser = getRolesUser(authenticationUser, hierarchyRole);
+        Set<String> rolesUser = getRolesUser(getCurrentUser(), hierarchyRole);
 
         roleEmployeeRegister = roleEmployeeRegister.stream().map(rol -> "ROLE_".concat(rol).toUpperCase()).collect(Collectors.toSet());
 
@@ -32,6 +33,10 @@ public class RoleValidator {
             String invalidRoleEmployee = hierarchyRole.get(hierarchyRoleEmployeeRegisterIndex);
             throw new UnauthorizedRoleException(HttpStatus.CONFLICT, String.format("No tienes los permisos para registrar un empleado con el rol %s", invalidRoleEmployee));
         }
+    }
+
+    private Authentication getCurrentUser() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     private int getHighestAuthorityRoleIndex(Set<String> roleList, List<String> hierarchyRoleList) {

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +45,8 @@ public class EmpleadoService {
     @Autowired
     private RoleValidator roleValidator;
 
-    public DatosRespuestaEmpleadoLogin registrar(DatosRegistrarEmpleado datos, Authentication authentication) {
-        roleValidator.validateHierarchy(datos.roles(), authentication);
+    public DatosRespuestaEmpleadoLogin registrar(DatosRegistrarEmpleado datos) {
+        roleValidator.validateHierarchy(datos.roles());
         
         Empleado respuesta = empleadoRepository.save(new Empleado(datos));
 
