@@ -10,7 +10,7 @@ public record DatosUsuarioLoginRespuesta(
 ) {
 
     public DatosUsuarioLoginRespuesta(Usuario userLogin, String password) {
-        this(userLogin.getIdUsuario(), userLogin.getEmail(), userLogin.getUsername(), password);
+        this(userLogin.getIdUsuario(), userLogin.getEmail(), userLogin.getPlainUsername(), password);
     }
 
 }

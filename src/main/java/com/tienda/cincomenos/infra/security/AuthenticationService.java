@@ -16,11 +16,11 @@ public class AuthenticationService implements UserDetailsService{
     private UsuarioRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (username == null) {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        if (email == null) {
             throw new RuntimeException("El nombre de usuario no puede ser nulo");
         }
-        Usuario userEntity = repository.findbyUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("El usuario %s no existe", username)));
+        Usuario userEntity = repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("El usuario %s no existe", email)));
         return userEntity;
     }
 

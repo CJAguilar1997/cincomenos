@@ -17,7 +17,6 @@ import com.tienda.cincomenos.domain.dto.persona.empleado.DatosRegistrarEmpleado;
 import com.tienda.cincomenos.domain.dto.persona.empleado.DatosRespuestaEmpleado;
 import com.tienda.cincomenos.domain.dto.persona.empleado.DatosRespuestaEmpleadoLogin;
 import com.tienda.cincomenos.domain.dto.persona.login.DatosUsuarioLoginRespuesta;
-import com.tienda.cincomenos.domain.persona.login.ERoles;
 import com.tienda.cincomenos.domain.persona.login.Roles;
 import com.tienda.cincomenos.domain.persona.login.Usuario;
 import com.tienda.cincomenos.domain.persona.login.UsuarioRepository;
@@ -92,11 +91,9 @@ public class EmpleadoService {
         Set<Roles> rolEntities = new HashSet<>();
 
         for (String rol : roles) {
-            Roles roleEntity = rolRepository.findByRol(ERoles.valueOf(rol.toUpperCase()));
+            Roles roleEntity = rolRepository.findByRol(rol.toUpperCase()).orElseThrow(() -> new ValueNotFoundException(HttpStatus.BAD_REQUEST ,String.format("El rol s% no se pudo encontrar en la base de datos", rol)));
             if (roleEntity != null) {
                 rolEntities.add(roleEntity);
-            } else {
-                throw new ValueNotFoundException(HttpStatus.BAD_REQUEST ,String.format("El rol s% no se pudo encontrar en la base de datos", roleEntity));
             }
         }
         return rolEntities;

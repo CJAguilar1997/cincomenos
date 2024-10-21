@@ -53,12 +53,16 @@ public class Usuario implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-        .map(rol -> new SimpleGrantedAuthority("ROLE_".concat(rol.getRol().name())))
+        .map(rol -> new SimpleGrantedAuthority("ROLE_".concat(rol.getRol())))
         .collect(Collectors.toList());
     }
 
     @Override
     public String getUsername() {
         return idUsuario + "_" + username;
+    }
+
+    public String getPlainUsername() {
+        return username;
     }
 }

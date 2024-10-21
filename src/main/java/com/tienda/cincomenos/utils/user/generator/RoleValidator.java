@@ -21,17 +21,17 @@ public class RoleValidator {
     }
 
     public void validateHierarchy(Set<String> roleEmployeeRegister) {
-        List<String> hierarchyRole = roleHierarchy.getHierarchy();
-        Set<String> rolesUser = getRolesUser(getCurrentUser(), hierarchyRole);
+        List<String> hierarchyRoles = roleHierarchy.getHierarchy();
+        Set<String> rolesUser = getRolesUser(getCurrentUser(), hierarchyRoles);
 
         roleEmployeeRegister = roleEmployeeRegister.stream().map(rol -> "ROLE_".concat(rol).toUpperCase()).collect(Collectors.toSet());
 
-        int highestAuthorityRoleIndex = getHighestAuthorityRoleIndex(rolesUser, hierarchyRole);
-        int hierarchyRoleEmployeeRegisterIndex = getHighestAuthorityRoleIndex(roleEmployeeRegister, hierarchyRole);
+        int highestAuthorityRoleIndex = getHighestAuthorityRoleIndex(rolesUser, hierarchyRoles);
+        int hierarchyRoleEmployeeRegisterIndex = getHighestAuthorityRoleIndex(roleEmployeeRegister, hierarchyRoles);
 
         if(highestAuthorityRoleIndex > 0 && hierarchyRoleEmployeeRegisterIndex <= highestAuthorityRoleIndex) {
-            String invalidRoleEmployee = hierarchyRole.get(hierarchyRoleEmployeeRegisterIndex);
-            throw new UnauthorizedRoleException(HttpStatus.CONFLICT, String.format("No tienes los permisos para registrar un empleado con el rol %s", invalidRoleEmployee));
+            String invalidRoleEmployee = hierarchyRoles.get(hierarchyRoleEmployeeRegisterIndex);
+            throw new UnauthorizedRoleException(HttpStatus.UNAUTHORIZED, String.format("No tienes los permisos para registrar un empleado con el rol %s", invalidRoleEmployee));
         }
     }
 
@@ -55,7 +55,7 @@ public class RoleValidator {
             .filter(role -> !hierarchyRoleList.contains(role))
             .findAny()
             .ifPresent(role -> {
-                throw new HierarchyNotContainRoleException(HttpStatus.CONFLICT, String.format("El rol %s no pertenece a la herarquia", role));
+                throw new HierarchyNotContainRoleException(HttpStatus.UNAUTHORIZED, String.format("El rol %s no pertenece a la herarquia", role));
             });
 
         return rolesUser;

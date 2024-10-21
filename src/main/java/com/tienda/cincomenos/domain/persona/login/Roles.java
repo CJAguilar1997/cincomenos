@@ -2,8 +2,6 @@ package com.tienda.cincomenos.domain.persona.login;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,19 +16,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Roles {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rol")
     private Long idRol;
     
-    @Enumerated(EnumType.STRING)
-    private ERoles rol;
+    private String rol;
 
     public Roles(Roles rolEntity) {
         this.rol = rolEntity.getRol();
-    }
-
-    public Roles(ERoles rolEnum) {
-        this.rol = rolEnum;
     }
 }

@@ -1,7 +1,10 @@
 package com.tienda.cincomenos.domain.dto.persona.login;
 
+import jakarta.validation.constraints.Email;
+
 public record DatosAutenticacionUsuario(
-    String username,
+    @Email
+    String email,
     String password
 ) {
 
