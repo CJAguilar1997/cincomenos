@@ -1,1 +1,0 @@
-ALTER TABLE productos ADD CONSTRAINT codigo_barras UNIQUE (codigo_barras);

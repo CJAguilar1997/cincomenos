@@ -20,7 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.store.cincomenos.domain.dto.factura.DatosListadoFactura;
 import com.store.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.store.cincomenos.domain.dto.factura.DatosRespuestaFactura;
-import com.store.cincomenos.domain.dto.producto.DatosListadoProducto;
+import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.factura.FacturaService;
 
 import jakarta.validation.Valid;
@@ -41,10 +41,10 @@ public class FacturaController {
     }
 
     @GetMapping("/getProducto")
-    public ResponseEntity<Page<DatosListadoProducto>> obtenerProducto(
+    public ResponseEntity<Page<DataListProducts>> obtenerProducto(
         @RequestParam(value = "codigo_barras", required = true) String codigoDeBarras,
         Pageable paginacion) {
-            Page<DatosListadoProducto> respuesta = service.obtenerProducto(codigoDeBarras, paginacion);
+            Page<DataListProducts> respuesta = service.obtenerProducto(codigoDeBarras, paginacion);
             return ResponseEntity.status(HttpStatus.OK).body(respuesta);
     } 
 

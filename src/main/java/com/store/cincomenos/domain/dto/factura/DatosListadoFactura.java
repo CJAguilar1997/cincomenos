@@ -35,10 +35,10 @@ public record DatosListadoFactura(
                 item.getPrecioUnitario(),
                 valorProductoCantidad,
                 new ProductoDTO(
-                    item.getProducto().getCodigoDeBarras(),
-                    item.getProducto().getNombre(),
-                    item.getProducto().getDescripcion(),
-                    item.getProducto().getMarca()
+                    item.getProducto().getBarcode(),
+                    item.getProducto().getName(),
+                    item.getProducto().getDescription(),
+                    item.getProducto().getBrand()
                 )
             );
         }).collect(Collectors.toList()),

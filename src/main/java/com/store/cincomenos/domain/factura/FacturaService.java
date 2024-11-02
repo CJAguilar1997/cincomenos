@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import com.store.cincomenos.domain.dto.factura.DatosListadoFactura;
 import com.store.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.store.cincomenos.domain.dto.factura.DatosRespuestaFactura;
-import com.store.cincomenos.domain.dto.producto.DatosListadoProducto;
+import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.persona.cliente.Cliente;
 import com.store.cincomenos.domain.persona.cliente.ClienteRespository;
-import com.store.cincomenos.domain.producto.productoBase.InventarioRepository;
-import com.store.cincomenos.domain.producto.productoBase.Producto;
+import com.store.cincomenos.domain.product.InventoryRepository;
+import com.store.cincomenos.domain.product.Product;
 import com.store.cincomenos.infra.exception.producto.BarcodeNotExistsException;
 import com.store.cincomenos.infra.exception.producto.OutOfStockException;
 import com.store.cincomenos.infra.exception.responsive.EntityNotFoundException;
@@ -26,7 +26,7 @@ public class FacturaService {
     FacturaRepository facturaRepository;
     
     @Autowired
-    InventarioRepository inventarioRepository;
+    InventoryRepository inventarioRepository;
 
     @Autowired
     ClienteRespository clienteRespository;
@@ -37,16 +37,16 @@ public class FacturaService {
         datos.items().forEach(item -> {
             String codigoDeBarras = item.codigoDeBarras();
 
-            if (!inventarioRepository.existsByCodigoDeBarras(codigoDeBarras)) {
+            if (!inventarioRepository.existsByBarcode(codigoDeBarras)) {
                 throw new BarcodeNotExistsException(HttpStatus.CONFLICT, "El código de barras no existe");
             }
 
-            Producto producto = inventarioRepository.findByCodigoDeBarras(codigoDeBarras);
+            Product producto = inventarioRepository.findByBarcode(codigoDeBarras);
             if (producto.getStock() < item.cantidad()) {
-                throw new OutOfStockException(HttpStatus.CONFLICT, String.format("No hay existencias suficientes del producto '%s', el stock disponible es de: %d", producto.getNombre(), producto.getStock()));   
+                throw new OutOfStockException(HttpStatus.CONFLICT, String.format("No hay existencias suficientes del producto '%s', el stock disponible es de: %d", producto.getName(), producto.getStock()));   
             }
             
-            inventarioRepository.updateStockProducto(item.codigoDeBarras(), item.cantidad());
+            inventarioRepository.updateStockProduct(item.codigoDeBarras(), item.cantidad());
             ItemsFactura items = new ItemsFactura(item.cantidad(), producto, factura);
             factura.agregarItems(items);
         });
@@ -69,11 +69,11 @@ public class FacturaService {
         return listadoFacturas;
     }
 
-    public Page<DatosListadoProducto> obtenerProducto(String codigoDeBarras, Pageable paginacion) {
-        if (!inventarioRepository.existsByCodigoDeBarras(codigoDeBarras)) {
+    public Page<DataListProducts> obtenerProducto(String codigoDeBarras, Pageable paginacion) {
+        if (!inventarioRepository.existsByBarcode(codigoDeBarras)) {
             throw new BarcodeNotExistsException(HttpStatus.BAD_REQUEST, "El producto no existe en la base de datos");
         }
-        Page<DatosListadoProducto> listadoProducto = inventarioRepository.getReferenceByCodigoDeBarras(codigoDeBarras, paginacion).map(DatosListadoProducto::new);
+        Page<DataListProducts> listadoProducto = inventarioRepository.getReferenceByBarcode(codigoDeBarras, paginacion).map(DataListProducts::new);
         return listadoProducto;
     }
     

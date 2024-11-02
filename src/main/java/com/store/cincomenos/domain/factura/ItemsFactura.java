@@ -2,7 +2,7 @@ package com.store.cincomenos.domain.factura;
 
 import java.math.BigDecimal;
 
-import com.store.cincomenos.domain.producto.productoBase.Producto;
+import com.store.cincomenos.domain.product.Product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,17 +33,17 @@ public class ItemsFactura {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producto_id", referencedColumnName = "id")
-    Producto producto;
+    Product producto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "factura_id", referencedColumnName = "id_factura")
     Factura factura;
 
-    public ItemsFactura(Integer cantidad, Producto producto, Factura factura) {
+    public ItemsFactura(Integer cantidad, Product producto, Factura factura) {
         this.cantidad = cantidad;
         this.producto = producto;
         this.factura = factura;
-        this.precioUnitario = producto.getPrecio();
+        this.precioUnitario = producto.getPrice();
     }
 
     public BigDecimal getValor() {
