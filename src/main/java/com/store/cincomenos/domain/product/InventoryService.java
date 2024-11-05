@@ -12,11 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.store.cincomenos.domain.dto.product.AttributeDTO;
 import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
 import com.store.cincomenos.domain.dto.product.DataResponseProduct;
 import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
+import com.store.cincomenos.domain.dto.product.attribute.AttributeDTO;
 import com.store.cincomenos.domain.product.attribute.Attribute;
 import com.store.cincomenos.domain.product.attribute.AttributeRepository;
 import com.store.cincomenos.domain.product.attribute.value.Value;

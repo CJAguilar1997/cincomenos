@@ -2,6 +2,8 @@ package com.store.cincomenos.domain.product.attribute;
 
 import java.util.List;
 
+import com.store.cincomenos.domain.dto.product.attribute.DataRegisterAttribute;
+import com.store.cincomenos.domain.dto.product.attribute.DataUpdateAttribute;
 import com.store.cincomenos.domain.product.Product;
 import com.store.cincomenos.domain.product.attribute.value.Value;
 
@@ -16,14 +18,16 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Entity
 @Table(name = "attributes")
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Attribute {
 
     @Id
@@ -42,5 +46,13 @@ public class Attribute {
 
     public void setValue(Value value) {
         this.value = value;
+    }
+
+    public Attribute(DataRegisterAttribute data) {
+        this.name = data.name();
+    }
+
+    public void updateData(DataUpdateAttribute data) {
+        this.name = data.name();
     }
 }

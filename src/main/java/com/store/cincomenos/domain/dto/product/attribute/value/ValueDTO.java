@@ -1,4 +1,4 @@
-package com.store.cincomenos.domain.dto.product;
+package com.store.cincomenos.domain.dto.product.attribute.value;
 
 import com.store.cincomenos.domain.product.attribute.value.Value;
 

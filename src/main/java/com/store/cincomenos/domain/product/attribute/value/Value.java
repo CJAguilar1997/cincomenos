@@ -1,6 +1,6 @@
 package com.store.cincomenos.domain.product.attribute.value;
 
-import com.store.cincomenos.domain.dto.product.ValueDTO;
+import com.store.cincomenos.domain.dto.product.attribute.value.ValueDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

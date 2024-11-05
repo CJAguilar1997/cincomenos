@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.store.cincomenos.domain.dto.product.attribute.AttributeDTO;
+import com.store.cincomenos.domain.dto.product.category.CategoryDTO;
 import com.store.cincomenos.domain.product.Product;
 import com.store.cincomenos.domain.product.attribute.Attribute;
 
