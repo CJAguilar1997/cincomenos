@@ -24,8 +24,10 @@ import com.store.cincomenos.domain.dto.product.category.DataRegisterCategory;
 import com.store.cincomenos.domain.dto.product.category.DataResponseCategory;
 import com.store.cincomenos.domain.dto.product.category.DataUpdateCategory;
 import com.store.cincomenos.domain.product.category.CategoryService;
+import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/category")
@@ -36,10 +38,14 @@ public class CategoryController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<DataResponseCategory> registerCategory(@Valid @RequestBody DataRegisterCategory data, UriComponentsBuilder uriComponentsBuilder) {
-        DataResponseCategory reply = categoryService.register(data);
-        URI url = uriComponentsBuilder.path("/category/{id}").buildAndExpand(reply.id()).toUri();
-        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
+    public ResponseEntity<Object> registerCategory(@Valid @RequestBody DataRegisterCategory data, UriComponentsBuilder uriComponentsBuilder) {
+        try {
+            DataResponseCategory reply = categoryService.register(data);
+            URI url = uriComponentsBuilder.path("/category/{id}").buildAndExpand(reply.id()).toUri();
+            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
+        } catch (ValidationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
+        }
     }
     
     @GetMapping
@@ -53,15 +59,25 @@ public class CategoryController {
     
     @Transactional
     @PutMapping
-    public ResponseEntity<DataResponseCategory> updateCategory(@Valid @RequestBody DataUpdateCategory data) {
-        DataResponseCategory reply = categoryService.update(data);
-        return ResponseEntity.status(HttpStatus.OK).body(reply);
+    public ResponseEntity<Object> updateCategory(@Valid @RequestBody DataUpdateCategory data) {
+        try {
+            DataResponseCategory reply = categoryService.update(data);
+            return ResponseEntity.status(HttpStatus.OK).body(reply);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
+        } catch (ValidationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
+        }
     }
     
     @Transactional
     @DeleteMapping
     public ResponseEntity<Object> deleteCategory(@RequestParam(value = "id", required = true) Long id) {
-        categoryService.logicalDelete(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        try {
+            categoryService.logicalDelete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
+        }
     }
 }

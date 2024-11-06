@@ -109,4 +109,8 @@ public class Product {
     public void setAttributes(Attribute attribute) {
         this.attributes.add(attribute);
     }
+
+    public void updateStock(Integer cantidad) {
+        this.stock = stock - cantidad;
+    }
 }

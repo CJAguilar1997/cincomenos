@@ -17,7 +17,7 @@ public interface FacturaRepository extends JpaRepository<Factura, Long>{
             (:id IS NULL OR f.id = :id) 
             AND (:idCliente IS NULL OR f.cliente = :idCliente) 
             """)
-    Page<Factura> getReferenceByParameters(
+    Page<Factura> findByParameters(
         @Param("id") Long id, 
         @Param("idCliente") Cliente cliente, 
         Pageable paginacion);

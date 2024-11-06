@@ -24,8 +24,10 @@ import com.store.cincomenos.domain.dto.product.attribute.DataRegisterAttribute;
 import com.store.cincomenos.domain.dto.product.attribute.DataResponseAttribute;
 import com.store.cincomenos.domain.dto.product.attribute.DataUpdateAttribute;
 import com.store.cincomenos.domain.product.attribute.AttributeService;
+import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/attribute")
@@ -36,10 +38,14 @@ public class AttributeController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<DataResponseAttribute> registerAttribute(@Valid @RequestBody DataRegisterAttribute data, UriComponentsBuilder uriComponentsBuilder) {
-        DataResponseAttribute reply = attributeService.register(data);
-        URI url = uriComponentsBuilder.path("/attribute/{id}").buildAndExpand(reply.id()).toUri();
-        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
+    public ResponseEntity<Object> registerAttribute(@Valid @RequestBody DataRegisterAttribute data, UriComponentsBuilder uriComponentsBuilder) {
+        try {
+            DataResponseAttribute reply = attributeService.register(data);
+            URI url = uriComponentsBuilder.path("/attribute/{id}").buildAndExpand(reply.id()).toUri();
+            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
+        } catch (ValidationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
+        }
     }
     
     @GetMapping
@@ -53,15 +59,25 @@ public class AttributeController {
         
     @Transactional
     @PutMapping
-    public ResponseEntity<DataResponseAttribute> updateAttribute(@Valid @RequestBody DataUpdateAttribute data) {
-        DataResponseAttribute reply = attributeService.update(data);
-        return ResponseEntity.status(HttpStatus.OK).body(reply);
+    public ResponseEntity<Object> updateAttribute(@Valid @RequestBody DataUpdateAttribute data) {
+        try {
+            DataResponseAttribute reply = attributeService.update(data);
+            return ResponseEntity.status(HttpStatus.OK).body(reply);
+        } catch (ValidationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
+        }
     }
     
     @Transactional
     @DeleteMapping
     public ResponseEntity<Object> deleteAttribute(@RequestParam(value = "id", required = true) Long id) {
-        attributeService.logicalDelete(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        try {
+            attributeService.logicalDelete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
+        }
     }
 }

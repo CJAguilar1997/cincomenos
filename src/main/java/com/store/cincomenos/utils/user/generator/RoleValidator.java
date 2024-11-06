@@ -31,7 +31,7 @@ public class RoleValidator {
 
         if(highestAuthorityRoleIndex > 0 && hierarchyRoleEmployeeRegisterIndex <= highestAuthorityRoleIndex) {
             String invalidRoleEmployee = hierarchyRoles.get(hierarchyRoleEmployeeRegisterIndex);
-            throw new UnauthorizedRoleException(HttpStatus.UNAUTHORIZED, String.format("No tienes los permisos para registrar un empleado con el rol %s", invalidRoleEmployee));
+            throw new UnauthorizedRoleException(String.format("No tienes los permisos para registrar un empleado con el rol %s", invalidRoleEmployee));
         }
     }
 

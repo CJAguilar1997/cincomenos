@@ -7,7 +7,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +19,9 @@ import com.store.cincomenos.domain.dto.persona.login.DatosUsuarioLoginRespuesta;
 import com.store.cincomenos.domain.persona.login.Roles;
 import com.store.cincomenos.domain.persona.login.Usuario;
 import com.store.cincomenos.domain.persona.login.UsuarioRepository;
-import com.store.cincomenos.infra.exception.responsive.EntityNotFoundException;
-import com.store.cincomenos.infra.exception.responsive.NullPointerException;
-import com.store.cincomenos.infra.exception.responsive.ValueNotFoundException;
+import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
+import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
+import com.store.cincomenos.infra.exception.console.NullPointerException;
 import com.store.cincomenos.utils.user.generator.RoleValidator;
 import com.store.cincomenos.utils.user.generator.UserGenerator;
 
@@ -67,31 +66,35 @@ public class EmpleadoService {
     }
     
     public DatosRespuestaEmpleado actualizar(DatosActualizarEmpleado datos) {
-        Empleado empleado = empleadoRepository.getReferenceById(datos.id());
+        Empleado empleado = empleadoRepository.findById(datos.id())
+            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired employee or not exists"));
+            
         empleado.actualizarDatos(datos);
         return new DatosRespuestaEmpleado(empleado);
     }
     
     public void borrar(Long id) {
-        if (id == null) {
-            throw new NullPointerException(HttpStatus.BAD_REQUEST, "Es necesario un id de una cuenta existente");
+        Empleado empleado = empleadoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired employee or not exists"));
+
+        if(empleado.getUsuarioActivo() == false) {
+            throw new LogicalDeleteOperationException("The employee is already removed from the product listings");
         }
-        if (!empleadoRepository.existsById(id)) {
-            throw new EntityNotFoundException(HttpStatus.BAD_REQUEST, "El id del usuario no existe");
-        }
-        Empleado empleado = empleadoRepository.getReferenceById(id);
+
         empleado.borrarCuentaEmpleado();
     }
     
     private Set<Roles> obtenerRoles(Set<String> roles) {
         if (roles.isEmpty()) {
-            throw new NullPointerException(HttpStatus.BAD_REQUEST, "No hay roles para añadir al usuario");
+            throw new NullPointerException("No hay roles para añadir al usuario");
         }
 
         Set<Roles> rolEntities = new HashSet<>();
 
         for (String rol : roles) {
-            Roles roleEntity = rolRepository.findByRol(rol.toUpperCase()).orElseThrow(() -> new ValueNotFoundException(HttpStatus.BAD_REQUEST ,String.format("El rol s% no se pudo encontrar en la base de datos", rol)));
+            Roles roleEntity = rolRepository.findByRol(rol.toUpperCase())
+                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired rol or not exists"));
+
             if (roleEntity != null) {
                 rolEntities.add(roleEntity);
             }

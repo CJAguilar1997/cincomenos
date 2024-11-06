@@ -22,8 +22,11 @@ import com.store.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.store.cincomenos.domain.dto.factura.DatosRespuestaFactura;
 import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.factura.FacturaService;
+import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
+import com.store.cincomenos.infra.exception.producto.OutOfStockException;
 
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/facturacion")
@@ -34,10 +37,18 @@ public class FacturaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DatosRespuestaFactura> registrarFactura(@Valid @RequestBody DatosRegistrarFactura datos, UriComponentsBuilder uriComponentsBuilder) {
-        DatosRespuestaFactura respuesta = service.registrar(datos);
-        URI url = uriComponentsBuilder.path("/facturacion/{id}").buildAndExpand(respuesta.id()).toUri();
-        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(respuesta);
+    public ResponseEntity<Object> registrarFactura(@Valid @RequestBody DatosRegistrarFactura datos, UriComponentsBuilder uriComponentsBuilder) {
+        try {
+            DatosRespuestaFactura respuesta = service.registrar(datos);
+            URI url = uriComponentsBuilder.path("/facturacion/{id}").buildAndExpand(respuesta.id()).toUri();
+            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(respuesta);
+        } catch (ValidationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
+        } catch (OutOfStockException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());  
+        }
     }
 
     @GetMapping("/getProducto")

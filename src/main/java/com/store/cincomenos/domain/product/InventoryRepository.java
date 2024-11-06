@@ -1,11 +1,11 @@
 package com.store.cincomenos.domain.product;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -39,17 +39,8 @@ public interface InventoryRepository extends JpaRepository <Product, Long> {
         @Param("barcode") String barcode,
         Pageable pageable);
 
-    Product findByBarcode(String barcode);
+    Optional<Product> findByBarcode(String barcode);
 
-    @Modifying
-    @Query("""
-        UPDATE Product p 
-        SET p.stock = p.stock - :quantity 
-        WHERE p.barcode = :barcode 
-        AND p.stock >= :quantity
-    """)
-    void updateStockProduct(String barcode, Integer quantity);
-
-    Page<Product> getReferenceByBarcode(String barcode, Pageable pagination);
+    Page<Product> findByBarcode(String barcode, Pageable pagination);
 
 }

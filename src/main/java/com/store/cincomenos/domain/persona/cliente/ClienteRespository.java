@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClienteRespository extends JpaRepository<Cliente, Long> {
 
-    Page<Cliente> getReferenceById(Long id, Pageable paginacion);
+    Page<Cliente> findById(Long id, Pageable paginacion);
 }

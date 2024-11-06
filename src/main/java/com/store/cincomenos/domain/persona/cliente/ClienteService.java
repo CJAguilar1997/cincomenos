@@ -3,14 +3,14 @@ package com.store.cincomenos.domain.persona.cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.store.cincomenos.domain.dto.persona.cliente.DatosActualizarCliente;
 import com.store.cincomenos.domain.dto.persona.cliente.DatosListadoCliente;
 import com.store.cincomenos.domain.dto.persona.cliente.DatosRegistrarCliente;
 import com.store.cincomenos.domain.dto.persona.cliente.DatosRespuestaCliente;
-import com.store.cincomenos.infra.exception.responsive.EntityNotFoundException;
+import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
+import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 
 @Service
 public class ClienteService {
@@ -19,10 +19,7 @@ public class ClienteService {
     private ClienteRespository respository;
 
     public Page<DatosListadoCliente> listar(Long id, Pageable paginacion) {
-        if (!respository.existsById(id)) {
-            throw new EntityNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
-        }
-        Page<DatosListadoCliente> listadoClientes = respository.getReferenceById(id, paginacion).map(DatosListadoCliente::new);
+        Page<DatosListadoCliente> listadoClientes = respository.findById(id, paginacion).map(DatosListadoCliente::new);
         return listadoClientes;
     }
     
@@ -32,20 +29,21 @@ public class ClienteService {
     }
     
     public DatosRespuestaCliente actualizar(DatosActualizarCliente datos) {
-        if (!respository.existsById(datos.id())) {
-            throw new EntityNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
-        }
-        Cliente cliente = respository.getReferenceById(datos.id());
+        Cliente cliente = respository.findById(datos.id())
+            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired customer or not exists"));
+
         cliente.actualizarDatos(datos);
         return new DatosRespuestaCliente(cliente);
-
     }
 
     public void borradoLogico(Long id) {
-        if (!respository.existsById(id)) {
-            throw new EntityNotFoundException(HttpStatus.BAD_REQUEST, "El id del cliente no existe en la base de datos");
+        Cliente cliente = respository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired attribute or not exists"));
+
+        if(cliente.getUsuarioActivo() == false) {
+            throw new LogicalDeleteOperationException("The customer is already removed from the product listings");
         }
-        Cliente cliente = respository.getReferenceById(id);
+        
         cliente.desactivarCliente();
     }
 
