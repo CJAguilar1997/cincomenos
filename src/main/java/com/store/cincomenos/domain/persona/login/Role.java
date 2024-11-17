@@ -11,20 +11,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Roles")
+@Table(name = "roles")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Roles {
+public class Role {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_rol")
-    private Long idRol;
+    private Long id;
     
-    private String rol;
+    @Column(name = "role")
+    private String role;
 
-    public Roles(Roles rolEntity) {
-        this.rol = rolEntity.getRol();
+    public Role(Role roleEntity) {
+        this.role = roleEntity.getRole();
     }
 }

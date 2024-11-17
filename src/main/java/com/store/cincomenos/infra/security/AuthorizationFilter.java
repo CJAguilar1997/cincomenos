@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.store.cincomenos.domain.persona.login.Usuario;
-import com.store.cincomenos.domain.persona.login.UsuarioRepository;
+import com.store.cincomenos.domain.persona.login.User;
+import com.store.cincomenos.domain.persona.login.UserRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository usuarioRepository;
 
     @Autowired
     private TokenService tokenService;
@@ -37,7 +37,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             String idUsername = tokenService.getSubject(token);
             if (idUsername != null) {
                 String[] split = idUsername.split("_");
-                Usuario user = usuarioRepository.findByIdAndUsername(split[0], split[1]).orElseThrow(() -> new UsernameNotFoundException("No se encontró el usuario"));
+                User user = usuarioRepository.findByIdAndUsername(split[0], split[1]).orElseThrow(() -> new UsernameNotFoundException("No se encontró el usuario"));
                 Authentication authentication = new UsernamePasswordAuthenticationToken(idUsername, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

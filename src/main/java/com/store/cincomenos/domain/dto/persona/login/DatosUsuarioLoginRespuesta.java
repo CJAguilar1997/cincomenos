@@ -1,6 +1,6 @@
 package com.store.cincomenos.domain.dto.persona.login;
 
-import com.store.cincomenos.domain.persona.login.Usuario;
+import com.store.cincomenos.domain.persona.login.User;
 
 public record DatosUsuarioLoginRespuesta(
     Long id,
@@ -9,8 +9,8 @@ public record DatosUsuarioLoginRespuesta(
     String password
 ) {
 
-    public DatosUsuarioLoginRespuesta(Usuario userLogin, String password) {
-        this(userLogin.getIdUsuario(), userLogin.getEmail(), userLogin.getPlainUsername(), password);
+    public DatosUsuarioLoginRespuesta(User userLogin, String password) {
+        this(userLogin.getId(), userLogin.getEmail(), userLogin.getPlainUsername(), password);
     }
 
 }

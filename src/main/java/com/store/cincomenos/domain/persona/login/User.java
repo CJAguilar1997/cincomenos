@@ -1,8 +1,8 @@
 package com.store.cincomenos.domain.persona.login;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -25,25 +25,25 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "Usuarios")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Usuario implements UserDetails{
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUsuario;
+    private Long id;
     
     private String email;
     private String username;
     private String password;
     
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Roles.class)
-    @JoinTable(name = "roles_usuario", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_rol"))
-    Set<Roles> roles;
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    List<Role> roles;
 
-    public Usuario(Map<String, String> userLogin, Set<Roles> roles) {
+    public User(Map<String, String> userLogin, List<Role> roles) {
         this.email = userLogin.get("email");
         this.username = userLogin.get("username");
         this.password = userLogin.get("password");
@@ -53,13 +53,13 @@ public class Usuario implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-        .map(rol -> new SimpleGrantedAuthority("ROLE_".concat(rol.getRol())))
+        .map(rol -> new SimpleGrantedAuthority("ROLE_".concat(rol.getRole())))
         .collect(Collectors.toList());
     }
 
     @Override
     public String getUsername() {
-        return idUsuario + "_" + username;
+        return id + "_" + username;
     }
 
     public String getPlainUsername() {

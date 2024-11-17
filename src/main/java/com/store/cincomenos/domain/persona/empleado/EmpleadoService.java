@@ -1,6 +1,7 @@
 package com.store.cincomenos.domain.persona.empleado;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,9 +17,9 @@ import com.store.cincomenos.domain.dto.persona.empleado.DatosRegistrarEmpleado;
 import com.store.cincomenos.domain.dto.persona.empleado.DatosRespuestaEmpleado;
 import com.store.cincomenos.domain.dto.persona.empleado.DatosRespuestaEmpleadoLogin;
 import com.store.cincomenos.domain.dto.persona.login.DatosUsuarioLoginRespuesta;
-import com.store.cincomenos.domain.persona.login.Roles;
-import com.store.cincomenos.domain.persona.login.Usuario;
-import com.store.cincomenos.domain.persona.login.UsuarioRepository;
+import com.store.cincomenos.domain.persona.login.Role;
+import com.store.cincomenos.domain.persona.login.User;
+import com.store.cincomenos.domain.persona.login.UserRepository;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 import com.store.cincomenos.infra.exception.console.NullPointerException;
@@ -32,10 +33,10 @@ public class EmpleadoService {
     private EmpleadoRepository empleadoRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository usuarioRepository;
 
     @Autowired
-    private RolRepository rolRepository;
+    private RoleRepository rolRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -49,11 +50,11 @@ public class EmpleadoService {
         Empleado respuesta = empleadoRepository.save(new Empleado(datos));
 
         Map<String, String> usuario = UserGenerator.generate(datos.nombre(), datos.contacto().email());
-        Set<Roles> roles = obtenerRoles(datos.roles());
+        List<Role> roles = obtenerRoles(datos.roles());
         String passwordResuesta = usuario.get("password");
         usuario.put("password", passwordEncoder.encode(passwordResuesta));
 
-        Usuario loginUsuario = usuarioRepository.save(new Usuario(usuario, roles));
+        User loginUsuario = usuarioRepository.save(new User(usuario, roles));
         DatosUsuarioLoginRespuesta datosLogin = new DatosUsuarioLoginRespuesta(loginUsuario, passwordResuesta);
 
         return new DatosRespuestaEmpleadoLogin(respuesta, datosLogin);
@@ -84,15 +85,15 @@ public class EmpleadoService {
         empleado.borrarCuentaEmpleado();
     }
     
-    private Set<Roles> obtenerRoles(Set<String> roles) {
+    private List<Role> obtenerRoles(Set<String> roles) {
         if (roles.isEmpty()) {
             throw new NullPointerException("No hay roles para añadir al usuario");
         }
 
-        Set<Roles> rolEntities = new HashSet<>();
+        List<Role> rolEntities = new ArrayList<>();
 
         for (String rol : roles) {
-            Roles roleEntity = rolRepository.findByRol(rol.toUpperCase())
+            Role roleEntity = rolRepository.findByRole(rol.toUpperCase())
                 .orElseThrow(() -> new EntityNotFoundException("Could not get the desired rol or not exists"));
 
             if (roleEntity != null) {

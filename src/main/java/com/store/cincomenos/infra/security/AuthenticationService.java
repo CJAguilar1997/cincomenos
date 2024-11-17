@@ -6,21 +6,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.store.cincomenos.domain.persona.login.Usuario;
-import com.store.cincomenos.domain.persona.login.UsuarioRepository;
+import com.store.cincomenos.domain.persona.login.User;
+import com.store.cincomenos.domain.persona.login.UserRepository;
 
 @Service
 public class AuthenticationService implements UserDetailsService{
 
     @Autowired
-    private UsuarioRepository repository;
+    private UserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         if (email == null) {
             throw new RuntimeException("El nombre de usuario no puede ser nulo");
         }
-        Usuario userEntity = repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("El usuario %s no existe", email)));
+        User userEntity = repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("El usuario %s no existe", email)));
         return userEntity;
     }
 

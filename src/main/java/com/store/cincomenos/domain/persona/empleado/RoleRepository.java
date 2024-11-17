@@ -5,13 +5,13 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.store.cincomenos.domain.persona.login.Roles;
+import com.store.cincomenos.domain.persona.login.Role;
 
 @Repository
-public interface RolRepository extends JpaRepository<Roles, Long>{
+public interface RoleRepository extends JpaRepository<Role, Long>{
     
-    boolean existsByRol(String rol);
+    boolean existsByRole(String role);
 
-    Optional<Roles> findByRol(String rol);
+    Optional<Role> findByRole(String role);
 
 }

@@ -13,7 +13,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.store.cincomenos.domain.persona.login.Usuario;
+import com.store.cincomenos.domain.persona.login.User;
 
 @Service
 public class TokenService {
@@ -21,13 +21,13 @@ public class TokenService {
     @Value("${cincomenos.security.secret}")
     private String secret;
 
-    public String generateToken(Usuario usuario) {
+    public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                 .withIssuer("cincomenos")
-                .withSubject(usuario.getUsername())
-                .withClaim("id", usuario.getIdUsuario())
+                .withSubject(user.getUsername())
+                .withClaim("id", user.getId())
                 .withExpiresAt(generateTimeExpiration())
                 .sign(algorithm);
         } catch (JWTCreationException e) {
