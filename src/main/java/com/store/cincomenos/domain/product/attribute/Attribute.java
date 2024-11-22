@@ -2,8 +2,8 @@ package com.store.cincomenos.domain.product.attribute;
 
 import java.util.List;
 
-import com.store.cincomenos.domain.dto.product.attribute.DataRegisterAttribute;
-import com.store.cincomenos.domain.dto.product.attribute.DataUpdateAttribute;
+import com.store.cincomenos.domain.persona.login.role.product.attribute.DataRegisterAttribute;
+import com.store.cincomenos.domain.persona.login.role.product.attribute.DataUpdateAttribute;
 import com.store.cincomenos.domain.product.Product;
 import com.store.cincomenos.domain.product.attribute.value.Value;
 

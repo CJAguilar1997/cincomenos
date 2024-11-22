@@ -1,4 +1,4 @@
-package com.store.cincomenos.domain.persona.login;
+package com.store.cincomenos.domain.persona.login.role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

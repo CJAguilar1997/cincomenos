@@ -1,10 +1,10 @@
-package com.store.cincomenos.domain.dto.product;
+package com.store.cincomenos.domain.persona.login.role.product;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
-import com.store.cincomenos.domain.dto.product.attribute.AttributeDTO;
-import com.store.cincomenos.domain.dto.product.category.CategoryDTO;
+import com.store.cincomenos.domain.persona.login.role.product.attribute.AttributeDTO;
+import com.store.cincomenos.domain.persona.login.role.product.category.CategoryDTO;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;

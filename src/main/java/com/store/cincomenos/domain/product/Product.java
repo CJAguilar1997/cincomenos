@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
-import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
+import com.store.cincomenos.domain.persona.login.role.product.DataRegisterProduct;
+import com.store.cincomenos.domain.persona.login.role.product.DataUpdateProduct;
 import com.store.cincomenos.domain.product.attribute.Attribute;
 import com.store.cincomenos.domain.product.category.Category;
 

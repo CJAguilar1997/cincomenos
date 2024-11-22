@@ -1,4 +1,4 @@
-package com.store.cincomenos.domain.dto.product.attribute;
+package com.store.cincomenos.domain.persona.login.role.product.attribute;
 
 import com.store.cincomenos.domain.product.attribute.Attribute;
 

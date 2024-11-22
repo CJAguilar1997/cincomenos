@@ -1,9 +1,9 @@
-package com.store.cincomenos.domain.dto.product.category;
+package com.store.cincomenos.domain.persona.login.role.product.attribute;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record DataRegisterCategory(
+public record DataRegisterAttribute(
     @NotBlank
     @Pattern(regexp = "[\\p{L} ]{3,20}", message = "The name of attribute contains invalid characters")
     String name

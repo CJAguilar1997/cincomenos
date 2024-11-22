@@ -1,14 +1,13 @@
-package com.store.cincomenos.domain.dto.product.category;
+package com.store.cincomenos.domain.persona.login.role.product.category;
 
 import com.store.cincomenos.domain.product.category.Category;
 
-public record DataResponseCategory(
+public record DataListCategories(
     Long id,
     String name
 ) {
 
-    public DataResponseCategory(Category category) {
+    public DataListCategories(Category category) {
         this(category.getId(), category.getName());
     }
-
 }

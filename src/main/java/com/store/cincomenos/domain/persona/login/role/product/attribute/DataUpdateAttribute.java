@@ -1,4 +1,4 @@
-package com.store.cincomenos.domain.dto.product.attribute;
+package com.store.cincomenos.domain.persona.login.role.product.attribute;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
