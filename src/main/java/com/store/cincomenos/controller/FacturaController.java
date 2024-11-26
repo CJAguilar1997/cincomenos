@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.dto.factura.DatosListadoFactura;
-import com.store.cincomenos.domain.dto.factura.DatosRegistrarFactura;
-import com.store.cincomenos.domain.dto.factura.DatosRespuestaFactura;
-import com.store.cincomenos.domain.factura.FacturaService;
+import com.store.cincomenos.domain.dto.invoice.DatosListadoFactura;
+import com.store.cincomenos.domain.dto.invoice.DatosRegistrarFactura;
+import com.store.cincomenos.domain.dto.invoice.DatosRespuestaFactura;
+import com.store.cincomenos.domain.invoice.FacturaService;
 import com.store.cincomenos.domain.persona.login.role.product.DataListProducts;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.producto.OutOfStockException;

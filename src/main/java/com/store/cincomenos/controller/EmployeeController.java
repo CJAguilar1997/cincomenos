@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.dto.persona.empleado.DataUpdateEmployee;
-import com.store.cincomenos.domain.dto.persona.empleado.DataListEmployee;
-import com.store.cincomenos.domain.dto.persona.empleado.DataRegisterEmployee;
-import com.store.cincomenos.domain.dto.persona.empleado.DataResponseEmployee;
-import com.store.cincomenos.domain.dto.persona.empleado.DataResponseEmployeeLogin;
-import com.store.cincomenos.domain.persona.empleado.EmployeeService;
+import com.store.cincomenos.domain.dto.persona.employee.DataListEmployee;
+import com.store.cincomenos.domain.dto.persona.employee.DataRegisterEmployee;
+import com.store.cincomenos.domain.dto.persona.employee.DataResponseEmployee;
+import com.store.cincomenos.domain.dto.persona.employee.DataResponseEmployeeLogin;
+import com.store.cincomenos.domain.dto.persona.employee.DataUpdateEmployee;
+import com.store.cincomenos.domain.persona.employee.EmployeeService;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 

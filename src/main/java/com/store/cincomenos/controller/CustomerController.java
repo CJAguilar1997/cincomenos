@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.dto.persona.cliente.DataUpdateCustomer;
-import com.store.cincomenos.domain.dto.persona.cliente.DataListCustomers;
-import com.store.cincomenos.domain.dto.persona.cliente.DataRegisterCustomer;
-import com.store.cincomenos.domain.dto.persona.cliente.DataResponseCustomer;
-import com.store.cincomenos.domain.persona.cliente.CustomerService;
+import com.store.cincomenos.domain.dto.persona.customer.DataListCustomers;
+import com.store.cincomenos.domain.dto.persona.customer.DataRegisterCustomer;
+import com.store.cincomenos.domain.dto.persona.customer.DataResponseCustomer;
+import com.store.cincomenos.domain.dto.persona.customer.DataUpdateCustomer;
+import com.store.cincomenos.domain.persona.customer.CustomerService;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 

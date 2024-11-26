@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.dto.persona.empleado.jobPosition.DataListJobPosition;
-import com.store.cincomenos.domain.dto.persona.empleado.jobPosition.DataRegisterJobPosition;
-import com.store.cincomenos.domain.dto.persona.empleado.jobPosition.DataResponseJobPosition;
-import com.store.cincomenos.domain.dto.persona.empleado.jobPosition.DataUpdateJobPosition;
-import com.store.cincomenos.domain.persona.empleado.jobPosition.JobPositionService;
+import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataListJobPosition;
+import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataRegisterJobPosition;
+import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataResponseJobPosition;
+import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataUpdateJobPosition;
+import com.store.cincomenos.domain.persona.employee.jobPosition.JobPositionService;
 import com.store.cincomenos.infra.exception.ErrorCode;
 import com.store.cincomenos.infra.exception.ErrorResponse;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
