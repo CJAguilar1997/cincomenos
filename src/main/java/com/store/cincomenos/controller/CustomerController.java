@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.dto.persona.cliente.DatosActualizarCliente;
-import com.store.cincomenos.domain.dto.persona.cliente.DatosListadoCliente;
-import com.store.cincomenos.domain.dto.persona.cliente.DatosRegistrarCliente;
-import com.store.cincomenos.domain.dto.persona.cliente.DatosRespuestaCliente;
-import com.store.cincomenos.domain.persona.cliente.ClienteService;
+import com.store.cincomenos.domain.dto.persona.cliente.DataUpdateCustomer;
+import com.store.cincomenos.domain.dto.persona.cliente.DataListCustomers;
+import com.store.cincomenos.domain.dto.persona.cliente.DataRegisterCustomer;
+import com.store.cincomenos.domain.dto.persona.cliente.DataResponseCustomer;
+import com.store.cincomenos.domain.persona.cliente.CustomerService;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 
@@ -31,19 +31,19 @@ import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 
 @RestController
-@RequestMapping("/clientes")
-public class ClienteController {
+@RequestMapping("/customer")
+public class CustomerController {
 
     @Autowired
-    private ClienteService service;
+    private CustomerService service;
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Object> registrarCliente(@RequestBody @Valid DatosRegistrarCliente datos, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<Object> registerCustomer(@RequestBody @Valid DataRegisterCustomer data, UriComponentsBuilder uriComponentsBuilder) {
         try {
-            DatosRespuestaCliente respuesta = service.registrar(datos);
-            URI url = uriComponentsBuilder.path("/clientes/{id}").buildAndExpand(respuesta.id()).toUri();
-            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(respuesta);
+            DataResponseCustomer reply = service.register(data);
+            URI url = uriComponentsBuilder.path("/customer/{id}").buildAndExpand(reply.id()).toUri();
+            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
         } catch (ValidationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
         }
@@ -51,10 +51,10 @@ public class ClienteController {
     
     @Transactional
     @PutMapping
-    public ResponseEntity<Object> actualizarCliente(@Valid @RequestBody DatosActualizarCliente datos) {
+    public ResponseEntity<Object> updateCustomer(@Valid @RequestBody DataUpdateCustomer data) {
         try {
-            DatosRespuestaCliente respuesta = service.actualizar(datos);
-            return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+            DataResponseCustomer reply = service.update(data);
+            return ResponseEntity.status(HttpStatus.OK).body(reply);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
         } catch (ValidationException e) {
@@ -64,18 +64,18 @@ public class ClienteController {
     
 
     @GetMapping
-    public ResponseEntity<Page<DatosListadoCliente>> listarClientes(
+    public ResponseEntity<Page<DataListCustomers>> getListOfCustomers(
         @RequestParam(value = "id", required = true) Long id, 
-        @PageableDefault(size = 10, sort = "id") Pageable pageable) {
-        Page<DatosListadoCliente> respuesta = service.listar(id, pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+        @PageableDefault(size = 10, sort = "id") Pageable pagination) {
+        Page<DataListCustomers> reply = service.getList(id, pagination);
+        return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
         
     @Transactional
     @DeleteMapping
-    public ResponseEntity<Object> borrarClienteLogico(@RequestParam(value = "id", required = true) Long id) {
+    public ResponseEntity<Object> logicalDeleteCustomer(@RequestParam(value = "id", required = true) Long id) {
         try {
-            service.borradoLogico(id);
+            service.logicalDelete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  

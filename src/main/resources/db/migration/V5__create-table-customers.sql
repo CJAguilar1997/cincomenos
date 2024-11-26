@@ -1,0 +1,10 @@
+CREATE TABLE customers(
+    id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    registration_date DATE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    dni VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    phone_number VARCHAR(25) NOT NULL UNIQUE,
+    address VARCHAR(100) NOT NULL,
+    active_user BOOLEAN NOT NULL
+)

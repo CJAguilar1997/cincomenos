@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.store.cincomenos.domain.persona.cliente.Cliente;
+import com.store.cincomenos.domain.persona.cliente.Customer;
 
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, Long>{
@@ -19,7 +19,7 @@ public interface FacturaRepository extends JpaRepository<Factura, Long>{
             """)
     Page<Factura> findByParameters(
         @Param("id") Long id, 
-        @Param("idCliente") Cliente cliente, 
+        @Param("idCliente") Customer cliente, 
         Pageable paginacion);
 
 }

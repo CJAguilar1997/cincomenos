@@ -1,13 +1,16 @@
 package com.store.cincomenos.domain.persona;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.store.cincomenos.domain.dto.persona.DatosActualizar;
+import com.store.cincomenos.domain.dto.persona.UpdateData;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,44 +22,52 @@ import lombok.NoArgsConstructor;
 @MappedSuperclass
 public abstract class Persona {
 
-    @Column(name = "nombre")
-    private String nombre;
-    
-    @Column(name = "dni")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
     private String dni;
 
-    @Column(name = "usuario_activo")
-    private Boolean usuarioActivo;
+    @Column(name = "active_user")
+    private Boolean activeUser;
 
-    @Column(name = "fecha_registro")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate fechaRegistro;
+    @Column(name = "registration_date")
+    private LocalDate registrationDate;
+
+    @Embedded
+    private ContactInformation contact;
     
-    protected <T extends DatosRegistrar> Persona(T datos) {
-        this.nombre = datos.nombre();
-        this.dni = datos.dni();
-        this.fechaRegistro = LocalDate.now();
-        this.usuarioActivo = true;
+    protected <T extends RegistrationData> Persona(T data) {
+        this.name = data.name();
+        this.dni = data.dni();
+        this.contact = new ContactInformation(data.contactInformationDTO().phoneNumber(), data.contactInformationDTO().email(), data.contactInformationDTO().address());
+        this.registrationDate = LocalDate.now();
+        this.activeUser = true;
     }
 
-    protected void actualizarAtributosCliente(DatosActualizar datos) {
-        Map<String, Object> atributos = datos.getAtributos();
-        atributos.forEach((key, value) -> {
-            switch (key) {
-                case "nombre":
-                    this.nombre = (String) value;
-                    break;
-                case "dni":
-                    this.dni = (String) value;
-                    break;
-                default:
-                    break;
+    protected <T extends UpdateData> void updateData(T data) {
+        if (data.name() != null) {
+            this.name = data.name();
+        }
+
+        if (data.dni() != null) {
+            this.dni = data.dni();
+        }
+
+        if (data.contactInformationDTO() != null) {
+            if (data.contactInformationDTO().phoneNumber() != null) {
+                contact.setPhoneNumber(data.contactInformationDTO().phoneNumber());
             }
-        });
+            if (data.contactInformationDTO().email() != null) {
+                contact.setEmail(data.contactInformationDTO().email());
+            }
+        }
     }
 
-    protected void desactivarCuenta() {
-        this.usuarioActivo = false;
+    protected void deleteUserAccount() {
+        this.activeUser = false;
     }
 
 }

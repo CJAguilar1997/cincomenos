@@ -11,10 +11,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DatosDeContacto {
+public class ContactInformation {
 
-    private String telefono;
+    private String phoneNumber;
     private String email;
+    private String address;
 
 }
 

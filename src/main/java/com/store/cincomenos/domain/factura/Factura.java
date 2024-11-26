@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.store.cincomenos.domain.persona.cliente.Cliente;
+import com.store.cincomenos.domain.persona.cliente.Customer;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,7 +40,7 @@ public class Factura {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", referencedColumnName = "id")
-    private Cliente cliente;
+    private Customer cliente;
 
     @Column(name = "fecha_emision")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -52,7 +52,7 @@ public class Factura {
     @Column(name = "importe_total")
     BigDecimal valorTotal = new BigDecimal(0);
     
-    public Factura(Cliente cliente) {
+    public Factura(Customer cliente) {
         this.cliente = cliente;
     }
 

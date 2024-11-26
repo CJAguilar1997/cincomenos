@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.store.cincomenos.domain.dto.factura.DatosListadoFactura;
 import com.store.cincomenos.domain.dto.factura.DatosRegistrarFactura;
 import com.store.cincomenos.domain.dto.factura.DatosRespuestaFactura;
-import com.store.cincomenos.domain.persona.cliente.Cliente;
-import com.store.cincomenos.domain.persona.cliente.ClienteRespository;
+import com.store.cincomenos.domain.persona.cliente.Customer;
+import com.store.cincomenos.domain.persona.cliente.CustomerRespository;
 import com.store.cincomenos.domain.persona.login.role.product.DataListProducts;
 import com.store.cincomenos.domain.product.InventoryRepository;
 import com.store.cincomenos.domain.product.Product;
@@ -28,10 +28,10 @@ public class FacturaService {
     private InventoryRepository inventarioRepository;
 
     @Autowired
-    private ClienteRespository clienteRespository;
+    private CustomerRespository clienteRespository;
 
     public DatosRespuestaFactura registrar(DatosRegistrarFactura datos) {
-        Cliente cliente = clienteRespository.findById(datos.idCliente())
+        Customer cliente = clienteRespository.findById(datos.idCliente())
             .orElseThrow(() -> new EntityNotFoundException("Could not get the desired customer or not exists"));
 
         Factura factura = new Factura(cliente);
@@ -55,7 +55,7 @@ public class FacturaService {
     }
 
     public Page<DatosListadoFactura> listarPorParametros(Pageable paginacion, Long id, Long idCliente) {
-        Cliente cliente = null;
+        Customer cliente = null;
         if (id == null && idCliente == null) {
             throw new NullPointerException("Se necesitan datos para realizar una busqueda de facturas");
         }
