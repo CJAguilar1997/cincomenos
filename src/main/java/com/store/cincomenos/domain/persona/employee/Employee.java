@@ -13,7 +13,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -29,9 +28,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Employee extends Persona{
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = JobPosition.class)
-    @JoinTable(name = "employee's_job_position", joinColumns = @JoinColumn(name = "id_employee", referencedColumnName = "id"), 
-        inverseJoinColumns = @JoinColumn(name = "id_job_position", referencedColumnName = "id"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_job_position", referencedColumnName = "id")
     private JobPosition jobPosition;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
