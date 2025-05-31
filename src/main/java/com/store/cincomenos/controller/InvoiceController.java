@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.dto.invoice.DatosListadoFactura;
-import com.store.cincomenos.domain.dto.invoice.DatosRegistrarFactura;
-import com.store.cincomenos.domain.dto.invoice.DatosRespuestaFactura;
+import com.store.cincomenos.domain.dto.invoice.DataInvoiceList;
+import com.store.cincomenos.domain.dto.invoice.DataRegisterInvoice;
+import com.store.cincomenos.domain.dto.invoice.DataResponseInvoice;
 import com.store.cincomenos.domain.dto.product.DataListProducts;
-import com.store.cincomenos.domain.invoice.FacturaService;
+import com.store.cincomenos.domain.invoice.InvoiceService;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.producto.OutOfStockException;
 
@@ -29,19 +29,19 @@ import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 
 @RestController
-@RequestMapping("/facturacion")
-public class FacturaController {
+@RequestMapping("/invoices")
+public class InvoiceController {
 
     @Autowired
-    private FacturaService service;
+    private InvoiceService service;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Object> registrarFactura(@Valid @RequestBody DatosRegistrarFactura datos, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<Object> registrarFactura(@Valid @RequestBody DataRegisterInvoice data, UriComponentsBuilder uriComponentsBuilder) {
         try {
-            DatosRespuestaFactura respuesta = service.registrar(datos);
-            URI url = uriComponentsBuilder.path("/facturacion/{id}").buildAndExpand(respuesta.id()).toUri();
-            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(respuesta);
+            DataResponseInvoice reply = service.register(data);
+            URI url = uriComponentsBuilder.path("/invoices/{id}").buildAndExpand(reply.id()).toUri();
+            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
         } catch (ValidationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
         } catch (EntityNotFoundException e) {
@@ -51,21 +51,21 @@ public class FacturaController {
         }
     }
 
-    @GetMapping("/getProducto")
-    public ResponseEntity<Page<DataListProducts>> obtenerProducto(
-        @RequestParam(value = "codigo_barras", required = true) String codigoDeBarras,
-        Pageable paginacion) {
-            Page<DataListProducts> respuesta = service.obtenerProducto(codigoDeBarras, paginacion);
-            return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+    @GetMapping("/getProduct")
+    public ResponseEntity<Page<DataListProducts>> getProducts(
+        @RequestParam(value = "barcode", required = true) String barcode,
+        Pageable pagination) {
+            Page<DataListProducts> reply = service.getProduct(barcode, pagination);
+            return ResponseEntity.status(HttpStatus.OK).body(reply);
     } 
 
     @GetMapping
-    public ResponseEntity<Page<DatosListadoFactura>> listarFacturaPorParametros(
-        @PageableDefault(size = 30, sort = "id") Pageable paginacion,
+    public ResponseEntity<Page<DataInvoiceList>> listInvoiceByParameters(
+        @PageableDefault(size = 30, sort = "id") Pageable pagination,
         @RequestParam(value = "id", required = false) Long id,
-        @RequestParam(value = "id_cliente", required = false) Long idCliente
+        @RequestParam(value = "id_customer", required = false) Long idClient
     ) {
-        Page<DatosListadoFactura> respuesta = service.listarPorParametros(paginacion, id, idCliente);
-        return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+        Page<DataInvoiceList> reply = service.getByParameters(pagination, id, idClient);
+        return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
 }

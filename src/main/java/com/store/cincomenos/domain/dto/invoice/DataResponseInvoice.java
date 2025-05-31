@@ -8,36 +8,36 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.store.cincomenos.domain.dto.persona.customer.ClienteDTO;
-import com.store.cincomenos.domain.invoice.Factura;
+import com.store.cincomenos.domain.invoice.Invoice;
 
-@JsonPropertyOrder({"id", "fechaDeRegistro", "cliente", "items", "valorTotal"})
-public record DatosRespuestaFactura(
+@JsonPropertyOrder({"id", "registration_date", "customer", "items", "total_value"})
+public record DataResponseInvoice(
     Long id,
 
-    @JsonProperty("fecha_registro")
-    LocalDate fechaDeRegistro,
+    @JsonProperty("registration_date")
+    LocalDate registrationDate,
     
-    ClienteDTO cliente,
+    ClienteDTO customer,
 
-    List<ItemsFacturaDTO> items,
+    List<InvoiceItemsDTO> items,
 
-    @JsonProperty("valor_total")
-    BigDecimal valorTotal
+    @JsonProperty("total_value")
+    BigDecimal totalValue
     ) {
 
-    public DatosRespuestaFactura(Factura facturaGuardada) {
+    public DataResponseInvoice(Invoice savedInvoice) {
         this(
-            facturaGuardada.getId(),
-            facturaGuardada.getFechaDeRegistro(),
+            savedInvoice.getId(),
+            savedInvoice.getRegistrationDate(),
             new ClienteDTO(
-                facturaGuardada.getCliente().getId(), 
-                facturaGuardada.getCliente().getName(), 
-                facturaGuardada.getCliente().getDni(), 
-                facturaGuardada.getCliente().getContact().getPhoneNumber()),
-            facturaGuardada.getItems().stream()
+                savedInvoice.getCustomer().getId(), 
+                savedInvoice.getCustomer().getName(), 
+                savedInvoice.getCustomer().getDni(), 
+                savedInvoice.getCustomer().getContact().getPhoneNumber()),
+            savedInvoice.getItems().stream()
             .map(item -> {
                 BigDecimal valorProductoCantidad = item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getCantidad()));
-                return new ItemsFacturaDTO(
+                return new InvoiceItemsDTO(
                 item.getId(),
                 item.getCantidad(),
                 item.getPrecioUnitario(),
@@ -50,7 +50,7 @@ public record DatosRespuestaFactura(
                 )
             );
         }).collect(Collectors.toList()),
-            facturaGuardada.getValorTotal()
+            savedInvoice.getTotalValue()
         );
     }
 }

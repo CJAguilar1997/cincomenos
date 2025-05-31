@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ItemsFactura {
+public class InvoiceItems {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +37,9 @@ public class ItemsFactura {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "factura_id", referencedColumnName = "id_factura")
-    Factura factura;
+    Invoice factura;
 
-    public ItemsFactura(Integer cantidad, Product producto, Factura factura) {
+    public InvoiceItems(Integer cantidad, Product producto, Invoice factura) {
         this.cantidad = cantidad;
         this.producto = producto;
         this.factura = factura;

@@ -7,29 +7,29 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.store.cincomenos.domain.invoice.Factura;
+import com.store.cincomenos.domain.invoice.Invoice;
 
 @JsonPropertyOrder({"id", "fecha_registro", "items", "valor_total"})
-public record DatosListadoFactura(
+public record DataInvoiceList(
     Long id,
 
     @JsonProperty("fecha_registro")
     LocalDate fechaDeRegistro,
     
-    List<ItemsFacturaDTO> items,
+    List<InvoiceItemsDTO> items,
 
     @JsonProperty("valor_total")
     BigDecimal valorTotal
     ) {
 
-    public DatosListadoFactura(Factura facturaGuardada) {
+    public DataInvoiceList(Invoice facturaGuardada) {
         this(
             facturaGuardada.getId(),
-            facturaGuardada.getFechaDeRegistro(),
+            facturaGuardada.getRegistrationDate(),
             facturaGuardada.getItems().stream()
             .map(item -> {
                 BigDecimal valorProductoCantidad = item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getCantidad()));
-                return new ItemsFacturaDTO(
+                return new InvoiceItemsDTO(
                 item.getId(),
                 item.getCantidad(),
                 item.getPrecioUnitario(),
@@ -42,7 +42,7 @@ public record DatosListadoFactura(
                 )
             );
         }).collect(Collectors.toList()),
-            facturaGuardada.getValorTotal()
+            facturaGuardada.getTotalValue()
         );
     }
 }

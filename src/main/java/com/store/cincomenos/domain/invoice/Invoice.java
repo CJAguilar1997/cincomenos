@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Getter
-public class Factura {
+public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,30 +40,30 @@ public class Factura {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", referencedColumnName = "id")
-    private Customer cliente;
+    private Customer customer;
 
     @Column(name = "fecha_emision")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate fechaDeRegistro = LocalDate.now();
+    LocalDate registrationDate = LocalDate.now();
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura")
-    List<ItemsFactura> items = new ArrayList<>();
+    List<InvoiceItems> items = new ArrayList<>();
 
     @Column(name = "importe_total")
-    BigDecimal valorTotal = new BigDecimal(0);
+    BigDecimal totalValue = new BigDecimal(0);
     
-    public Factura(Customer cliente) {
-        this.cliente = cliente;
+    public Invoice(Customer customer) {
+        this.customer = customer;
     }
 
-    public void setItems(List<ItemsFactura> items) {
+    public void setItems(List<InvoiceItems> items) {
         this.items = items;
     }
 
-    public void agregarItems(ItemsFactura item) {
+    public void agregarItems(InvoiceItems item) {
         item.setFactura(this);
         this.items.add(item);
-        this.valorTotal = this.valorTotal.add(item.getValor());
+        this.totalValue = this.totalValue.add(item.getValor());
     }
 
 }

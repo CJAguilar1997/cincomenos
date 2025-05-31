@@ -10,16 +10,16 @@ import org.springframework.stereotype.Repository;
 import com.store.cincomenos.domain.persona.customer.Customer;
 
 @Repository
-public interface FacturaRepository extends JpaRepository<Factura, Long>{
+public interface InvoiceRepository extends JpaRepository<Invoice, Long>{
     
     @Query("""
-            SELECT f FROM Factura f WHERE 
+            SELECT f FROM Invoice f WHERE 
             (:id IS NULL OR f.id = :id) 
-            AND (:idCliente IS NULL OR f.cliente = :idCliente) 
+            AND (:idClient IS NULL OR f.customer = :idCustomer) 
             """)
-    Page<Factura> findByParameters(
+    Page<Invoice> findByParameters(
         @Param("id") Long id, 
-        @Param("idCliente") Customer cliente, 
-        Pageable paginacion);
+        @Param("idCustomer") Customer customer, 
+        Pageable pagination);
 
 }
