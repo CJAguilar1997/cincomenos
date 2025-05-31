@@ -165,7 +165,7 @@ public class EmployeeService {
                         .filter(edp -> edp.getDepartament().getName().equals(deptDto.nameDeptToUpdate()))
                         .map(EmployeeDeptPosition::getDepartament)
                         .findFirst()
-                        .orElseThrow(() -> new NullPointerException("The desired departament not exist for this employee"));
+                        .orElseThrow(() -> new EntityNotFoundException("The desired departament not exist for this employee"));
                 }
 
                 Position positionEntity;
@@ -180,7 +180,7 @@ public class EmployeeService {
                         .filter(edp -> edp.getPosition().getName().equals(deptDto.positionDTO().namePositionToUpdate()))
                         .map(EmployeeDeptPosition::getPosition)
                         .findFirst()
-                        .orElseThrow(() -> new NullPointerException("The desired position not exist for this employee"));
+                        .orElseThrow(() -> new EntityNotFoundException("The desired position not exist for this employee"));
                 }
 
                 if (deptDto.update().equals("true") || deptDto.positionDTO().update().equals("true")) {
@@ -240,7 +240,7 @@ public class EmployeeService {
             .filter(edp -> edp.getDepartament().getName().equals(deptDto.nameDeptToUpdate()))
             .filter(edp -> edp.getPosition().getName().equals(deptDto.positionDTO().namePositionToUpdate()))
             .findFirst()
-            .orElseThrow(() -> new NullPointerException(String.format("The departament \"%s\" or \"%s\" not exists for this employee", deptDto.nameDeptToUpdate(), deptDto.positionDTO().namePositionToUpdate())));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("The departament \"%s\" or \"%s\" not exists for this employee", deptDto.nameDeptToUpdate(), deptDto.positionDTO().namePositionToUpdate())));
     }
     
     public void logicalDelete(Long id) {
