@@ -20,9 +20,9 @@ import com.store.cincomenos.domain.dto.persona.employee.DataRegisterEmployee;
 import com.store.cincomenos.domain.dto.persona.employee.DataResponseEmployee;
 import com.store.cincomenos.domain.dto.persona.employee.DataResponseEmployeeLogin;
 import com.store.cincomenos.domain.dto.persona.employee.DataUpdateEmployee;
-import com.store.cincomenos.domain.dto.persona.employee.RegisEmployeePositionDTO;
 import com.store.cincomenos.domain.dto.persona.employee.departament.RegisEmployeeDepartamentDTO;
 import com.store.cincomenos.domain.dto.persona.employee.departament.UpdateEmployeeDepartamentDTO;
+import com.store.cincomenos.domain.dto.persona.employee.jobPosition.RegisEmployeePositionDTO;
 import com.store.cincomenos.domain.dto.persona.login.DataUserLoginResponse;
 import com.store.cincomenos.domain.persona.employee.departament.Departament;
 import com.store.cincomenos.domain.persona.employee.departament.DepartamentRepository;
@@ -140,7 +140,7 @@ public class EmployeeService {
 
         return roleEntities;
     }
-    
+
     public Page<DataListEmployee> getList(Pageable pagination, Long id, String name, String dni, String phoneNumber,
     String registrationDate) {
         Page<DataListEmployee> getListOfEmployee = employeeRepository.getReferenceByParameters(pagination, id, name, dni, phoneNumber, registrationDate).map(DataListEmployee::new);

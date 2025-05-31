@@ -1,6 +1,8 @@
 package com.store.cincomenos.domain.dto.persona.employee;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.store.cincomenos.domain.dto.persona.employee.departament.ResponseDepartamentDTO;
+import com.store.cincomenos.domain.dto.persona.employee.jobPosition.ResponsePositionDTO;
 import com.store.cincomenos.domain.persona.employee.EmployeeDeptPosition;
 
 public record EmployeeDeptPositionDTO(

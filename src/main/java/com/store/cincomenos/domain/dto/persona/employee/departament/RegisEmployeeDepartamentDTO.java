@@ -1,7 +1,7 @@
 package com.store.cincomenos.domain.dto.persona.employee.departament;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.store.cincomenos.domain.dto.persona.employee.RegisEmployeePositionDTO;
+import com.store.cincomenos.domain.dto.persona.employee.jobPosition.RegisEmployeePositionDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

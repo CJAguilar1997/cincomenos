@@ -1,4 +1,4 @@
-package com.store.cincomenos.domain.dto.persona.employee;
+package com.store.cincomenos.domain.dto.persona.employee.jobPosition;
 
 import jakarta.validation.constraints.NotBlank;
 
