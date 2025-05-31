@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.persona.login.role.product.attribute.DataListAttributes;
-import com.store.cincomenos.domain.persona.login.role.product.attribute.DataRegisterAttribute;
-import com.store.cincomenos.domain.persona.login.role.product.attribute.DataResponseAttribute;
-import com.store.cincomenos.domain.persona.login.role.product.attribute.DataUpdateAttribute;
+import com.store.cincomenos.domain.dto.product.attribute.DataListAttributes;
+import com.store.cincomenos.domain.dto.product.attribute.DataRegisterAttribute;
+import com.store.cincomenos.domain.dto.product.attribute.DataResponseAttribute;
+import com.store.cincomenos.domain.dto.product.attribute.DataUpdateAttribute;
 import com.store.cincomenos.domain.product.attribute.AttributeService;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 

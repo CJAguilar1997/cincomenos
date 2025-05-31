@@ -12,15 +12,14 @@ import jakarta.validation.constraints.Pattern;
 public record ContactInformationDTO(
     @NotBlank
     @JsonAlias({"phone_number", "phone"})
-    @Pattern(regexp = "\\+?[0-9 ]+", message = "The phone number contains valid caracters")
+    @Pattern(regexp = "\\+?[0-9 ]+", message = "The phone number contains invalid characters")
     String phoneNumber,
 
     @Email
     String email,
 
-    /*TODO
-        add pathern and add necesary validations
-    */
+    @NotBlank
+    @Pattern(regexp = "[\\p{L}, ]", message = "The address constains invalid characters")
     String address
 ) {
 

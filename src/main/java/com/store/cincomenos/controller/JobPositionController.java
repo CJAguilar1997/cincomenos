@@ -23,7 +23,7 @@ import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataListJobP
 import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataRegisterJobPosition;
 import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataResponseJobPosition;
 import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataUpdateJobPosition;
-import com.store.cincomenos.domain.persona.employee.jobPosition.JobPositionService;
+import com.store.cincomenos.domain.persona.employee.departament.position.JobPositionService;
 import com.store.cincomenos.infra.exception.ErrorCode;
 import com.store.cincomenos.infra.exception.ErrorResponse;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;

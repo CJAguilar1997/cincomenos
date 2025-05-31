@@ -1,19 +1,20 @@
 package com.store.cincomenos.domain.persona.employee;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.store.cincomenos.domain.dto.persona.employee.DataRegisterEmployee;
 import com.store.cincomenos.domain.dto.persona.employee.DataUpdateEmployee;
 import com.store.cincomenos.domain.persona.Persona;
-import com.store.cincomenos.domain.persona.employee.jobPosition.JobPosition;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -28,28 +29,28 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Employee extends Persona{
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_job_position", referencedColumnName = "id")
-    private JobPosition jobPosition;
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<EmployeeDeptPosition> employeeDeptPositions;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date_of_dismissal/resignation")
     private LocalDate dimissalResignationDate;
 
-    public Employee (DataRegisterEmployee data, JobPosition jobPosition) {
+    public Employee (DataRegisterEmployee data) {
         super(data);
-        this.jobPosition = jobPosition;
+        this.employeeDeptPositions = new ArrayList<>();
     }
 
-    public void updateData(DataUpdateEmployee data, JobPosition jobPosition) {
+    public void updateData(DataUpdateEmployee data) {
         super.updateData(data);
-        if (data.jobPosition() != null) {
-            this.jobPosition = jobPosition;
-        }
     }
 
     public void deleteEmployeeAccount() {
         super.deleteUserAccount();
         this.dimissalResignationDate = LocalDate.now();
+    }
+
+    public void addDeptPosition(EmployeeDeptPosition deptPositionEntity) {
+        this.employeeDeptPositions.add(deptPositionEntity);
     }
 }

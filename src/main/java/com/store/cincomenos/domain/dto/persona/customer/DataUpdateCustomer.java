@@ -26,4 +26,14 @@ public record DataUpdateCustomer(
 
 ) implements UpdateData {
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
 }

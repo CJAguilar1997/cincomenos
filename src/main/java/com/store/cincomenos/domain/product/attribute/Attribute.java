@@ -2,8 +2,8 @@ package com.store.cincomenos.domain.product.attribute;
 
 import java.util.List;
 
-import com.store.cincomenos.domain.persona.login.role.product.attribute.DataRegisterAttribute;
-import com.store.cincomenos.domain.persona.login.role.product.attribute.DataUpdateAttribute;
+import com.store.cincomenos.domain.dto.product.attribute.DataRegisterAttribute;
+import com.store.cincomenos.domain.dto.product.attribute.DataUpdateAttribute;
 import com.store.cincomenos.domain.product.Product;
 import com.store.cincomenos.domain.product.attribute.value.Value;
 
@@ -34,14 +34,14 @@ public class Attribute {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String name;
+    private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "attributes")
-    List<Product> product;
+    private List<Product> product;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Value.class)
-    @JoinTable(name = "attribute_value", joinColumns = @JoinColumn(name = "id_attribute", referencedColumnName = "id"), 
-        inverseJoinColumns = @JoinColumn(name = "id_value", referencedColumnName = "id"))
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "attribute_value", joinColumns = @JoinColumn(name = "attribute_id", referencedColumnName = "id"), 
+        inverseJoinColumns = @JoinColumn(name = "value_id", referencedColumnName = "id"))
     private Value value;
 
     public void setValue(Value value) {

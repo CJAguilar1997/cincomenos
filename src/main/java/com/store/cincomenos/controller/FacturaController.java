@@ -20,8 +20,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.store.cincomenos.domain.dto.invoice.DatosListadoFactura;
 import com.store.cincomenos.domain.dto.invoice.DatosRegistrarFactura;
 import com.store.cincomenos.domain.dto.invoice.DatosRespuestaFactura;
+import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.invoice.FacturaService;
-import com.store.cincomenos.domain.persona.login.role.product.DataListProducts;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.producto.OutOfStockException;
 

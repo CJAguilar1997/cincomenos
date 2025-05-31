@@ -2,9 +2,9 @@ package com.store.cincomenos.domain.product.category;
 
 import java.util.List;
 
-import com.store.cincomenos.domain.persona.login.role.product.category.CategoryDTO;
-import com.store.cincomenos.domain.persona.login.role.product.category.DataRegisterCategory;
-import com.store.cincomenos.domain.persona.login.role.product.category.DataUpdateCategory;
+import com.store.cincomenos.domain.dto.product.category.CategoryDTO;
+import com.store.cincomenos.domain.dto.product.category.DataRegisterCategory;
+import com.store.cincomenos.domain.dto.product.category.DataUpdateCategory;
 import com.store.cincomenos.domain.product.Product;
 
 import jakarta.persistence.Entity;

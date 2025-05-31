@@ -1,25 +1,55 @@
 package com.store.cincomenos.domain.dto.persona.employee;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.store.cincomenos.domain.dto.persona.ContactInformationDTO;
 import com.store.cincomenos.domain.dto.persona.UpdateData;
-import com.store.cincomenos.domain.dto.persona.employee.jobPosition.JobPositionDTO;
+import com.store.cincomenos.domain.dto.persona.employee.departament.UpdateEmployeeDepartamentDTO;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-public record DataUpdateEmployee(
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+public class DataUpdateEmployee implements UpdateData {
+
     @NotNull
-    Long id,
+    private Long id;
 
-    String name,
-    String dni,
+    private String name;
+    private String dni;
 
-    @JsonAlias({"job_position", "position"})
-    JobPositionDTO jobPosition,
+    @JsonAlias({"departaments"})
+    private List<UpdateEmployeeDepartamentDTO> departamentDTO;
 
     @JsonAlias({"contact_information", "contact"})
-    ContactInformationDTO contactInformationDTO
-    
-) implements UpdateData{
-    
+    private ContactInformationDTO contactInformationDTO;
+
+    public void setDepartamentDTO(List<UpdateEmployeeDepartamentDTO> updatedDepartaments) {
+        this.departamentDTO = updatedDepartaments;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String dni() {
+        return this.dni;
+    }
+
+    public List<UpdateEmployeeDepartamentDTO> getDepartamentDTO() {
+        return departamentDTO;
+    }
+
+    public ContactInformationDTO contactInformationDTO() {
+        return contactInformationDTO;
+    }
 }

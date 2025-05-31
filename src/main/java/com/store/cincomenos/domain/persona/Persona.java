@@ -48,8 +48,8 @@ public abstract class Persona {
     }
 
     protected <T extends UpdateData> void updateData(T data) {
-        if (data.name() != null) {
-            this.name = data.name();
+        if (data.getName() != null) {
+            this.name = data.getName();
         }
 
         if (data.dni() != null) {

@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,12 +41,13 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<Object> registerEmployee(@RequestBody @Valid DataRegisterEmployee data, UriComponentsBuilder uriComponentsBuilder) {
         try {
             DataResponseEmployeeLogin reply = employeeService.register(data);
             URI url = uriComponentsBuilder.path("/employee/{id}").buildAndExpand(reply.dataResponseEmployee().id()).toUri();
             return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
-        } catch (ValidationException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -64,6 +66,7 @@ public class EmployeeController {
     }
         
     @PutMapping
+    @Transactional
     public ResponseEntity<Object> updateEmployee(@Valid @RequestBody DataUpdateEmployee data) {
         try {
             DataResponseEmployee reply = employeeService.update(data);
@@ -74,8 +77,9 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
         }
     }
-
+    
     @DeleteMapping
+    @Transactional
     public ResponseEntity<Object> logicalDeleteEmployee(@RequestParam(value = "id", required = true) Long id) {
         try {
             employeeService.logicalDelete(id);

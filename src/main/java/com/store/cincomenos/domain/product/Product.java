@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.store.cincomenos.domain.persona.login.role.product.DataRegisterProduct;
-import com.store.cincomenos.domain.persona.login.role.product.DataUpdateProduct;
+import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
+import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
 import com.store.cincomenos.domain.product.attribute.Attribute;
 import com.store.cincomenos.domain.product.category.Category;
 
@@ -18,7 +18,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -42,10 +41,10 @@ public class Product {
     private BigDecimal price;
     private Long stock;
     
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Category.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Category.class)
     @JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "id_product", referencedColumnName = "id"), 
         inverseJoinColumns = @JoinColumn(name = "id_category", referencedColumnName = "id"))
-    private Category category;
+    private List<Category> category;
         
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Attribute.class)
     @JoinTable(name = "product_attributes", joinColumns = @JoinColumn(name = "id_product", referencedColumnName = "id"), 
@@ -55,14 +54,14 @@ public class Product {
     private LocalDate registrationDate;
     private Boolean activeProduct;
     
-    protected Product(DataRegisterProduct datos, Category category) {
+    protected Product(DataRegisterProduct datos, List<Category> categoryList) {
         this.barcode = datos.barcode();
         this.name = datos.name();
         this.description = datos.description();
         this.brand = datos.brand();
         this.price = datos.price();
         this.stock = datos.stock();
-        this.category = category;
+        this.category = categoryList;
         this.registrationDate = LocalDate.now();
         this.activeProduct = true;
         this.attributes = new ArrayList<>();
@@ -72,7 +71,7 @@ public class Product {
         this.activeProduct = false;
     }
 
-    protected void updateData(@Valid DataUpdateProduct datos, Category category, List<Attribute> attributes) {
+    protected void updateData(@Valid DataUpdateProduct datos, List<Category> category, List<Attribute> attributes) {
         if (datos.barcode() != null && !datos.barcode().isBlank()) {
             this.barcode = datos.barcode();
         }

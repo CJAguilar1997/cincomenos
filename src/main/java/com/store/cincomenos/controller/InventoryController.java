@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.persona.login.role.product.DataListProducts;
-import com.store.cincomenos.domain.persona.login.role.product.DataRegisterProduct;
-import com.store.cincomenos.domain.persona.login.role.product.DataResponseProduct;
-import com.store.cincomenos.domain.persona.login.role.product.DataUpdateProduct;
+import com.store.cincomenos.domain.dto.product.DataListProducts;
+import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
+import com.store.cincomenos.domain.dto.product.DataResponseProduct;
+import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
 import com.store.cincomenos.domain.product.InventoryService;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;

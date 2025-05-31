@@ -29,7 +29,7 @@ public class CustomerService {
     }
     
     public DataResponseCustomer update(DataUpdateCustomer data) {
-        Customer customer = respository.findById(data.id())
+        Customer customer = respository.findById(data.getId())
             .orElseThrow(() -> new EntityNotFoundException("Could not get the desired customer or not exists"));
 
         customer.updateData(data);

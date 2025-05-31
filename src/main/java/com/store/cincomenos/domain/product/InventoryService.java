@@ -3,18 +3,18 @@ package com.store.cincomenos.domain.product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.store.cincomenos.domain.persona.login.role.product.DataListProducts;
-import com.store.cincomenos.domain.persona.login.role.product.DataRegisterProduct;
-import com.store.cincomenos.domain.persona.login.role.product.DataResponseProduct;
-import com.store.cincomenos.domain.persona.login.role.product.DataUpdateProduct;
-import com.store.cincomenos.domain.persona.login.role.product.attribute.AttributeDTO;
+import com.store.cincomenos.domain.dto.product.DataListProducts;
+import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
+import com.store.cincomenos.domain.dto.product.DataResponseProduct;
+import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
+import com.store.cincomenos.domain.dto.product.attribute.AttributeDTO;
+import com.store.cincomenos.domain.dto.product.category.CategoryDTO;
 import com.store.cincomenos.domain.product.attribute.Attribute;
 import com.store.cincomenos.domain.product.attribute.AttributeRepository;
 import com.store.cincomenos.domain.product.attribute.value.Value;
@@ -41,16 +41,14 @@ public class InventoryService {
     @Autowired
     private ValueRepository valueRepository;
     
-    public DataResponseProduct register(@Valid DataRegisterProduct datos) {
-        Category category = categoryRepository.findByName(datos.category().name())
-            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired product or not exists"));
-
-        Product product = new Product(datos, category);
+    public DataResponseProduct register(@Valid DataRegisterProduct data) {
+        List<Category> categories = getCategory(data.getCategories());
+        Product product = new Product(data, categories);
         
-        for (AttributeDTO attribDTO : datos.attributes()) {
+        for (AttributeDTO attribDTO : data.attributes()) {
 
             Attribute attribute = attributeRepository.findByName(attribDTO.name())
-                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired product or not exists"));
+                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired attribute or not exists"));
 
             Value value = valueRepository.save(new Value(attribDTO.value()));
 
@@ -66,7 +64,7 @@ public class InventoryService {
         Product producto = inventoryRepository.findById(data.id())
             .orElseThrow(() -> new EntityNotFoundException("Could not get the desired product or not exists"));
             
-            Category category = getCategory(data);
+            List<Category> category = getCategory(data.categories());
             List<Attribute> attributes = getAttribute(data.attributes(), producto.getAttributes());
         
             producto.updateData(data, category, attributes);
@@ -92,17 +90,20 @@ public class InventoryService {
 
     //Private Methods
 
-    private Category getCategory(DataUpdateProduct data) {
-        Category category = null;
+    private List<Category> getCategory(List<CategoryDTO> categoryDTO) {
+        List<Category> categoryList = new ArrayList<>();
         
-        if (data.category().name() != null) {
-            category = categoryRepository.findByName(data.category().name())
-                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired category or not exists"));
+        for (CategoryDTO catDTO : categoryDTO) {
+            Category category = categoryRepository.findByName(catDTO.name())
+                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired category or not exists")); 
+
+            categoryList.add(category); 
         }
-        return category;
+        
+        return categoryList;
     }
 
-    private List<Attribute> getAttribute(Set<AttributeDTO> attributesDTO, List<Attribute> attributesProduct) {
+    private List<Attribute> getAttribute(List<AttributeDTO> attributesDTO, List<Attribute> attributesProduct) {
         List<Attribute> updatedAttributes = new ArrayList<>();
 
         for (AttributeDTO attribDTO : attributesDTO) {

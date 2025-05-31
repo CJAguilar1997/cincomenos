@@ -21,4 +21,16 @@ public record DataRegisterCustomer(
 
 ) implements RegistrationData{
 
+    public String name() {
+        return name;
+    }
+
+    public String dni() {
+        return dni;
+    }
+
+    public ContactInformationDTO contactInformationDTO() {
+        return contactInformationDTO;
+    }
+    
 }

@@ -5,10 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.store.cincomenos.domain.persona.login.role.product.category.DataListCategories;
-import com.store.cincomenos.domain.persona.login.role.product.category.DataRegisterCategory;
-import com.store.cincomenos.domain.persona.login.role.product.category.DataResponseCategory;
-import com.store.cincomenos.domain.persona.login.role.product.category.DataUpdateCategory;
+import com.store.cincomenos.domain.dto.product.category.DataListCategories;
+import com.store.cincomenos.domain.dto.product.category.DataRegisterCategory;
+import com.store.cincomenos.domain.dto.product.category.DataResponseCategory;
+import com.store.cincomenos.domain.dto.product.category.DataUpdateCategory;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 
 @Service
