@@ -1,8 +1,5 @@
 package com.store.cincomenos.infra.security;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.store.cincomenos.utils.user.generator.RoleHierarchy;
-import com.store.cincomenos.utils.user.generator.RoleValidator;
 
 @Configuration
 @EnableWebSecurity
@@ -47,17 +41,6 @@ public class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public RoleHierarchy roleHierarchy() {
-        List<String> hierarchy = Arrays.asList("ROLE_OWNER", "ROLE_ADMIN", "ROLE_EMPLOYEE", "ROLE_USER");
-        return new RoleHierarchy(hierarchy);
-    }
-
-    @Bean
-    public RoleValidator roleValidator() {
-        return new RoleValidator(roleHierarchy());
     }
 
 }

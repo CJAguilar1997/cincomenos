@@ -34,7 +34,6 @@ import com.store.cincomenos.domain.persona.login.role.RoleRepository;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 import com.store.cincomenos.infra.exception.console.NullPointerException;
-import com.store.cincomenos.utils.user.generator.RoleValidator;
 import com.store.cincomenos.utils.user.generator.UserGenerator;
 
 @Service
@@ -58,12 +57,7 @@ public class EmployeeService {
     @Autowired
     private DeptPosition deptPositionRepository;
 
-    @Autowired
-    private RoleValidator roleValidator;
-
     public DataResponseEmployeeLogin register(DataRegisterEmployee data) {
-        roleValidator.validateHierarchy(data.roles());
-
         Employee employee = new Employee(data);
 
         employeeRepository.save(employee);
