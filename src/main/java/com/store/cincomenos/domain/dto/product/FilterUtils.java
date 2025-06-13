@@ -34,8 +34,4 @@ public abstract class FilterUtils {
             .stream()
             .collect(Collectors.toList());
     }
-
-    /*TODO
-     * Make logic a generic for all DTOs that are a list of themselves
-     */
 }

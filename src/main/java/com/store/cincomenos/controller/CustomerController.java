@@ -24,11 +24,8 @@ import com.store.cincomenos.domain.dto.persona.customer.DataRegisterCustomer;
 import com.store.cincomenos.domain.dto.persona.customer.DataResponseCustomer;
 import com.store.cincomenos.domain.dto.persona.customer.DataUpdateCustomer;
 import com.store.cincomenos.domain.persona.customer.CustomerService;
-import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
-import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/customer")
@@ -40,26 +37,16 @@ public class CustomerController {
     @Transactional
     @PostMapping
     public ResponseEntity<Object> registerCustomer(@RequestBody @Valid DataRegisterCustomer data, UriComponentsBuilder uriComponentsBuilder) {
-        try {
-            DataResponseCustomer reply = service.register(data);
-            URI url = uriComponentsBuilder.path("/customer/{id}").buildAndExpand(reply.id()).toUri();
-            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
-        } catch (ValidationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
-        }
+        DataResponseCustomer reply = service.register(data);
+        URI url = uriComponentsBuilder.path("/customer/{id}").buildAndExpand(reply.id()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
     }
     
     @Transactional
     @PutMapping
     public ResponseEntity<Object> updateCustomer(@Valid @RequestBody DataUpdateCustomer data) {
-        try {
-            DataResponseCustomer reply = service.update(data);
-            return ResponseEntity.status(HttpStatus.OK).body(reply);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
-        } catch (ValidationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
-        }
+        DataResponseCustomer reply = service.update(data);
+        return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
     
 
@@ -74,13 +61,7 @@ public class CustomerController {
     @Transactional
     @DeleteMapping
     public ResponseEntity<Object> logicalDeleteCustomer(@RequestParam(value = "id", required = true) Long id) {
-        try {
-            service.logicalDelete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
-        } catch (LogicalDeleteOperationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        service.logicalDelete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(String.format("Customer with id %l has been eliminated", id));
     }
 }

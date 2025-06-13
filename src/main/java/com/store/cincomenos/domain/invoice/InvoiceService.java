@@ -1,5 +1,7 @@
 package com.store.cincomenos.domain.invoice;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +39,6 @@ public class InvoiceService {
         Invoice invoice = new Invoice(customer);
 
         data.items().forEach(item -> {
-
             Product product = inventoryRepository.findByBarcode(item.barcode())
                 .orElseThrow(() -> new EntityNotFoundException("Could not get the desired product or not exists"));
 
@@ -55,21 +56,21 @@ public class InvoiceService {
     }
 
     public Page<DataInvoiceList> getByParameters(Pageable pagination, Long id, Long idCustomer) {
-        Customer customer = null;
-        if (id == null && idCustomer == null) {
-            throw new NullPointerException("Se necesitan datos para realizar una busqueda de facturas");
+        Optional<Customer> customer = Optional.ofNullable(null);
+        if ((id == null) && idCustomer == null) {
+            throw new NullPointerException("the data is necesary to find an invoice");
         }
         if(idCustomer != null) {
-            customer = clientRespository.findById(idCustomer)
-                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired customer or not exists"));
+            customer = Optional.of(clientRespository.findById(idCustomer)
+                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired customer or not exists")));
         }
-        Page<DataInvoiceList> invoiceList = invoiceRepository.findByParameters(id, customer, pagination).map(DataInvoiceList::new);
+        Page<DataInvoiceList> invoiceList = invoiceRepository.findByParameters(id, customer.get(), pagination).map(DataInvoiceList::new);
         return invoiceList;
     }
 
     public Page<DataListProducts> getProduct(String barcode, Pageable pagination) {
         if (!inventoryRepository.existsByBarcode(barcode)) {
-            throw new BarcodeNotExistsException("El producto no existe en la base de datos");
+            throw new BarcodeNotExistsException("The product is not exists");
         }
         Page<DataListProducts> productList = inventoryRepository.findByBarcode(barcode, pagination).map(DataListProducts::new);
         return productList;

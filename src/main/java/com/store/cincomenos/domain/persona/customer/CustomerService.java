@@ -18,8 +18,8 @@ public class CustomerService {
     @Autowired
     private CustomerRespository respository;
 
-    public Page<DataListCustomers> getList(Long id, Pageable paginacion) {
-        Page<DataListCustomers> customersList = respository.findById(id, paginacion).map(DataListCustomers::new);
+    public Page<DataListCustomers> getList(Long id, Pageable pagination) {
+        Page<DataListCustomers> customersList = respository.findById(id, pagination).map(DataListCustomers::new);
         return customersList;
     }
     

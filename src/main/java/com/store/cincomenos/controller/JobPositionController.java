@@ -24,9 +24,6 @@ import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataRegister
 import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataResponseJobPosition;
 import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataUpdateJobPosition;
 import com.store.cincomenos.domain.persona.employee.departament.position.JobPositionService;
-import com.store.cincomenos.infra.exception.ErrorCode;
-import com.store.cincomenos.infra.exception.ErrorResponse;
-import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 
 import jakarta.validation.Valid;
 
@@ -58,25 +55,17 @@ public class JobPositionController {
     @PutMapping
     @Transactional
     public ResponseEntity<Object> updateJobPosition(@RequestBody DataUpdateJobPosition data) {
-        try {
-            DataResponseJobPosition reply = jobPositionService.update(data);
-            return ResponseEntity.status(HttpStatus.OK).body(reply);
-        } catch (EntityNotFoundException e) {
-            ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), ErrorCode.DATA_NOT_FOUND);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse.toString());
-        }
+        DataResponseJobPosition reply = jobPositionService.update(data);
+        return ResponseEntity.status(HttpStatus.OK).body(reply);
+        
     }
 
     @DeleteMapping
     @Transactional
     public ResponseEntity<Object> deleteJobPosition(@RequestParam(value = "id", required = true) Long id) {
-        try {
-            jobPositionService.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }  catch (EntityNotFoundException e) {
-            ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), ErrorCode.DATA_NOT_FOUND);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse.toString());
-        }
+        jobPositionService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        
     }
     
 }

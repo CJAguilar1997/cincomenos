@@ -3,14 +3,20 @@ package com.store.cincomenos.domain.dto.persona.employee.departament;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.store.cincomenos.domain.dto.persona.employee.jobPosition.UpdateEmployeePositionDTO;
 
+import jakarta.validation.constraints.Pattern;
+
 public record UpdateEmployeeDepartamentDTO(
+    @Pattern(regexp = "[\\p{L}]{0,8}")
     String type,
 
+    @Pattern(regexp = "[\\p{L}]{0,8}")
     String update,
-
+    
+    @Pattern(regexp = "[\\p{L} ]{0,20}")
     @JsonAlias({"departament_to_update", "departament_updatable"})
     String nameDeptToUpdate,
-
+    
+    @Pattern(regexp = "[\\p{L} ]{0,20}")
     @JsonAlias({"new_departament"})
     String nameDept,
 

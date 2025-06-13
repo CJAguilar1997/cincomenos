@@ -7,7 +7,10 @@ import com.store.cincomenos.domain.dto.persona.ContactInformationDTO;
 import com.store.cincomenos.domain.dto.persona.UpdateData;
 import com.store.cincomenos.domain.dto.persona.employee.departament.UpdateEmployeeDepartamentDTO;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,9 +21,14 @@ import lombok.NoArgsConstructor;
 public class DataUpdateEmployee implements UpdateData {
 
     @NotNull
+    @Positive(message = "Id only accept positive numbers")
+    @Digits(integer = 15, fraction = 0, message = "The id contains an invalid number")
     private Long id;
 
+    @Pattern(regexp = "[\\p{L} ]*")
     private String name;
+
+    @Pattern(regexp = "[0-9]+(\\-?[0-9]+)*", message = "El DNI conteins invalid symbols")
     private String dni;
 
     @JsonAlias({"departaments"})

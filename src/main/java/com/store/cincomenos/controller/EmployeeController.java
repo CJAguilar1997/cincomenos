@@ -26,11 +26,8 @@ import com.store.cincomenos.domain.dto.persona.employee.DataResponseEmployee;
 import com.store.cincomenos.domain.dto.persona.employee.DataResponseEmployeeLogin;
 import com.store.cincomenos.domain.dto.persona.employee.DataUpdateEmployee;
 import com.store.cincomenos.domain.persona.employee.EmployeeService;
-import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
-import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/employee")
@@ -43,13 +40,9 @@ public class EmployeeController {
     @PostMapping
     @Transactional
     public ResponseEntity<Object> registerEmployee(@RequestBody @Valid DataRegisterEmployee data, UriComponentsBuilder uriComponentsBuilder) {
-        try {
-            DataResponseEmployeeLogin reply = employeeService.register(data);
-            URI url = uriComponentsBuilder.path("/employee/{id}").buildAndExpand(reply.dataResponseEmployee().id()).toUri();
-            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        DataResponseEmployeeLogin reply = employeeService.register(data);
+        URI url = uriComponentsBuilder.path("/employee/{id}").buildAndExpand(reply.dataResponseEmployee().id()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
     }
     
     @GetMapping
@@ -68,26 +61,14 @@ public class EmployeeController {
     @PutMapping
     @Transactional
     public ResponseEntity<Object> updateEmployee(@Valid @RequestBody DataUpdateEmployee data) {
-        try {
-            DataResponseEmployee reply = employeeService.update(data);
-            return ResponseEntity.status(HttpStatus.OK).body(reply);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
-        } catch (ValidationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
-        }
+        DataResponseEmployee reply = employeeService.update(data);
+        return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
     
     @DeleteMapping
     @Transactional
     public ResponseEntity<Object> logicalDeleteEmployee(@RequestParam(value = "id", required = true) Long id) {
-        try {
-            employeeService.logicalDelete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
-        } catch (LogicalDeleteOperationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        employeeService.logicalDelete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(String.format("The employee with the id %l has been elimanted", id));
     }
 }

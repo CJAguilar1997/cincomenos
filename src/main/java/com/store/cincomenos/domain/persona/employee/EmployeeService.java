@@ -33,7 +33,6 @@ import com.store.cincomenos.domain.persona.login.role.Role;
 import com.store.cincomenos.domain.persona.login.role.RoleRepository;
 import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
-import com.store.cincomenos.infra.exception.console.NullPointerException;
 import com.store.cincomenos.utils.user.generator.UserGenerator;
 
 @Service
@@ -117,10 +116,6 @@ public class EmployeeService {
     }
     
     private List<Role> getRoles(Set<String> roles) {
-        if (roles.isEmpty()) {
-            throw new NullPointerException("No hay roles para añadir al usuario");
-        }
-        
         List<Role> roleEntities = new ArrayList<>();
         
         for (String role : roles) {
@@ -246,7 +241,6 @@ public class EmployeeService {
         }
 
         employee.deleteEmployeeAccount();
-
         employeeRepository.save(employee);
     }
     

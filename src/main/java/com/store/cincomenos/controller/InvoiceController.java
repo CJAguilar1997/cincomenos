@@ -22,11 +22,8 @@ import com.store.cincomenos.domain.dto.invoice.DataRegisterInvoice;
 import com.store.cincomenos.domain.dto.invoice.DataResponseInvoice;
 import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.invoice.InvoiceService;
-import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
-import com.store.cincomenos.infra.exception.producto.OutOfStockException;
 
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/invoices")
@@ -37,18 +34,11 @@ public class InvoiceController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Object> registrarFactura(@Valid @RequestBody DataRegisterInvoice data, UriComponentsBuilder uriComponentsBuilder) {
-        try {
-            DataResponseInvoice reply = service.register(data);
-            URI url = uriComponentsBuilder.path("/invoices/{id}").buildAndExpand(reply.id()).toUri();
-            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
-        } catch (ValidationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
-        } catch (OutOfStockException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());  
-        }
+    public ResponseEntity<Object> registerInvoice(@Valid @RequestBody DataRegisterInvoice data, UriComponentsBuilder uriComponentsBuilder) {
+        DataResponseInvoice reply = service.register(data);
+        URI url = uriComponentsBuilder.path("/invoices/{id}").buildAndExpand(reply.id()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
+        
     }
 
     @GetMapping("/getProduct")

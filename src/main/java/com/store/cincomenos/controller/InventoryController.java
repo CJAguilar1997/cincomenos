@@ -25,11 +25,8 @@ import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
 import com.store.cincomenos.domain.dto.product.DataResponseProduct;
 import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
 import com.store.cincomenos.domain.product.InventoryService;
-import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
-import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/inventory")
@@ -41,26 +38,17 @@ public class InventoryController {
     @PostMapping
     @Transactional
     public ResponseEntity<Object> registerProduct(@Valid @RequestBody DataRegisterProduct data, UriComponentsBuilder uriComponentsBuilder) {
-        try {
-            DataResponseProduct reply = service.register(data);
-            URI url = uriComponentsBuilder.path("/inventory/{id}").buildAndExpand(reply.id()).toUri();
-            return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
-        } catch (ValidationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
-        }
+        DataResponseProduct reply = service.register(data);
+        URI url = uriComponentsBuilder.path("/inventory/{id}").buildAndExpand(reply.id()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
+        
     }
 
     @PutMapping
     @Transactional
     public ResponseEntity<Object> updateProduct(@RequestBody @Valid DataUpdateProduct data) {
-        try {
-            DataResponseProduct reply = service.update(data);
-            return ResponseEntity.status(HttpStatus.OK).body(reply);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());  
-        }
+        DataResponseProduct reply = service.update(data);
+        return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
 
     @GetMapping
@@ -80,13 +68,7 @@ public class InventoryController {
     @DeleteMapping
     @Transactional
     public ResponseEntity<Object> deleteProduct(@RequestParam(value = "id", required = true) Long id) {
-        try {
-            service.logicalDelete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (LogicalDeleteOperationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        service.logicalDelete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
