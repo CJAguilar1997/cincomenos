@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.store.cincomenos.domain.dto.persona.login.DataAuthenticationUser;
 import com.store.cincomenos.domain.persona.login.User;
-import com.store.cincomenos.infra.security.DatosJwtToken;
+import com.store.cincomenos.infra.security.DataJwtToken;
 import com.store.cincomenos.infra.security.TokenService;
 
 import jakarta.validation.Valid;
@@ -32,6 +32,6 @@ public class AuthenticationController {
         Authentication authToken = new UsernamePasswordAuthenticationToken(dataAuthenticationUser.email(), dataAuthenticationUser.password());
         var authUser = authenticationManager.authenticate(authToken);
         var jwtToken = tokenService.generateToken((User) authUser.getPrincipal());
-        return ResponseEntity.ok(new DatosJwtToken(jwtToken));  
+        return ResponseEntity.ok(new DataJwtToken(jwtToken));  
     }
 }
