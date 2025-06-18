@@ -36,7 +36,7 @@ public class AttributeController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Object> registerAttribute(@Valid @RequestBody DataRegisterAttribute data, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<DataResponseAttribute> registerAttribute(@Valid @RequestBody DataRegisterAttribute data, UriComponentsBuilder uriComponentsBuilder) {
         DataResponseAttribute reply = attributeService.register(data);
         URI url = uriComponentsBuilder.path("/attribute/{id}").buildAndExpand(reply.id()).toUri();
         return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
@@ -53,7 +53,7 @@ public class AttributeController {
         
     @Transactional
     @PutMapping
-    public ResponseEntity<Object> updateAttribute(@Valid @RequestBody DataUpdateAttribute data) {
+    public ResponseEntity<DataResponseAttribute> updateAttribute(@Valid @RequestBody DataUpdateAttribute data) {
         DataResponseAttribute reply = attributeService.update(data);
         return ResponseEntity.status(HttpStatus.OK).body(reply);
     }

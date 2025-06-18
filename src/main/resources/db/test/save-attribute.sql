@@ -1,0 +1,1 @@
+INSERT INTO attributes (`name`) value ("PESO");
