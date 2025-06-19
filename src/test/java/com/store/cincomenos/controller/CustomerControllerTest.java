@@ -229,7 +229,6 @@ public class CustomerControllerTest {
         "classpath:db/test/save-customer.sql"
         }, 
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-customers.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testLogicalDeleteCustomer200() throws Exception {
 
@@ -246,7 +245,6 @@ public class CustomerControllerTest {
         "classpath:db/test/save-customer.sql"
         }, 
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-customers.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testLogicalDeleteCustomer400() throws Exception {
 
@@ -262,7 +260,6 @@ public class CustomerControllerTest {
         "classpath:db/test/save-customer.sql"
         }, 
         executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-customers.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testLogicalDeleteCustomer403() throws Exception {
 
