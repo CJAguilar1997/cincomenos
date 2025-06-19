@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Pattern;
 
 public record DataRegisterCustomer(
     @NotBlank
-    @Pattern(regexp = "^\\w+\\s+\\w+.*$", message = "Customer name contains invalid characters")
+    @Pattern(regexp = "[\\p{L} ]+", message = "Customer name contains invalid characters")
     String name,
 
     @NotBlank

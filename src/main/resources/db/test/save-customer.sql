@@ -1,0 +1,2 @@
+INSERT INTO customers(registration_date, `name`, dni, email, phone_number, `address`, active_user) 
+value ("2010-11-08", "Perrito Fiel", "5879569", "laskdfhsoeiueo@gmail.com", "+50488935469", "Another place", 1);

@@ -62,6 +62,6 @@ public class CustomerController {
     @DeleteMapping
     public ResponseEntity<Object> logicalDeleteCustomer(@RequestParam(value = "id", required = true) Long id) {
         service.logicalDelete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(String.format("Customer with id %l has been eliminated", id));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

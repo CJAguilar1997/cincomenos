@@ -17,7 +17,7 @@ public record DataUpdateCustomer(
     @Max(10)
     Long id,
 
-    @Pattern(regexp = "^\\w+\\s+\\w+.*$", message = "El nombre contiene caracteres invalidos")
+    @Pattern(regexp = "[\\p{L} ]+", message = "El nombre contiene caracteres invalidos")
     String name,
 
     @Pattern(regexp = "[0-9]+(\\-?[0-9]+)*", message = "El DNI contiene simbolos invalidos")
