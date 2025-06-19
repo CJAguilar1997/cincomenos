@@ -63,6 +63,6 @@ public class CategoryController {
     @DeleteMapping
     public ResponseEntity<Object> deleteCategory(@RequestParam(value = "id", required = true) Long id) {
         categoryService.logicalDelete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(String.format("The category with id %l has been elimanted", id));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
