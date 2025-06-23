@@ -26,6 +26,7 @@ import com.store.cincomenos.domain.dto.product.category.DataUpdateCategory;
 import com.store.cincomenos.domain.product.category.CategoryService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/category")
@@ -45,7 +46,7 @@ public class CategoryController {
     
     @GetMapping
     public ResponseEntity<Page<DataListCategories>> getListCategories(
-        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "id", required = false) @Min(1) Long id,
         @RequestParam(value = "name", required = false) String name,
         @PageableDefault(size = 20) Pageable pagination) {
         Page<DataListCategories> reply = categoryService.getList(id, name, pagination);
@@ -61,7 +62,7 @@ public class CategoryController {
     
     @Transactional
     @DeleteMapping
-    public ResponseEntity<Object> deleteCategory(@RequestParam(value = "id", required = true) Long id) {
+    public ResponseEntity<Object> deleteCategory(@RequestParam(value = "id", required = true) @Min(1) Long id) {
         categoryService.logicalDelete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

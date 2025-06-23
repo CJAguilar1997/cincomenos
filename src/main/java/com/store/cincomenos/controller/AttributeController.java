@@ -26,6 +26,7 @@ import com.store.cincomenos.domain.dto.product.attribute.DataUpdateAttribute;
 import com.store.cincomenos.domain.product.attribute.AttributeService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/attribute")
@@ -44,7 +45,7 @@ public class AttributeController {
     
     @GetMapping
     public ResponseEntity<Page<DataListAttributes>> getListAttribute(
-        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "id", required = false) @Min(1) Long id,
         @RequestParam(value = "name", required = false) String name,
         @PageableDefault(size = 20) Pageable pagination) {
             Page<DataListAttributes> reply = attributeService.getList(id, name, pagination);
@@ -60,7 +61,7 @@ public class AttributeController {
     
     @Transactional
     @DeleteMapping
-    public ResponseEntity<Object> deleteAttribute(@RequestParam(value = "id", required = true) Long id) {
+    public ResponseEntity<Object> deleteAttribute(@RequestParam(value = "id", required = true) @Min(1) Long id) {
         attributeService.logicalDelete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

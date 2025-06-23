@@ -27,6 +27,7 @@ import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
 import com.store.cincomenos.domain.product.InventoryService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/inventory")
@@ -54,7 +55,7 @@ public class InventoryController {
     @GetMapping
     public ResponseEntity<Page<DataListProducts>> listProductsByParameters(
         @PageableDefault(size = 30, sort = "id") Pageable pagination,
-        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "id", required = false) @Min(1) Long id,
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "brand", required = false) String brand,
         @RequestParam(value = "category", required = false) String category,
@@ -67,7 +68,7 @@ public class InventoryController {
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity<Object> deleteProduct(@RequestParam(value = "id", required = true) Long id) {
+    public ResponseEntity<Object> deleteProduct(@RequestParam(value = "id", required = true) @Min(1) Long id) {
         service.logicalDelete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

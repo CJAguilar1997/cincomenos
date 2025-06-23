@@ -26,6 +26,7 @@ import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataUpdateJo
 import com.store.cincomenos.domain.persona.employee.departament.position.JobPositionService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/position")
@@ -45,7 +46,7 @@ public class JobPositionController {
 
     @GetMapping
     public ResponseEntity<Page<DataListJobPosition>> getListOfJobPosition(
-        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "id", required = false) @Min(1) Long id,
         @RequestParam(value = "name", required = false) String name,
         @PageableDefault(size = 20) Pageable pagination) {
         Page<DataListJobPosition> reply = jobPositionService.getList(id, name, pagination);
@@ -62,7 +63,7 @@ public class JobPositionController {
 
     @DeleteMapping
     @Transactional
-    public ResponseEntity<Object> deleteJobPosition(@RequestParam(value = "id", required = true) Long id) {
+    public ResponseEntity<Object> deleteJobPosition(@RequestParam(value = "id", required = true) @Min(1) Long id) {
         jobPositionService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         

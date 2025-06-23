@@ -26,6 +26,7 @@ import com.store.cincomenos.domain.dto.persona.customer.DataUpdateCustomer;
 import com.store.cincomenos.domain.persona.customer.CustomerService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/customer")
@@ -52,7 +53,7 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<Page<DataListCustomers>> getListOfCustomers(
-        @RequestParam(value = "id", required = true) Long id, 
+        @RequestParam(value = "id", required = true) @Min(1) Long id, 
         @PageableDefault(size = 10, sort = "id") Pageable pagination) {
         Page<DataListCustomers> reply = service.getList(id, pagination);
         return ResponseEntity.status(HttpStatus.OK).body(reply);
@@ -60,7 +61,7 @@ public class CustomerController {
         
     @Transactional
     @DeleteMapping
-    public ResponseEntity<Object> logicalDeleteCustomer(@RequestParam(value = "id", required = true) Long id) {
+    public ResponseEntity<Object> logicalDeleteCustomer(@RequestParam(value = "id", required = true) @Min(1) Long id) {
         service.logicalDelete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

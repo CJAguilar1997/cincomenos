@@ -24,6 +24,7 @@ import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.invoice.InvoiceService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/invoices")
@@ -52,7 +53,7 @@ public class InvoiceController {
     @GetMapping
     public ResponseEntity<Page<DataInvoiceList>> listInvoiceByParameters(
         @PageableDefault(size = 30, sort = "id") Pageable pagination,
-        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "id", required = false) @Min(1) Long id,
         @RequestParam(value = "id_customer", required = false) Long idClient
     ) {
         Page<DataInvoiceList> reply = service.getByParameters(pagination, id, idClient);
