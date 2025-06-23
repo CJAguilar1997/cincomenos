@@ -1,0 +1,5 @@
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE departament_position;
+TRUNCATE TABLE departaments;
+TRUNCATE TABLE job_positions;
+SET FOREIGN_KEY_CHECKS = 1;

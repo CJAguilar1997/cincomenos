@@ -52,16 +52,19 @@ public abstract class Persona {
             this.name = data.getName();
         }
 
-        if (data.dni() != null) {
-            this.dni = data.dni();
+        if (data.getDni() != null) {
+            this.dni = data.getDni();
         }
 
-        if (data.contactInformationDTO() != null) {
-            if (data.contactInformationDTO().phoneNumber() != null) {
-                contact.setPhoneNumber(data.contactInformationDTO().phoneNumber());
+        if (data.getContactInformationDTO() != null) {
+            if (data.getContactInformationDTO().phoneNumber() != null) {
+                contact.setPhoneNumber(data.getContactInformationDTO().phoneNumber());
             }
-            if (data.contactInformationDTO().email() != null) {
-                contact.setEmail(data.contactInformationDTO().email());
+            if (data.getContactInformationDTO().address() != null) {
+                contact.setAddress(data.getContactInformationDTO().address());
+            }
+            if (data.getContactInformationDTO().email() != null) {
+                contact.setEmail(data.getContactInformationDTO().email());
             }
         }
     }

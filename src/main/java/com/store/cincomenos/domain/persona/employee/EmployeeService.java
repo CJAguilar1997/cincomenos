@@ -31,8 +31,9 @@ import com.store.cincomenos.domain.persona.login.User;
 import com.store.cincomenos.domain.persona.login.UserRepository;
 import com.store.cincomenos.domain.persona.login.role.Role;
 import com.store.cincomenos.domain.persona.login.role.RoleRepository;
-import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
+import com.store.cincomenos.infra.exception.ErrorCode;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
+import com.store.cincomenos.infra.exception.console.response.ResponseLoggeableException;
 import com.store.cincomenos.utils.user.generator.UserGenerator;
 
 @Service
@@ -88,7 +89,7 @@ public class EmployeeService {
         }
             
             Departament departamentEntity = departamentRepository.findByName(departamentDTO.name())
-                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired departament \"" + departamentDTO.name() + "\" or not exists"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired departament \"" + departamentDTO.name() + "\" or not exists"));
             
             String[] dividedPositions = departamentDTO.positionDTO().name().split(",");
             
@@ -96,7 +97,7 @@ public class EmployeeService {
                 Position positionEntity = departamentEntity.getPositions().stream()
                 .filter(position -> position.getName().equals(positionR))
                 .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired job position \"" + departamentDTO.positionDTO().name() + "\" or not exists"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired job position \"" + departamentDTO.positionDTO().name() + "\" or not exists"));
 
                 EmployeeDeptPosition edp = deptPositionRepository.save(new EmployeeDeptPosition(employee, departamentEntity, positionEntity));
                 employee.addDeptPosition(edp);
@@ -120,7 +121,7 @@ public class EmployeeService {
         
         for (String role : roles) {
             Role roleEntity = roleRepository.findByRole(role)
-                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired rol or not exists"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired rol or not exists"));
 
             if (roleEntity != null) {
                 roleEntities.add(roleEntity);
@@ -138,23 +139,25 @@ public class EmployeeService {
     
     public DataResponseEmployee update(DataUpdateEmployee data) {
         Employee employee = employeeRepository.findById(data.getId())
-            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired employee or not exists"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired employee or not exists"));
         
         if (data.getDepartamentDTO() != null) {
             
             for (UpdateEmployeeDepartamentDTO deptDto : data.getDepartamentDTO()) {
+
                 Optional<EmployeeDeptPosition> deptPositionEntity = Optional.ofNullable(null);
+                boolean badRequest = false;
                 Departament departamentEntity;
 
                 if (deptDto.nameDept() != null) {
                     departamentEntity = departamentRepository.findByName(deptDto.nameDept())
-                        .orElseThrow(() -> new EntityNotFoundException("Could not get the desired departament or not exists"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired departament or not exists"));
                 } else {
                     departamentEntity = employee.getEmployeeDeptPositions().stream()
                         .filter(edp -> edp.getDepartament().getName().equals(deptDto.nameDeptToUpdate()))
                         .map(EmployeeDeptPosition::getDepartament)
                         .findFirst()
-                        .orElseThrow(() -> new EntityNotFoundException("The desired departament not exist for this employee"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The desired departament not exist for this employee"));
                 }
 
                 Position positionEntity;
@@ -163,24 +166,29 @@ public class EmployeeService {
                     positionEntity = departamentEntity.getPositions().stream()
                         .filter(pos -> pos.getName().equals(deptDto.positionDTO().namePosition()))
                         .findFirst()
-                        .orElseThrow(() -> new EntityNotFoundException("Could not get the desired position or not exists"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired position or not exists"));
                 } else {
                     positionEntity = employee.getEmployeeDeptPositions().stream()
                         .filter(edp -> edp.getPosition().getName().equals(deptDto.positionDTO().namePositionToUpdate()))
                         .map(EmployeeDeptPosition::getPosition)
                         .findFirst()
-                        .orElseThrow(() -> new EntityNotFoundException("The desired position not exist for this employee"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "The desired position not exist for this employee"));
                 }
 
                 if (deptDto.update().equals("true") || deptDto.positionDTO().update().equals("true")) {
                     boolean exceptionThrown = false;
+
+                    if (deptDto.nameDeptToUpdate() == null || deptDto.positionDTO().namePositionToUpdate() == null) {
+                        badRequest = true;
+                        throw new ResponseLoggeableException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.MISSING_REQUIRED_FIELDS.toString());
+                    }
 
                     if (deptDto.update().equals("true") && deptDto.type().equals("update")) {
                         try {
                             deptPositionEntity = Optional.of(getDeptPosition(employee, deptDto));
                             deptPositionEntity.ifPresent(edp -> edp.updateDepartament(departamentEntity));
                             
-                        } catch (EntityNotFoundException e) {
+                        } catch (ResponseStatusException e) {
                             exceptionThrown = true;
                         }
                     }
@@ -193,8 +201,8 @@ public class EmployeeService {
                         deptPositionEntity.ifPresent(edp -> edp.updatePosition(positionEntity)); 
                     }
 
-                    if ((deptDto.type().equals("delete") && deptDto.update().equals("true")) && 
-                        ((deptDto.positionDTO().type().equals("delete") && deptDto.positionDTO().update().equals("true")))) {
+                    if (((deptDto.type().equals("delete") && deptDto.update().equals("true")) && 
+                        ((deptDto.positionDTO().type().equals("delete") && deptDto.positionDTO().update().equals("true"))) && !badRequest)) {
                         EmployeeDeptPosition edp = deptPositionRepository.findByParameters(employee.getId(), departamentEntity.getId(), positionEntity.getId());
                         employee.getEmployeeDeptPositions().remove(edp);
                         deptPositionRepository.deleteEntity(edp.getId());
@@ -204,6 +212,10 @@ public class EmployeeService {
                     
                     
                 } else {
+                    if ((!deptDto.type().equals("update") || !deptDto.positionDTO().type().equals("update")) 
+                        || (deptDto.nameDeptToUpdate() != null || deptDto.positionDTO().namePositionToUpdate() != null)) {
+                        throw new ResponseLoggeableException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.INVALID_REQUEST.toString());
+                    }
 
                     employee.getEmployeeDeptPositions().stream()
                         .filter(edp -> edp.getDepartament().equals(departamentEntity) && edp.getPosition().equals(positionEntity))
@@ -229,12 +241,12 @@ public class EmployeeService {
             .filter(edp -> edp.getDepartament().getName().equals(deptDto.nameDeptToUpdate()))
             .filter(edp -> edp.getPosition().getName().equals(deptDto.positionDTO().namePositionToUpdate()))
             .findFirst()
-            .orElseThrow(() -> new EntityNotFoundException(String.format("The departament \"%s\" or \"%s\" not exists for this employee", deptDto.nameDeptToUpdate(), deptDto.positionDTO().namePositionToUpdate())));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("The departament \"%s\" or the position \"%s\" not exists for this employee", deptDto.nameDeptToUpdate(), deptDto.positionDTO().namePositionToUpdate())));
     }
     
     public void logicalDelete(Long id) {
         Employee employee = employeeRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired employee or not exists"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired employee or not exists"));
             
         if(employee.getActiveUser() == false) {
             throw new LogicalDeleteOperationException("The employee is already removed from the product listings");

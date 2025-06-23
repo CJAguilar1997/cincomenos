@@ -27,15 +27,23 @@ public record DataUpdateCustomer(
     ContactInformationDTO contactInformationDTO
 
 ) implements UpdateData {
-
+    
     @Override
     public Long getId() {
         return id;
     }
-
+    
     @Override
     public String getName() {
         return this.name;
+    }
+    
+    public String getDni() {
+        return this.dni;
+    }
+
+    public ContactInformationDTO getContactInformationDTO() {
+        return contactInformationDTO;
     }
 
 }

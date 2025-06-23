@@ -28,6 +28,7 @@ import com.store.cincomenos.domain.dto.persona.employee.DataUpdateEmployee;
 import com.store.cincomenos.domain.persona.employee.EmployeeService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/employee")
@@ -48,7 +49,7 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity<Page<DataListEmployee>> getListOfEmployeeByParameters(
         @PageableDefault(size = 30) Pageable pagination,
-        @RequestParam(value = "id", required = false) Long id,
+        @RequestParam(value = "id", required = false) @Min(1) Long id,
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "dni", required = false) String dni,
         @RequestParam(value = "phone_number", required = false) String phoneNumber,
@@ -67,8 +68,8 @@ public class EmployeeController {
     
     @DeleteMapping
     @Transactional
-    public ResponseEntity<Object> logicalDeleteEmployee(@RequestParam(value = "id", required = true) Long id) {
+    public ResponseEntity<Object> logicalDeleteEmployee(@RequestParam(value = "id", required = true) @Min(1) Long id) {
         employeeService.logicalDelete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(String.format("The employee with the id %l has been elimanted", id));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

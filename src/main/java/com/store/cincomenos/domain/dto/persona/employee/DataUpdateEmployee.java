@@ -28,7 +28,7 @@ public class DataUpdateEmployee implements UpdateData {
     @Pattern(regexp = "[\\p{L} ]*")
     private String name;
 
-    @Pattern(regexp = "[0-9]+(\\-?[0-9]+)*", message = "El DNI conteins invalid symbols")
+    @Pattern(regexp = "[0-9]+(\\-?[0-9]+)*", message = "El DNI contains invalid symbols")
     private String dni;
 
     @JsonAlias({"departaments"})
@@ -49,7 +49,7 @@ public class DataUpdateEmployee implements UpdateData {
         return this.name;
     }
 
-    public String dni() {
+    public String getDni() {
         return this.dni;
     }
 
@@ -57,7 +57,7 @@ public class DataUpdateEmployee implements UpdateData {
         return departamentDTO;
     }
 
-    public ContactInformationDTO contactInformationDTO() {
+    public ContactInformationDTO getContactInformationDTO() {
         return contactInformationDTO;
     }
 }

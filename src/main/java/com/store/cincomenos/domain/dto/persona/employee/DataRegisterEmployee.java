@@ -17,7 +17,7 @@ public class DataRegisterEmployee implements RegistrationData {
 
     @NotBlank
     @JsonProperty("name")
-    @Pattern(regexp = "^\\w+\\s+\\w+.*$", message = "El nombre debe de contener al menos un nombre y un apellido")
+    @Pattern(regexp = "[\\p{L} ]+", message = "The name contains invalid characters")
     private String name;
     
     @NotBlank

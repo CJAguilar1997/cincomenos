@@ -19,7 +19,7 @@ public record ContactInformationDTO(
     String email,
 
     @NotBlank
-    @Pattern(regexp = "[\\p{L}, ]", message = "The address constains invalid characters")
+    @Pattern(regexp = "[\\p{L}, ]+", message = "The address constains invalid characters")
     String address
 ) {
 
