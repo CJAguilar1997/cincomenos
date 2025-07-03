@@ -41,6 +41,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(idUsername, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
         filterChain.doFilter(request, response);
     }

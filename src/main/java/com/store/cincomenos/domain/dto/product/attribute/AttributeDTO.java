@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 
 @JsonPropertyOrder({"name", "value"})
 public record AttributeDTO(
-    @Pattern(regexp = "[\\p{L} ]{3,20}", message = "The attribute name contains invalid characters")
+    @Pattern(regexp = "^$|^[\\p{L} ]{3,20}$", message = "The attribute name contains invalid characters")
     String name,
     ValueDTO value
 ) {

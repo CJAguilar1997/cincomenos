@@ -1,1 +1,1 @@
-INSERT INTO categories(`name`) value ("PESO");
+INSERT INTO categories(`name`) values ("QUIMICO"), ("MEDICAMENTO"), ("CARNE"), ("PROCESADOS");

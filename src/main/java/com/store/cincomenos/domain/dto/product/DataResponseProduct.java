@@ -27,15 +27,21 @@ public record DataResponseProduct(
         this(product.getId(), product.getBarcode(), product.getName(), product.getDescription(), product.getBrand(), product.getPrice(), product.getStock(), getCategory(product.getCategory()), getAttribute(product.getAttributes()));
     }
 
+    public BigDecimal price() {
+        return this.price.setScale(2);
+    }
+
     private static List<CategoryDTO> getCategory(List<Category> category) {
         return category.stream()
             .map(cat -> new CategoryDTO(cat.getName()))
+            .sorted((c1, c2) -> c1.name().compareToIgnoreCase(c2.name()))
             .collect(Collectors.toList());
     }
 
     private static List<AttributeDTO> getAttribute(List<Attribute> attributes) {
         return attributes.stream()
             .map(attribute -> new AttributeDTO(attribute))
+            .sorted((c1, c2) -> c1.name().compareToIgnoreCase(c2.name()))
             .collect(Collectors.toList());
     }
 

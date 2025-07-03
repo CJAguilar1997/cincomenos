@@ -1,1 +1,1 @@
-INSERT INTO attributes (`name`) value ("PESO");
+INSERT INTO attributes (`name`) values ("PESO"), ("EMBASE"), ("EMPAQUE");

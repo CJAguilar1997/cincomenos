@@ -3,11 +3,14 @@ package com.store.cincomenos.domain.product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
@@ -21,7 +24,6 @@ import com.store.cincomenos.domain.product.attribute.value.Value;
 import com.store.cincomenos.domain.product.attribute.value.ValueRepository;
 import com.store.cincomenos.domain.product.category.Category;
 import com.store.cincomenos.domain.product.category.CategoryRepository;
-import com.store.cincomenos.infra.exception.console.EntityNotFoundException;
 import com.store.cincomenos.infra.exception.console.LogicalDeleteOperationException;
 
 import jakarta.validation.Valid;
@@ -42,13 +44,18 @@ public class InventoryService {
     private ValueRepository valueRepository;
     
     public DataResponseProduct register(@Valid DataRegisterProduct data) {
+        
+        if (inventoryRepository.findByBarcode(data.barcode()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The product is already exists");
+        }
+
         List<Category> categories = getCategory(data.getCategories());
         Product product = new Product(data, categories);
         
         for (AttributeDTO attribDTO : data.attributes()) {
 
             Attribute attribute = attributeRepository.findByName(attribDTO.name())
-                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired attribute or not exists"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired attribute or not exists"));
 
             Value value = valueRepository.save(new Value(attribDTO.value()));
 
@@ -60,14 +67,22 @@ public class InventoryService {
         return new DataResponseProduct(product);
     }
  
-    public DataResponseProduct update(@Valid DataUpdateProduct data) {     
+    public DataResponseProduct update(@Valid DataUpdateProduct data) { 
+        Optional<List<Attribute>> attributes = Optional.ofNullable(null);
+        Optional<List<Category>> category = Optional.ofNullable(null);
+
         Product producto = inventoryRepository.findById(data.id())
-            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired product or not exists"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired product or not exists"));
             
-            List<Category> category = getCategory(data.categories());
-            List<Attribute> attributes = getAttribute(data.attributes(), producto.getAttributes());
+            if (data.categories() != null) {
+                category = Optional.of(getCategory(data.categories()));
+            }
+
+            if(data.attributes() != null) {
+                attributes = Optional.of(getAttribute(data.attributes(), producto.getAttributes()));
+            }
         
-            producto.updateData(data, category, attributes);
+            producto.updateData(data, category.orElse(null), attributes.orElse(null));
         return new DataResponseProduct(producto);
     }
     
@@ -79,7 +94,7 @@ public class InventoryService {
     
     public void logicalDelete(Long id) {
         Product producto = inventoryRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Could not get the desired product or not exists"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Could not get the desired product or not exists"));
 
         if(producto.getActiveProduct() == false) {
             throw new LogicalDeleteOperationException("The product is already removed from the product listings");
@@ -95,7 +110,7 @@ public class InventoryService {
         
         for (CategoryDTO catDTO : categoryDTO) {
             Category category = categoryRepository.findByName(catDTO.name())
-                .orElseThrow(() -> new EntityNotFoundException("Could not get the desired category or not exists")); 
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired category or not exists")); 
 
             categoryList.add(category); 
         }
@@ -112,7 +127,7 @@ public class InventoryService {
                 .findFirst()
                 .orElseGet(() -> {
                     Attribute newAttribute = attributeRepository.findByName(attribDTO.name())
-                        .orElseThrow(() -> new EntityNotFoundException("Could not get the desired attribute or not exists"));
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired attribute or not exists"));
 
                     return newAttribute;
                 });
