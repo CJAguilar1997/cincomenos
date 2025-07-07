@@ -3,7 +3,7 @@ package com.store.cincomenos.domain.product.attribute.value;
 import java.util.List;
 
 import com.store.cincomenos.domain.dto.product.attribute.value.ValueDTO;
-import com.store.cincomenos.domain.product.attribute.Attribute;
+import com.store.cincomenos.domain.product.ProductAttribValue;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +29,7 @@ public class Value {
     private String value;
 
     @OneToMany(mappedBy = "value")
-    private List<Attribute> attribute;
+    private List<ProductAttribValue> attribute;
 
     public Value(ValueDTO value) {
         this.value = value.value();

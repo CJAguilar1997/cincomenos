@@ -1,5 +1,5 @@
 CREATE TABLE products (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     barcode VARCHAR(50) UNIQUE,
     name VARCHAR(255) NOT NULL,
     description TEXT,

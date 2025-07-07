@@ -3,6 +3,7 @@ package com.store.cincomenos.domain.dto.product.attribute;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.store.cincomenos.domain.dto.product.attribute.value.ValueDTO;
 import com.store.cincomenos.domain.product.attribute.Attribute;
+import com.store.cincomenos.domain.product.attribute.value.Value;
 
 import jakarta.validation.constraints.Pattern;
 
@@ -13,8 +14,8 @@ public record AttributeDTO(
     ValueDTO value
 ) {
 
-    public AttributeDTO(Attribute attribute) {
-        this(attribute.getName(), new ValueDTO(attribute.getValue()));
+    public AttributeDTO(Attribute attribute, Value value) {
+        this(attribute.getName(), new ValueDTO(value));
     }
 
     public String name() {

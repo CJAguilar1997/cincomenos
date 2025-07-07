@@ -59,8 +59,7 @@ public class InventoryService {
 
             Value value = valueRepository.save(new Value(attribDTO.value()));
 
-            attribute.setValue(value);
-            product.setAttributes(attribute);
+            product.setAttributesValues(new ProductAttribValue(product, attribute, value));
         }
 
         product = inventoryRepository.save(product);
@@ -68,10 +67,10 @@ public class InventoryService {
     }
  
     public DataResponseProduct update(@Valid DataUpdateProduct data) { 
-        Optional<List<Attribute>> attributes = Optional.ofNullable(null);
+        Optional<List<ProductAttribValue>> attributesValues = Optional.ofNullable(null);
         Optional<List<Category>> category = Optional.ofNullable(null);
 
-        Product producto = inventoryRepository.findById(data.id())
+        Product product = inventoryRepository.findById(data.id())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired product or not exists"));
             
             if (data.categories() != null) {
@@ -79,11 +78,11 @@ public class InventoryService {
             }
 
             if(data.attributes() != null) {
-                attributes = Optional.of(getAttribute(data.attributes(), producto.getAttributes()));
+                attributesValues = Optional.of(getAttribute(data.attributes(), product));
             }
         
-            producto.updateData(data, category.orElse(null), attributes.orElse(null));
-        return new DataResponseProduct(producto);
+            product.updateData(data, category.orElse(null), attributesValues.orElse(null));
+        return new DataResponseProduct(product);
     }
     
     public Page<DataListProducts> listByParameters(Pageable pagination, Long id, String name,
@@ -118,28 +117,28 @@ public class InventoryService {
         return categoryList;
     }
 
-    private List<Attribute> getAttribute(List<AttributeDTO> attributesDTO, List<Attribute> attributesProduct) {
-        List<Attribute> updatedAttributes = new ArrayList<>();
+    private List<ProductAttribValue> getAttribute(List<AttributeDTO> attributesDTO, Product product) {
+        List<ProductAttribValue> updatedAttributes = new ArrayList<>();
 
         for (AttributeDTO attribDTO : attributesDTO) {
-            Attribute attribute = attributesProduct.stream()
-                .filter(attrib -> attrib.getName().equals(attribDTO.name()))
+            ProductAttribValue attributeValue = product.getAttributesValues().stream()
+                .filter(attrib -> attrib.getAttribute().getName().equals(attribDTO.name()))
                 .findFirst()
                 .orElseGet(() -> {
                     Attribute newAttribute = attributeRepository.findByName(attribDTO.name())
                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired attribute or not exists"));
 
-                    return newAttribute;
+                    return new ProductAttribValue(product, newAttribute, null);
                 });
             
-            Value value = attribute.getValue();
+            Value value = attributeValue.getValue();
             if (value == null) {
                 value = valueRepository.save(new Value(attribDTO.value()));
             } else {
                 value.updateValue(attribDTO.value());
             }
-            attribute.setValue(value);
-            updatedAttributes.add(attribute);
+            attributeValue.setValue(value);
+            updatedAttributes.add(attributeValue);
         }
         return updatedAttributes;
     }

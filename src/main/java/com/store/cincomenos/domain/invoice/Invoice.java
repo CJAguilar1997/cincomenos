@@ -26,7 +26,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Facturas_Detalle")
+@Table(name = "invoices_details")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -35,22 +35,21 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_factura")
-    Long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
-    @Column(name = "fecha_emision")
+    @Column(name = "issuance_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate registrationDate = LocalDate.now();
+    private LocalDate issuanceDate = LocalDate.now();
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "factura")
-    List<InvoiceItems> items = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice")
+    private List<InvoiceItems> items = new ArrayList<>();
 
-    @Column(name = "importe_total")
-    BigDecimal totalValue = new BigDecimal(0);
+    @Column(name = "total_amount")
+    private BigDecimal totalValue = new BigDecimal(0);
     
     public Invoice(Customer customer) {
         this.customer = customer;
@@ -60,10 +59,10 @@ public class Invoice {
         this.items = items;
     }
 
-    public void agregarItems(InvoiceItems item) {
-        item.setFactura(this);
+    public void addItems(InvoiceItems item) {
+        item.setInvoice(this);
         this.items.add(item);
-        this.totalValue = this.totalValue.add(item.getValor());
+        this.totalValue = this.totalValue.add(item.getAmount());
     }
 
 }

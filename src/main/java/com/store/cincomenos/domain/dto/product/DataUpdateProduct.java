@@ -35,10 +35,6 @@ public record DataUpdateProduct(
     
     List<AttributeDTO> attributes){
 
-    public String name() {
-        return this.name;
-    }
-
     public List<CategoryDTO> categories() {
         if (categories != null) {
             return FilterUtils.getFiltredCategories(categories);

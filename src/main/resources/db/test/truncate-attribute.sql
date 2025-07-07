@@ -1,4 +1,4 @@
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE attribute_value;
+TRUNCATE TABLE product_attributes_values;
 TRUNCATE TABLE attributes;
 SET FOREIGN_KEY_CHECKS = 1;

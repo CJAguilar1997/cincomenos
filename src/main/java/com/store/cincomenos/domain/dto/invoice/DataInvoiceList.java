@@ -25,20 +25,20 @@ public record DataInvoiceList(
     public DataInvoiceList(Invoice facturaGuardada) {
         this(
             facturaGuardada.getId(),
-            facturaGuardada.getRegistrationDate(),
+            facturaGuardada.getIssuanceDate(),
             facturaGuardada.getItems().stream()
             .map(item -> {
-                BigDecimal valorProductoCantidad = item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getCantidad()));
+                BigDecimal valorProductoCantidad = item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getQuantity()));
                 return new InvoiceItemsDTO(
                 item.getId(),
-                item.getCantidad(),
+                item.getQuantity(),
                 item.getPrecioUnitario(),
                 valorProductoCantidad,
-                new ProductoDTO(
-                    item.getProducto().getBarcode(),
-                    item.getProducto().getName(),
-                    item.getProducto().getDescription(),
-                    item.getProducto().getBrand()
+                new ProductDTO(
+                    item.getProduct().getBarcode(),
+                    item.getProduct().getName(),
+                    item.getProduct().getDescription(),
+                    item.getProduct().getBrand()
                 )
             );
         }).collect(Collectors.toList()),

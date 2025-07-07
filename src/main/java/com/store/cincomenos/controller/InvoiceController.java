@@ -20,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.store.cincomenos.domain.dto.invoice.DataInvoiceList;
 import com.store.cincomenos.domain.dto.invoice.DataRegisterInvoice;
 import com.store.cincomenos.domain.dto.invoice.DataResponseInvoice;
-import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.invoice.InvoiceService;
 
 import jakarta.validation.Valid;
@@ -42,19 +41,11 @@ public class InvoiceController {
         
     }
 
-    @GetMapping("/getProduct")
-    public ResponseEntity<Page<DataListProducts>> getProducts(
-        @RequestParam(value = "barcode", required = true) String barcode,
-        Pageable pagination) {
-            Page<DataListProducts> reply = service.getProduct(barcode, pagination);
-            return ResponseEntity.status(HttpStatus.OK).body(reply);
-    } 
-
     @GetMapping
     public ResponseEntity<Page<DataInvoiceList>> listInvoiceByParameters(
         @PageableDefault(size = 30, sort = "id") Pageable pagination,
-        @RequestParam(value = "id", required = false) @Min(1) Long id,
-        @RequestParam(value = "id_customer", required = false) Long idClient
+        @RequestParam(value = "invoice_id", required = false) @Min(1) Long id,
+        @RequestParam(value = "customer_id", required = false) Long idClient
     ) {
         Page<DataInvoiceList> reply = service.getByParameters(pagination, id, idClient);
         return ResponseEntity.status(HttpStatus.OK).body(reply);

@@ -1,6 +1,7 @@
 package com.store.cincomenos.domain.dto.invoice;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,34 +24,46 @@ public record DataResponseInvoice(
 
     @JsonProperty("total_value")
     BigDecimal totalValue
-    ) {
-
+) {
+ 
     public DataResponseInvoice(Invoice savedInvoice) {
         this(
             savedInvoice.getId(),
-            savedInvoice.getRegistrationDate(),
-            new ClienteDTO(
-                savedInvoice.getCustomer().getId(), 
-                savedInvoice.getCustomer().getName(), 
-                savedInvoice.getCustomer().getDni(), 
-                savedInvoice.getCustomer().getContact().getPhoneNumber()),
-            savedInvoice.getItems().stream()
-            .map(item -> {
-                BigDecimal valorProductoCantidad = item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getCantidad()));
-                return new InvoiceItemsDTO(
-                item.getId(),
-                item.getCantidad(),
-                item.getPrecioUnitario(),
-                valorProductoCantidad,
-                new ProductoDTO(
-                    item.getProducto().getBarcode(),
-                    item.getProducto().getName(),
-                    item.getProducto().getDescription(),
-                    item.getProducto().getBrand()
-                )
-            );
-        }).collect(Collectors.toList()),
+            savedInvoice.getIssuanceDate(),
+            getCustomer(savedInvoice),
+            getInvoiceItems(savedInvoice),
             savedInvoice.getTotalValue()
         );
+    }
+
+    private static List<InvoiceItemsDTO> getInvoiceItems(Invoice savedInvoice) {
+        return savedInvoice.getItems().stream()
+        .map(item -> {
+            BigDecimal valorProductoCantidad = item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getQuantity()));
+            return new InvoiceItemsDTO(
+                item.getId(),
+                item.getQuantity(),
+                item.getPrecioUnitario(),
+                valorProductoCantidad,
+                new ProductDTO(
+                    item.getProduct().getBarcode(),
+                    item.getProduct().getName(),
+                    item.getProduct().getDescription(),
+                    item.getProduct().getBrand()
+                    )
+         );
+      }).collect(Collectors.toList());
+    }
+
+    private static ClienteDTO getCustomer(Invoice savedInvoice) {
+        return new ClienteDTO(
+            savedInvoice.getCustomer().getId(), 
+            savedInvoice.getCustomer().getName(), 
+            savedInvoice.getCustomer().getDni(), 
+            savedInvoice.getCustomer().getContact().getPhoneNumber());
+    }
+
+    public BigDecimal totalValue() {
+        return totalValue.setScale(2, RoundingMode.UNNECESSARY);
     }
 }

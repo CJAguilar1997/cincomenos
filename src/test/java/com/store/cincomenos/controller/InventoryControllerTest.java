@@ -350,7 +350,7 @@ public class InventoryControllerTest {
 
         DataUpdateProduct data = new DataUpdateProduct(Long.valueOf(1), "654679763", "Salchicha", "Salchicha con queso", "Frank", new BigDecimal(35.00), categories, attributes);
 
-        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "654679763", "Salchicha", "Salchicha con queso", "Frank", new BigDecimal(35.00), Long.valueOf(20), categories, attributes);
+        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "654679763", "Salchicha", "Salchicha con queso", "Frank", new BigDecimal(35.00), Long.valueOf(60), categories, attributes);
 
         var testResponse = mockMvc.perform(put("/inventory")
             .contentType(MediaType.APPLICATION_JSON)
@@ -394,7 +394,7 @@ public class InventoryControllerTest {
 
         DataUpdateProduct data = new DataUpdateProduct(Long.valueOf(1), null, "Salchicha", "Salchicha con queso", null, null, categories, attributes);
 
-        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Salchicha", "Salchicha con queso", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Salchicha", "Salchicha con queso", "Profe Utonio", new BigDecimal(15.00), Long.valueOf(60), categories, attributes);
 
         var testResponse = mockMvc.perform(put("/inventory")
             .contentType(MediaType.APPLICATION_JSON)
@@ -437,7 +437,7 @@ public class InventoryControllerTest {
 
         DataUpdateProduct data = new DataUpdateProduct(Long.valueOf(1), null, "Salchicha", "Salchicha con queso", null, null, null, attributes);
 
-        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Salchicha", "Salchicha con queso", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Salchicha", "Salchicha con queso", "Profe Utonio", new BigDecimal(15.00), Long.valueOf(60), categories, attributes);
 
         var testResponse = mockMvc.perform(put("/inventory")
             .contentType(MediaType.APPLICATION_JSON)
@@ -480,7 +480,7 @@ public class InventoryControllerTest {
 
         DataUpdateProduct data = new DataUpdateProduct(Long.valueOf(1), null, "Salchicha", "Salchicha con queso", null, null, categories, null);
 
-        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Salchicha", "Salchicha con queso", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Salchicha", "Salchicha con queso", "Profe Utonio", new BigDecimal(15.00), Long.valueOf(60), categories, attributes);
 
         var testResponse = mockMvc.perform(put("/inventory")
             .contentType(MediaType.APPLICATION_JSON)

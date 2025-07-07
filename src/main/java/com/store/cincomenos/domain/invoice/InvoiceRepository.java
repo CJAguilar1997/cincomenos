@@ -13,13 +13,13 @@ import com.store.cincomenos.domain.persona.customer.Customer;
 public interface InvoiceRepository extends JpaRepository<Invoice, Long>{
     
     @Query("""
-            SELECT f FROM Invoice f WHERE 
-            (:id IS NULL OR f.id = :id) 
-            AND (:idClient IS NULL OR f.customer = :idCustomer) 
+            SELECT i FROM Invoice i WHERE 
+            (:id IS NULL OR i.id = :id) 
+            AND (:customer IS NULL OR i.customer = :customer) 
             """)
     Page<Invoice> findByParameters(
         @Param("id") Long id, 
-        @Param("idCustomer") Customer customer, 
+        @Param("customer") Customer customer, 
         Pageable pagination);
 
 }

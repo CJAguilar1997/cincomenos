@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Items_Facturas")
+@Table(name = "invoice_items")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,26 +27,26 @@ public class InvoiceItems {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    Integer cantidad;
-    @Column(name = "precio_unitario")
+    Integer quantity;
+    @Column(name = "unit_price")
     BigDecimal precioUnitario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "producto_id", referencedColumnName = "id")
-    Product producto;
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "factura_id", referencedColumnName = "id_factura")
-    Invoice factura;
+    @JoinColumn(name = "invoice_id", referencedColumnName = "id")
+    Invoice invoice;
 
-    public InvoiceItems(Integer cantidad, Product producto, Invoice factura) {
-        this.cantidad = cantidad;
-        this.producto = producto;
-        this.factura = factura;
-        this.precioUnitario = producto.getPrice();
+    public InvoiceItems(Integer quantity, Product product, Invoice invoice) {
+        this.quantity = quantity;
+        this.product = product;
+        this.invoice = invoice;
+        this.precioUnitario = product.getPrice();
     }
 
-    public BigDecimal getValor() {
-        return this.precioUnitario.multiply(new BigDecimal(this.cantidad));
+    public BigDecimal getAmount() {
+        return this.precioUnitario.multiply(new BigDecimal(this.quantity));
     }
 }

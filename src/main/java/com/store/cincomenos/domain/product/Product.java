@@ -7,9 +7,9 @@ import java.util.List;
 
 import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
 import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
-import com.store.cincomenos.domain.product.attribute.Attribute;
 import com.store.cincomenos.domain.product.category.Category;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -46,10 +46,8 @@ public class Product {
         inverseJoinColumns = @JoinColumn(name = "id_category", referencedColumnName = "id"))
     private List<Category> category;
         
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Attribute.class)
-    @JoinTable(name = "product_attributes", joinColumns = @JoinColumn(name = "id_product", referencedColumnName = "id"), 
-        inverseJoinColumns = @JoinColumn(name = "id_attribute", referencedColumnName = "id"))
-    private List<Attribute> attributes;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductAttribValue> attributesValues;
     
     private LocalDate registrationDate;
     private Boolean activeProduct;
@@ -64,14 +62,14 @@ public class Product {
         this.category = categoryList;
         this.registrationDate = LocalDate.now();
         this.activeProduct = true;
-        this.attributes = new ArrayList<>();
+        this.attributesValues = new ArrayList<>();
     }
 
     public void desactivarProducto() {
         this.activeProduct = false;
     }
 
-    protected void updateData(@Valid DataUpdateProduct datos, List<Category> category, List<Attribute> attributes) {
+    protected void updateData(@Valid DataUpdateProduct datos, List<Category> category, List<ProductAttribValue> attributesValues) {
         if (datos.barcode() != null && !datos.barcode().isBlank()) {
             this.barcode = datos.barcode();
         }
@@ -90,23 +88,24 @@ public class Product {
         if (category != null) {
             this.category = category;
         }
-        if (attributes != null) {
+        if (attributesValues != null) {
             
-            for (Attribute attribute : attributes) {
-                if(!this.attributes.contains(attribute)) {
-                    this.attributes.add(attribute);
+            for (ProductAttribValue attributeValue : attributesValues) {
+
+                if(!this.attributesValues.contains(attributeValue)) {
+                    this.attributesValues.add(attributeValue);
                 } else {
-                    int index = this.attributes.indexOf(attribute);
+                    int index = this.attributesValues.indexOf(attributeValue);
                     if (index != -1) {
-                        this.attributes.set(index, attribute);
+                        this.attributesValues.set(index, attributeValue);
                     }
                 }
             }
         }
     }
 
-    public void setAttributes(Attribute attribute) {
-        this.attributes.add(attribute);
+    public void setAttributesValues(ProductAttribValue prodAttribValue) {
+        this.attributesValues.add(prodAttribValue);
     }
 
     public void updateStock(Integer cantidad) {
