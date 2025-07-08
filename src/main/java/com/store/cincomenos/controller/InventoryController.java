@@ -1,6 +1,5 @@
 package com.store.cincomenos.controller;
 
-import java.math.BigDecimal;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
 import com.store.cincomenos.domain.dto.product.DataResponseProduct;
 import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
+import com.store.cincomenos.domain.dto.product.ProductFilterDTO;
 import com.store.cincomenos.domain.product.InventoryService;
 
 import jakarta.validation.Valid;
@@ -55,14 +55,8 @@ public class InventoryController {
     @GetMapping
     public ResponseEntity<Page<DataListProducts>> listProductsByParameters(
         @PageableDefault(size = 30, sort = "id") Pageable pagination,
-        @RequestParam(value = "id", required = false) @Min(1) Long id,
-        @RequestParam(value = "name", required = false) String name,
-        @RequestParam(value = "brand", required = false) String brand,
-        @RequestParam(value = "category", required = false) String category,
-        @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
-        @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
-        @RequestParam(value = "barcode", required = false) String barcode) {
-        Page<DataListProducts> reply = service.listByParameters(pagination, id, name, brand, category, minPrice, maxPrice, barcode);
+        @RequestBody @Valid ProductFilterDTO filter) {
+        Page<DataListProducts> reply = service.listByParameters(pagination, filter);
         return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
 

@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
 import com.store.cincomenos.domain.dto.product.DataResponseProduct;
 import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
+import com.store.cincomenos.domain.dto.product.ProductFilterDTO;
 import com.store.cincomenos.domain.dto.product.attribute.AttributeDTO;
 import com.store.cincomenos.domain.dto.product.attribute.value.ValueDTO;
 import com.store.cincomenos.domain.dto.product.category.CategoryDTO;
@@ -51,6 +52,9 @@ public class InventoryControllerTest {
     
     @Autowired
     private JacksonTester<DataResponseProduct> dataResponseJacksonTester;
+    
+    @Autowired
+    private JacksonTester<ProductFilterDTO> dataFilterJacksonTester;
 
     @Autowired
     private TokenService tokenService;
@@ -265,11 +269,15 @@ public class InventoryControllerTest {
     },
     executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
-    @DisplayName("The following test should be return a HTTP code 200 when the user not introduce params")
+    @DisplayName("The following test should be return a HTTP code 200 when the user not introduce values")
     void testListProductsWithoutParameters200() throws Exception {
 
+        ProductFilterDTO filter = new ProductFilterDTO(null, null, null, null, null, null, null);
+        
         mockMvc.perform(get("/inventory")
-            .header("Authorization", token))
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", token)
+            .content(dataFilterJacksonTester.write(filter).getJson()))
             .andExpect(status().isOk());
 
     }
@@ -288,13 +296,15 @@ public class InventoryControllerTest {
     },
     executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
-    @DisplayName("The following test should be return a HTTP code 200 when the user introduce some params")
+    @DisplayName("The following test should be return a HTTP code 200 when the user introduce some values")
     void testListProductsWithParameters200() throws Exception {
 
+        ProductFilterDTO filter = new ProductFilterDTO(1l, "Sustancia X", null, null, null, null, null);
+        
         mockMvc.perform(get("/inventory")
-            .param("id", "1", 
-                "name", "Sustancia X")
-            .header("Authorization", token))
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", token)
+            .content(dataFilterJacksonTester.write(filter).getJson()))
             .andExpect(status().isOk());
 
     }

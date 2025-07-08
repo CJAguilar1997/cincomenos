@@ -14,6 +14,6 @@ public record CategoryDTO(
     }
 
     public String name() {
-        return this.name.toUpperCase();
+        return (name != null) ? this.name.toUpperCase() : null;
     }
 }

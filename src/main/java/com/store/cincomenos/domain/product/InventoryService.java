@@ -1,6 +1,5 @@
 package com.store.cincomenos.domain.product;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +15,7 @@ import com.store.cincomenos.domain.dto.product.DataListProducts;
 import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
 import com.store.cincomenos.domain.dto.product.DataResponseProduct;
 import com.store.cincomenos.domain.dto.product.DataUpdateProduct;
+import com.store.cincomenos.domain.dto.product.ProductFilterDTO;
 import com.store.cincomenos.domain.dto.product.attribute.AttributeDTO;
 import com.store.cincomenos.domain.dto.product.category.CategoryDTO;
 import com.store.cincomenos.domain.product.attribute.Attribute;
@@ -85,9 +85,16 @@ public class InventoryService {
         return new DataResponseProduct(product);
     }
     
-    public Page<DataListProducts> listByParameters(Pageable pagination, Long id, String name,
-    String brand, String category, BigDecimal minPrice, BigDecimal maxPrice, String barcode) {
-        Page<DataListProducts> listOfProducts = inventoryRepository.findByParameters(id, name, brand, category, minPrice, maxPrice, barcode, pagination).map(DataListProducts::new);
+    public Page<DataListProducts> listByParameters(Pageable pagination, ProductFilterDTO productFilter) {
+        Page<DataListProducts> listOfProducts = inventoryRepository.findByParameters(
+            productFilter.id(), 
+            productFilter.name(), 
+            productFilter.brand(), 
+            productFilter.category(), 
+            productFilter.minPrice(), 
+            productFilter.maxPrice(), 
+            productFilter.barcode(), 
+            pagination).map(DataListProducts::new);
         return listOfProducts;
     }
     

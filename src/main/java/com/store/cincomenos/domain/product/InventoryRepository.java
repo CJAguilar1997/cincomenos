@@ -24,7 +24,7 @@ public interface InventoryRepository extends JpaRepository <Product, Long> {
         AND (:id IS NULL OR p.id = :id)
         AND (:name IS NULL OR p.name LIKE :name) 
         AND (:brand IS NULL OR p.brand LIKE :brand) 
-        AND (:categoryName IS NULL OR c.name = :categoryName)                                        
+        AND (:categoryName IS NULL OR c.name = :categoryName)
         AND (:minPrice IS NULL OR p.price >= :minPrice)
         AND (:maxPrice IS NULL OR p.price <= :maxPrice)
         AND (:barcode IS NULL OR p.barcode LIKE :barcode)
