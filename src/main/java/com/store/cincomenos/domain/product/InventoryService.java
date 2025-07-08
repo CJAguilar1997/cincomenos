@@ -100,7 +100,7 @@ public class InventoryService {
     
     public void logicalDelete(Long id) {
         Product producto = inventoryRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Could not get the desired product or not exists"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not get the desired product or not exists"));
 
         if(producto.getActiveProduct() == false) {
             throw new LogicalDeleteOperationException("The product is already removed from the product listings");
