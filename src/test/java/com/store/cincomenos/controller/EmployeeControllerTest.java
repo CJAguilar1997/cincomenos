@@ -82,12 +82,10 @@ public class EmployeeControllerTest {
     @Rollback
     @Sql(scripts = {
         "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-roles.sql",
         "classpath:db/test/save-departament-and-position.sql"
         },
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {
-        "classpath:db/test/truncate-roles.sql",
         "classpath:db/test/truncate-employee.sql",
         "classpath:db/test/truncate-departament-and-position.sql"
     }, 
@@ -124,12 +122,10 @@ public class EmployeeControllerTest {
     @Rollback
     @Sql(scripts = {
         "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-roles.sql",
         "classpath:db/test/save-departament-and-position.sql"
         },
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {
-        "classpath:db/test/truncate-roles.sql",
         "classpath:db/test/truncate-employee.sql",
         "classpath:db/test/truncate-departament-and-position.sql"
     }, 
@@ -166,12 +162,10 @@ public class EmployeeControllerTest {
     @Rollback
     @Sql(scripts = {
         "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-roles.sql",
         "classpath:db/test/save-departament-and-position.sql"
         },
          executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {
-        "classpath:db/test/truncate-roles.sql",
         "classpath:db/test/truncate-employee.sql",
         "classpath:db/test/truncate-departament-and-position.sql"
     }, 

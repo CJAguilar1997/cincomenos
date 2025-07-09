@@ -21,6 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.store.cincomenos.domain.dto.product.attribute.DataRegisterAttribute;
@@ -34,6 +36,16 @@ import Utils.TestUtils;
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 @ActiveProfiles("test")
+@SqlGroup({
+    @Sql(scripts = {
+        "classpath:db/test/save-attribute.sql",
+        "classpath:db/test/save-user.sql"
+    }, executionPhase = ExecutionPhase.BEFORE_TEST_CLASS),
+    @Sql(scripts = {
+        "classpath:db/test/truncate-attribute.sql",
+        "classpath:db/test/truncate-user.sql"
+    }, executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
+})
 public class AttributeControllerTest {
 
     @Autowired
@@ -44,17 +56,17 @@ public class AttributeControllerTest {
 
     @Autowired
     private JacksonTester<DataUpdateAttribute> dataUpdateJacksonTester;
-
+    
     @Autowired
     private JacksonTester<DataResponseAttribute> dataResponseJacksonTester;
-
+    
     @Autowired
     private TokenService tokenService;
-
+    
     private TestUtils testUtils;
-
+    
     private String token;
-
+    
     @BeforeEach
     void setup() {
         testUtils = new TestUtils(tokenService);
@@ -63,12 +75,11 @@ public class AttributeControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 201")
     void testRegister201() throws IOException, Exception {
         
         DataRegisterAttribute data = new DataRegisterAttribute("peso");
-        DataResponseAttribute responseDto = new DataResponseAttribute(Long.valueOf(1), "PESO");
+        DataResponseAttribute responseDto = new DataResponseAttribute(Long.valueOf(4), "PESO");
         
         var testResponse = mockMvc.perform(post("/attribute")
             .contentType(MediaType.APPLICATION_JSON)
@@ -84,7 +95,6 @@ public class AttributeControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testRegister403() throws IOException, Exception {
         
@@ -100,7 +110,6 @@ public class AttributeControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testRegister400() throws IOException, Exception {
         
@@ -117,7 +126,6 @@ public class AttributeControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testGetList200() throws IOException, Exception {
 
@@ -131,7 +139,6 @@ public class AttributeControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testGetList403() throws IOException, Exception {
 
@@ -144,12 +151,6 @@ public class AttributeControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-attribute.sql"
-        }, 
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncade-attribute.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testUpdate200() throws IOException, Exception {
         
@@ -170,12 +171,6 @@ public class AttributeControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-attribute.sql"
-        }, 
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncade-attribute.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testUpdate403() throws IOException, Exception {
         
@@ -191,7 +186,6 @@ public class AttributeControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testUpdate400() throws IOException, Exception {
         
@@ -208,12 +202,6 @@ public class AttributeControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-attribute.sql"
-    }, 
-    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncade-attribute.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testLogicalDelete200() throws IOException, Exception {
         
@@ -228,12 +216,6 @@ public class AttributeControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-attribute.sql"
-    },
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncade-attribute.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testLogicalDelete403() throws IOException, Exception {
     

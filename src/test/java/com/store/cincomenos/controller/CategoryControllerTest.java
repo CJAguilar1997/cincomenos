@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.store.cincomenos.domain.dto.product.category.DataRegisterCategory;
@@ -34,6 +35,18 @@ import Utils.TestUtils;
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 @ActiveProfiles("test")
+@SqlGroup({
+    @Sql(scripts = {
+        "classpath:db/test/save-user.sql",
+        "classpath:db/test/save-category.sql"
+    }, 
+    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS),
+    @Sql(scripts = {
+        "classpath:db/test/truncate-user.sql",
+        "classpath:db/test/truncate-category.sql"
+    }, 
+    executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
+})
 public class CategoryControllerTest {
 
     @Autowired
@@ -63,12 +76,11 @@ public class CategoryControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 201")
     void testRegisterCategory201() throws IOException, Exception {
 
         DataRegisterCategory data = new DataRegisterCategory("carne");
-        DataResponseCategory responseDto = new DataResponseCategory(Long.valueOf(1), "CARNE");
+        DataResponseCategory responseDto = new DataResponseCategory(Long.valueOf(5), "CARNE");
 
         var testResponse = mockMvc.perform(post("/category")
             .contentType(MediaType.APPLICATION_JSON)
@@ -84,7 +96,6 @@ public class CategoryControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testRegisterCategory403() throws IOException, Exception {
 
@@ -101,7 +112,6 @@ public class CategoryControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testRegisterCategory400() throws IOException, Exception {
 
@@ -118,7 +128,6 @@ public class CategoryControllerTest {
     }
     
     @Test
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testGetListCategories200() throws Exception {
 
@@ -142,12 +151,6 @@ public class CategoryControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql"
-        }, 
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-category.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testUpdateCategory200() throws IOException, Exception {
         
@@ -168,12 +171,6 @@ public class CategoryControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql"
-        }, 
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-category.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testUpdateCategory403() throws IOException, Exception {
         
@@ -189,12 +186,6 @@ public class CategoryControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql"
-        }, 
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-category.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testUpdateCategory400() throws IOException, Exception {
         
@@ -212,12 +203,6 @@ public class CategoryControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql"
-    }, 
-    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-category.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 203")
     void testDeleteCategory203() throws Exception {
         
@@ -231,12 +216,6 @@ public class CategoryControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql"
-    }, 
-    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-category.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testDeleteCategory403() throws Exception {
         

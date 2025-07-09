@@ -1,4 +1,4 @@
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE facturas_detalle;
+TRUNCATE TABLE invoices_details;
 TRUNCATE TABLE customers;
 SET FOREIGN_KEY_CHECKS = 1;

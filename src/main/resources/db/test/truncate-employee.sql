@@ -1,4 +1,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE employees;
 TRUNCATE TABLE employee_departaments_positions;
+TRUNCATE TABLE employees;
+TRUNCATE TABLE user_roles;
+TRUNCATE TABLE users;
 SET FOREIGN_KEY_CHECKS = 1;

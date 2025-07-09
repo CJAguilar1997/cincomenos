@@ -47,13 +47,16 @@ import Utils.TestUtils;
         "classpath:db/test/save-customer.sql",
         "classpath:db/test/save-category.sql",
         "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
+        "classpath:db/test/save-product.sql",
+        "classpath:db/test/save-invoices.sql"
     }, executionPhase = ExecutionPhase.BEFORE_TEST_CLASS),
     @Sql(scripts = {
         "classpath:db/test/truncate-category.sql",
         "classpath:db/test/truncate-product.sql",
         "classpath:db/test/truncate-attribute.sql",
-        "classpath:db/test/truncate-invoices.sql"
+        "classpath:db/test/truncate-invoices.sql",
+        "classpath:db/test/truncate-customers.sql",
+        "classpath:db/test/truncate-user.sql"
     }, executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
 })
 public class InvoiceControllerTest {
@@ -81,9 +84,6 @@ public class InvoiceControllerTest {
     }
     
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/truncate-invoices.sql"
-    }, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 200 if the user enter valid data")
     void testRegisterInvoice200FirstScenario() throws IOException, Exception {
@@ -93,13 +93,13 @@ public class InvoiceControllerTest {
         );
 
         List<InvoiceItemsDTO> itemsResponse = List.of(
-            new InvoiceItemsDTO(1l, 
+            new InvoiceItemsDTO(3l, 
                 5,
                 new BigDecimal(15.00), 
                 new BigDecimal(75.00), 
                 new ProductDTO("6546798796", "Sustancia X", "Las super nenas papaaaaa", "Profe Utonio")),
 
-            new InvoiceItemsDTO(2l, 
+            new InvoiceItemsDTO(4l, 
                 5,
                 new BigDecimal(15.00), 
                 new BigDecimal(75.00), 
@@ -109,7 +109,7 @@ public class InvoiceControllerTest {
         DataRegisterInvoice data = new DataRegisterInvoice(1l, items);
 
         DataResponseInvoice responseDto = new DataResponseInvoice(
-            1l, 
+            2l, 
             LocalDate.now(), 
             new ClienteDTO(
                 1l,
@@ -135,9 +135,6 @@ public class InvoiceControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/truncate-invoices.sql"
-    }, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 200 when the user enters two times one product")
     void testRegisterInvoice200SecondScenario() throws IOException, Exception {
@@ -190,9 +187,6 @@ public class InvoiceControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/truncate-invoices.sql"
-    }, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user enters an invalid barcode")
     void testRegisterInvoice400FirstScenario() throws IOException, Exception {
@@ -213,9 +207,6 @@ public class InvoiceControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/truncate-invoices.sql"
-    }, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user enters an customer id that does not exist")
     void testRegisterInvoice400SecondScenario() throws IOException, Exception {
@@ -235,9 +226,6 @@ public class InvoiceControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/truncate-invoices.sql"
-    }, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user does not enter a token")
     void testRegisterInvoice403() throws IOException, Exception {
@@ -256,9 +244,6 @@ public class InvoiceControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/truncate-invoices.sql"
-    }, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 409 when the user enters an amount out of stock to a product")
     void testRegisterInvoice409() throws IOException, Exception {

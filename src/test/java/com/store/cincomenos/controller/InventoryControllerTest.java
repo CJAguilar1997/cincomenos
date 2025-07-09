@@ -25,6 +25,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.store.cincomenos.domain.dto.product.DataRegisterProduct;
@@ -42,6 +43,20 @@ import Utils.TestUtils;
 @AutoConfigureJsonTesters
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@SqlGroup({
+    @Sql(scripts = {
+        "classpath:db/test/save-user.sql",
+        "classpath:db/test/save-category.sql",
+        "classpath:db/test/save-attribute.sql",
+        "classpath:db/test/save-product.sql"
+    }, executionPhase = ExecutionPhase.BEFORE_TEST_CLASS),
+    @Sql(scripts = {
+        "classpath:db/test/truncate-category.sql",
+        "classpath:db/test/truncate-attribute.sql",
+        "classpath:db/test/truncate-user.sql",
+        "classpath:db/test/truncate-product.sql"
+    }, executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
+})
 public class InventoryControllerTest {
 
     @Autowired
@@ -73,16 +88,6 @@ public class InventoryControllerTest {
     }
     
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 201")
     void testRegisterProduct201FirstScenario() throws IOException, Exception {
@@ -95,9 +100,9 @@ public class InventoryControllerTest {
             new AttributeDTO("Embase", new ValueDTO("PET")),
             new AttributeDTO("Peso", new ValueDTO("500ml"))
         );
-        DataRegisterProduct data = new DataRegisterProduct("6546798796", "Sustancia X", "Las super nenas papaaaaa", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataRegisterProduct data = new DataRegisterProduct("6986795476", "Sustancia V", "Las super nenas abuelooooo", "Profe toño", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
 
-        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Sustancia X", "Las super nenas papaaaaa", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(4), "6986795476", "Sustancia V", "Las super nenas abuelooooo", "Profe toño", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
 
         var testResponse = mockMvc.perform(post("/inventory")
             .contentType(MediaType.APPLICATION_JSON)
@@ -112,16 +117,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 201 alternating between uppercase and lowercase letters in Category and Attribute name")
     void testRegisterProduct201SecondScenario() throws IOException, Exception {
@@ -134,9 +129,9 @@ public class InventoryControllerTest {
             new AttributeDTO("EmBaSe", new ValueDTO("PET")),
             new AttributeDTO("PeSo", new ValueDTO("500ml"))
         );
-        DataRegisterProduct data = new DataRegisterProduct("6546798796", "Sustancia X", "Las super nenas papaaaaa", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataRegisterProduct data = new DataRegisterProduct("6546795476", "Sustancia Z", "Las super nenas abuelaaaaa", "Profe otoño", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
 
-        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Sustancia X", "Las super nenas papaaaaa", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(3), "6546795476", "Sustancia Z", "Las super nenas abuelaaaaa", "Profe otoño", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
 
         var testResponse = mockMvc.perform(post("/inventory")
             .contentType(MediaType.APPLICATION_JSON)
@@ -151,19 +146,9 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
-    @DisplayName("The following test should be return a HTTP code 400 when the user use invalid characters in CategoryDTO")
-    void testRegisterProduct400FirstScenario() throws IOException, Exception {
+    @DisplayName("The following test should be return a HTTP code 409 when the user use invalid characters in CategoryDTO")
+    void testRegisterProduct409FirstScenario() throws IOException, Exception {
         
         List<CategoryDTO> categories = List.of( //This list will be ordenated by name in descending order
             new CategoryDTO("Medic@ment0"),
@@ -173,31 +158,21 @@ public class InventoryControllerTest {
             new AttributeDTO("EmBaSe", new ValueDTO("PET")),
             new AttributeDTO("PeSo", new ValueDTO("500ml"))
         );
-        DataRegisterProduct data = new DataRegisterProduct("6546798796", "Sustancia X", "Las super nenas papaaaaa", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataRegisterProduct data = new DataRegisterProduct("6546795476", "Sustancia Z", "Las super nenas abuelaaaaa", "Profe otoño", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
 
         mockMvc.perform(post("/inventory")
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", token)
             .content(dataRegisterJacksonTester.write(data).getJson()))
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isConflict())
             .andReturn().getResponse();
 
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
-    @DisplayName("The following test should be return a HTTP code 400 when the user use invalid characters in AttributeDTO")
-    void testRegisterProduct400SecondScenario() throws IOException, Exception {
+    @DisplayName("The following test should be return a HTTP code 409 when the user use invalid characters in AttributeDTO")
+    void testRegisterProduct409SecondScenario() throws IOException, Exception {
         
         List<CategoryDTO> categories = List.of( //This list will be ordenated by name in descending order
             new CategoryDTO("Medicamento"),
@@ -207,33 +182,21 @@ public class InventoryControllerTest {
             new AttributeDTO("Emb@se", new ValueDTO("PET")),
             new AttributeDTO("Pes0", new ValueDTO("500ml"))
         );
-        DataRegisterProduct data = new DataRegisterProduct("6546798796", "Sustancia X", "Las super nenas papaaaaa", "Profe Utonio", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
+        DataRegisterProduct data = new DataRegisterProduct("6546795476", "Sustancia Z", "Las super nenas abuelaaaaa", "Profe otoño", new BigDecimal(10.00), Long.valueOf(20), categories, attributes);
 
         mockMvc.perform(post("/inventory")
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", token)
             .content(dataRegisterJacksonTester.write(data).getJson()))
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isConflict())
             .andReturn().getResponse();
 
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 409 when the user introduce a barcode how is already exists")
-    void testRegisterProduct409() throws IOException, Exception {
+    void testRegisterProduct409ThirthScenario() throws IOException, Exception {
         
         List<CategoryDTO> categories = List.of( //This list will be ordenated by name in descending order
             new CategoryDTO("Medicamento"),
@@ -256,18 +219,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 200 when the user not introduce values")
     void testListProductsWithoutParameters200() throws Exception {
@@ -283,18 +234,6 @@ public class InventoryControllerTest {
     }
     
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 200 when the user introduce some values")
     void testListProductsWithParameters200() throws Exception {
@@ -310,18 +249,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 403 when the token field is empty")
     void testListProducts403() throws Exception {
@@ -332,18 +259,6 @@ public class InventoryControllerTest {
     }
     
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 200 when the user introduce all params correctly")
     void testUpdateProduct200FirstScenario() throws IOException, Exception {
@@ -376,18 +291,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 200 when the user introduce some params correctly")
     void testUpdateProduct200SecondScenario() throws IOException, Exception {
@@ -420,18 +323,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 200 when the user introduce some params correctly second scenario")
     void testUpdateProduct200ThirthScenario() throws IOException, Exception {
@@ -463,18 +354,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 200 when the user introduce some params correctly thirth scenario")
     void testUpdateProduct200FourthScenario() throws IOException, Exception {
@@ -485,12 +364,13 @@ public class InventoryControllerTest {
         );
 
         List<AttributeDTO> attributes = List.of(
+            new AttributeDTO("Empaque", new ValueDTO("Paquete plástico")),
             new AttributeDTO("peso", new ValueDTO("350g"))
         );
 
         DataUpdateProduct data = new DataUpdateProduct(Long.valueOf(1), null, "Salchicha", "Salchicha con queso", null, null, categories, null);
 
-        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "6546798796", "Salchicha", "Salchicha con queso", "Profe Utonio", new BigDecimal(15.00), Long.valueOf(60), categories, attributes);
+        DataResponseProduct responseDto = new DataResponseProduct(Long.valueOf(1), "654679763", "Salchicha", "Salchicha con queso", "Frank", new BigDecimal(35.00), Long.valueOf(60), categories, attributes);
 
         var testResponse = mockMvc.perform(put("/inventory")
             .contentType(MediaType.APPLICATION_JSON)
@@ -506,18 +386,6 @@ public class InventoryControllerTest {
     }
     
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user introduce invalid characters in categories")
     void testUpdateProduct400FirstScenario() throws IOException, Exception {
@@ -544,18 +412,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user introduce invalid characters in attributes")
     void testUpdateProduct400SecondScenario() throws IOException, Exception {
@@ -582,18 +438,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user introduce invalid characters in barcode")
     void testUpdateProduct400ThirdScenario() throws IOException, Exception {
@@ -620,18 +464,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user introduce invalid characters in name product")
     void testUpdateProduct400FourthScenario() throws IOException, Exception {
@@ -658,18 +490,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user introduce invalid characters in brand product")
     void testUpdateProduct400FifthScenario() throws IOException, Exception {
@@ -696,18 +516,6 @@ public class InventoryControllerTest {
         }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user introduce negative values in price variable")
     void testUpdateProduct400SixthScenario() throws IOException, Exception {
@@ -734,18 +542,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 403 when the front-end doesn't send a token")
     void testUpdateProduct403FisthScenario() throws IOException, Exception {
@@ -772,18 +568,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 203 when the user enter a valid parameter")
     void testDeleteProduct203() throws Exception {
@@ -795,41 +579,28 @@ public class InventoryControllerTest {
     }
     
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 400 when the user enter a invalid parameter")
-    void testDeleteProduct400() throws Exception {
+    void testDeleteProduct400FirstScenario() throws Exception {
         
         mockMvc.perform(delete("/inventory")
             .param("id", "-1")
             .header("Authorization", token))
             .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @Rollback
+    @DisplayName("The following test should be return a HTTP code 400 when the user enter a valid parameter but the product not exist")
+    void testDeleteProduct400SecondScenario() throws Exception {
+        
+        mockMvc.perform(delete("/inventory")
+            .param("id", "10000")
+            .header("Authorization", token))
+            .andExpect(status().isBadRequest());
+    }
     
     @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @Rollback
     @DisplayName("The following test should be return a HTTP code 403 when the front-end doesn't send a token")
     void testDeleteProduct403() throws Exception {
@@ -839,26 +610,4 @@ public class InventoryControllerTest {
             .andExpect(status().isForbidden());
     }
 
-    @Test
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-category.sql",
-        "classpath:db/test/save-attribute.sql",
-        "classpath:db/test/save-product.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-        "classpath:db/test/truncate-category.sql",
-        "classpath:db/test/truncate-product.sql",
-        "classpath:db/test/truncate-attribute.sql"
-    },
-    executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
-    @Rollback
-    @DisplayName("The following test should be return a HTTP code 409 when the user enter a valid parameter but the product not exist")
-    void testDeleteProduct409() throws Exception {
-        
-        mockMvc.perform(delete("/inventory")
-            .param("id", "10000")
-            .header("Authorization", token))
-            .andExpect(status().isConflict());
-    }
 }

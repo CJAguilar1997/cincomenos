@@ -38,7 +38,10 @@ import Utils.TestUtils;
 @SqlGroup({
     @Sql(scripts = {
         "classpath:db/test/save-user.sql"
-    }, executionPhase = ExecutionPhase.BEFORE_TEST_CLASS)
+    }, executionPhase = ExecutionPhase.BEFORE_TEST_CLASS),
+    @Sql(scripts = {
+        "classpath:db/test/truncate-user.sql"
+    }, executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
 })
 public class DepartamentControllerTest {
 

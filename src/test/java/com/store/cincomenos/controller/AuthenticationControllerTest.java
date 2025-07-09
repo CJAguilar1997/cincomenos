@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +26,9 @@ import com.store.cincomenos.domain.dto.persona.login.DataAuthenticationUser;
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 @ActiveProfiles("test")
+@Sql(scripts = {
+    "classpath:db/test/save-user.sql"
+}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 public class AuthenticationControllerTest {
 
     @Autowired
@@ -34,7 +38,7 @@ public class AuthenticationControllerTest {
     private JacksonTester<DataAuthenticationUser> dataAuthenticationJacksonTester;
 
     @Test
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Rollback
     @DisplayName("The following test should return an HTTP code 200")
     void testAuthenticateUser200() throws IOException, Exception {
 
@@ -49,7 +53,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Rollback
     @DisplayName("The following test should return an HTTP code 403")
     void testAuthenticateUser403() throws IOException, Exception {
 

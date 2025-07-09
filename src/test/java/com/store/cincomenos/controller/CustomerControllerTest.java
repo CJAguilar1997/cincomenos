@@ -23,6 +23,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.store.cincomenos.domain.dto.persona.ContactInformationDTO;
@@ -37,6 +38,16 @@ import Utils.TestUtils;
 @AutoConfigureJsonTesters
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@SqlGroup({
+    @Sql(scripts = {
+        "classpath:db/test/save-user.sql",
+        "classpath:db/test/save-customer.sql"
+    }, executionPhase = ExecutionPhase.BEFORE_TEST_CLASS),
+    @Sql(scripts = {
+        "classpath:db/test/truncate-customers.sql",
+        "classpath:db/test/truncate-user.sql"
+    }, executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
+})
 public class CustomerControllerTest {
     
     @Autowired
@@ -66,11 +77,10 @@ public class CustomerControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 201")
     void testRegisterCustomer201() throws IOException, Exception {
         DataRegisterCustomer data = new DataRegisterCustomer("Fabian Castro", "6546579697", new ContactInformationDTO("65467979", "llaskdf@gmail.com", "In some place"));
-        DataResponseCustomer responseDto = new DataResponseCustomer(Long.valueOf(1), "Fabian Castro", "6546579697", new ContactInformationDTO("65467979", "llaskdf@gmail.com", "In some place"));
+        DataResponseCustomer responseDto = new DataResponseCustomer(Long.valueOf(2), "Fabian Castro", "6546579697", new ContactInformationDTO("65467979", "llaskdf@gmail.com", "In some place"));
         
         var testResponse = mockMvc.perform(post("/customer")
             .contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +96,6 @@ public class CustomerControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testRegisterCustomer403() throws IOException, Exception {
         DataRegisterCustomer data = new DataRegisterCustomer("Fabian Castro", "6546579697", new ContactInformationDTO("65467979", "llaskdf@gmail.com", "In some place"));
@@ -101,7 +110,6 @@ public class CustomerControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testRegisterCustomer400() throws IOException, Exception {
         DataRegisterCustomer data = new DataRegisterCustomer("Fabian C@stro", "6546579697", new ContactInformationDTO("65467979", "llaskdf@gmail.com", "In some place"));
@@ -117,7 +125,6 @@ public class CustomerControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testGetListOfCustomers200() throws Exception {
 
@@ -131,7 +138,6 @@ public class CustomerControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testGetListOfCustomers400() throws Exception {
         
@@ -144,7 +150,6 @@ public class CustomerControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = "classpath:db/test/save-user.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testGetListOfCustomers403() throws Exception {
 
@@ -157,12 +162,6 @@ public class CustomerControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-customer.sql"
-        }, 
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-customers.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testUpdateCustomer200() throws IOException, Exception {
         DataUpdateCustomer data = new DataUpdateCustomer(Long.valueOf(1), "Perrito dulce", "6547963", new ContactInformationDTO("+504 98763154", "laksdjfjk@gmail.com", "Another place"));
@@ -182,12 +181,6 @@ public class CustomerControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-customer.sql"
-        }, 
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-customers.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testUpdateCustomer400() throws IOException, Exception {
         DataUpdateCustomer data = new DataUpdateCustomer(Long.valueOf(1), "Perrito-dulce", "6547963", new ContactInformationDTO("+504 98763154", "laksdjfjk@gmail.com", "someplace"));
@@ -204,12 +197,6 @@ public class CustomerControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-customer.sql"
-        }, 
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/test/truncate-customers.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testUpdateCustomer403() throws IOException, Exception {
         DataUpdateCustomer data = new DataUpdateCustomer(Long.valueOf(1), "Perrito dulce", "6547963", new ContactInformationDTO("+504 98763154", "laksdjfjk@gmail.com", "someplace"));
@@ -224,11 +211,6 @@ public class CustomerControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-customer.sql"
-        }, 
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 200")
     void testLogicalDeleteCustomer200() throws Exception {
 
@@ -240,11 +222,6 @@ public class CustomerControllerTest {
 
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-customer.sql"
-        }, 
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 400")
     void testLogicalDeleteCustomer400() throws Exception {
 
@@ -255,11 +232,6 @@ public class CustomerControllerTest {
     
     @Test
     @Rollback
-    @Sql(scripts = {
-        "classpath:db/test/save-user.sql",
-        "classpath:db/test/save-customer.sql"
-        }, 
-        executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("The following test should return an HTTP code 403")
     void testLogicalDeleteCustomer403() throws Exception {
 
