@@ -2,6 +2,7 @@ package com.store.cincomenos.domain.persona.employee.departament;
 
 import java.util.List;
 
+import com.store.cincomenos.domain.dto.departament.DataRegisterDepartament;
 import com.store.cincomenos.domain.persona.employee.departament.position.Position;
 
 import jakarta.persistence.Entity;
@@ -49,5 +50,9 @@ public class Departament {
 
     public void setPositions(List<Position> positions) {
         this.positions = positions;
+    }
+
+    public Departament(DataRegisterDepartament data) {
+        this.name = data.name();
     }
 }

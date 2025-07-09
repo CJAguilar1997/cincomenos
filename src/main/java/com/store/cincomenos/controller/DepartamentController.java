@@ -16,35 +16,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataListJobPosition;
-import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataRegisterJobPosition;
-import com.store.cincomenos.domain.dto.persona.employee.jobPosition.DataResponseJobPosition;
-import com.store.cincomenos.domain.dto.position.PositionFilterDTO;
-import com.store.cincomenos.domain.persona.employee.departament.position.JobPositionService;
+import com.store.cincomenos.domain.dto.departament.DataListDepartament;
+import com.store.cincomenos.domain.dto.departament.DataRegisterDepartament;
+import com.store.cincomenos.domain.dto.departament.DataResponseDepartament;
+import com.store.cincomenos.domain.dto.departament.DepartamentFilterDTO;
+import com.store.cincomenos.domain.persona.employee.departament.DepartamentService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/position")
-public class JobPositionController {
+@RequestMapping("/departament")
+public class DepartamentController {
 
     @Autowired
-    private JobPositionService jobPositionService;
+    private DepartamentService departamentService;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Object> registerJobPosition(@RequestBody @Valid DataRegisterJobPosition data, UriComponentsBuilder uriComponentsBuilder) {
-        DataResponseJobPosition reply = jobPositionService.register(data);
-        URI url = uriComponentsBuilder.path("/position/{id}").buildAndExpand(reply.id()).toUri();
+    public ResponseEntity<Object> registerDepartament(@RequestBody @Valid DataRegisterDepartament data, UriComponentsBuilder uriComponentsBuilder) {
+        DataResponseDepartament reply = departamentService.register(data);
+        URI url = uriComponentsBuilder.path("/departament/{id}").buildAndExpand(reply.id()).toUri();
         return ResponseEntity.status(HttpStatus.CREATED).location(url).body(reply);
     }
 
     @GetMapping
-    public ResponseEntity<Page<DataListJobPosition>> getListOfJobPosition(
-        @RequestBody @Valid PositionFilterDTO positionFilterDTO,
+    public ResponseEntity<Page<DataListDepartament>> getListOfDepartament(
+        @RequestBody @Valid DepartamentFilterDTO departamentFilterDTO,
         @PageableDefault(size = 20) Pageable pagination) {
-        Page<DataListJobPosition> reply = jobPositionService.getList(positionFilterDTO, pagination);
+        Page<DataListDepartament> reply = departamentService.getList(departamentFilterDTO, pagination);
         return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
-    
 }
