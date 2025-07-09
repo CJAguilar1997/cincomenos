@@ -9,4 +9,8 @@ public record DataRegisterDepartament(
     String name
 ) {
 
+    public String name() {
+        return (name != null) ? name.toUpperCase() : null;
+    }
+
 }
